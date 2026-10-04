@@ -146,5 +146,16 @@
   },
   "optSaved": {
     "message": "Сохранено"
+  },
+  "optFadeCustom": {
+    "message": "Своя, $VALUE$",
+    "placeholders": {
+      "value": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSeconds": {
+    "message": "с"
   }
 }

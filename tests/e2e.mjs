@@ -62,6 +62,30 @@ try {
 
   const { usage } = await sw.evaluate(() => chrome.storage.local.get('usage'));
   usage?.seconds > 10 ? ok(`time counted: ${usage.seconds.toFixed(1)} s`) : fail(`usage: ${JSON.stringify(usage)}`);
+
+  const badge = await sw.evaluate(() => chrome.action.getBadgeText({}));
+  badge === '0' ? ok('badge shows 0 min left') : fail(`badge: ${JSON.stringify(badge)}`);
+
+  await sw.evaluate(() =>
+    chrome.storage.local.set({
+      settings: { sites: ['fake.test'], limitMinutes: 30, fadeSeconds: 6, mode: 'soft' },
+    }),
+  );
+  await new Promise((r) => setTimeout(r, 300));
+  const badge2 = await sw.evaluate(() => chrome.action.getBadgeText({}));
+  badge2 === '30' ? ok('badge follows a raised limit') : fail(`badge after limit change: ${JSON.stringify(badge2)}`);
+
+  // fadeSeconds = 6 isn't a preset, so options must show it as a custom choice.
+  const opts = await ctx.newPage();
+  await opts.goto(`chrome-extension://${new URL(sw.url()).host}/options.html`);
+  await opts.waitForTimeout(500);
+  const fade = await opts.evaluate(() => {
+    const s = document.getElementById('fade');
+    return { value: s.value, label: s.selectedOptions[0]?.textContent };
+  });
+  fade.value === '6' && /6/.test(fade.label ?? '')
+    ? ok(`custom fade shown: ${fade.label}`)
+    : fail(`fade select: ${JSON.stringify(fade)}`);
 } finally {
   await ctx.close();
   server.close();

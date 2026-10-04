@@ -25,7 +25,7 @@ npm run typecheck
 
 To load manually: `chrome://extensions` → Developer mode → Load unpacked → `.output/chrome-mv3`.
 
-`BAKU_E2E=1 npm run build` produces a build with host permissions granted up front, for automated tests that can't click permission prompts. Don't ship it.
+`npx wxt build --mode e2e` (or `BAKU_E2E=1 npm run build`) produces a build with host permissions granted up front, for automated tests that can't click permission prompts. Don't ship it. `npm run test:e2e` builds it and runs the Playwright smoke test.
 
 ## Structure
 

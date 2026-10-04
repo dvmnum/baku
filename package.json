@@ -13,7 +13,7 @@
     "zip:firefox": "wxt zip -b firefox",
     "typecheck": "wxt prepare && tsc --noEmit",
     "postinstall": "wxt prepare",
-    "test:e2e": "BAKU_E2E=1 wxt build && node tests/e2e.mjs"
+    "test:e2e": "wxt build --mode e2e && node tests/e2e.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",

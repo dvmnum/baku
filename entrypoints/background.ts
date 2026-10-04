@@ -6,6 +6,9 @@ import { getSettings, getUsage, limitSeconds, setUsage } from '@/utils/state';
 
 const SCRIPT_ID = 'baku-fade';
 const CONTENT_SCRIPT_FILE = '/content-scripts/content.js';
+// Badge colors mirror --accent and --gray from assets/shared.css (light theme).
+const BADGE_ACTIVE = '#b5452f';
+const BADGE_OUT = '#8c8a87';
 
 export default defineBackground(() => {
   // --- Time tracking -------------------------------------------------------
@@ -110,12 +113,39 @@ export default defineBackground(() => {
       await injectIntoOpenTabs(await grantedSites());
     }).catch((e) => console.error('[baku] sync failed', e));
 
+  // --- Toolbar badge ---------------------------------------------------------
+  //
+  // Minutes left today, vermilion while there's time and gray once it's gone.
+  // Empty when no sites are tracked. Usage rolls over at midnight only when
+  // read, so we also refresh on tab/window switches to catch the new day.
+
+  async function updateBadge(): Promise<void> {
+    const [settings, usage] = await Promise.all([getSettings(), getUsage()]);
+    if (!settings.sites.length) {
+      await browser.action.setBadgeText({ text: '' });
+      return;
+    }
+    const left = Math.max(0, limitSeconds(settings, usage) - usage.seconds);
+    const minutes = Math.ceil(left / 60);
+    await browser.action.setBadgeText({ text: minutes > 999 ? '999+' : String(minutes) });
+    await browser.action.setBadgeBackgroundColor({ color: minutes > 0 ? BADGE_ACTIVE : BADGE_OUT });
+    await browser.action.setBadgeTextColor?.({ color: '#ffffff' });
+  }
+
+  const refreshBadge = () => void updateBadge().catch((e) => console.error('[baku] badge failed', e));
+
   browser.runtime.onInstalled.addListener(resync);
   browser.runtime.onStartup.addListener(resync);
+  browser.runtime.onInstalled.addListener(refreshBadge);
+  browser.runtime.onStartup.addListener(refreshBadge);
+  browser.tabs.onActivated.addListener(refreshBadge);
+  browser.windows.onFocusChanged.addListener(refreshBadge);
   browser.permissions.onAdded.addListener(resync);
   browser.permissions.onRemoved.addListener(resync);
   browser.storage.onChanged.addListener((changes, area) => {
-    if (area !== 'local' || !changes.settings) return;
+    if (area !== 'local') return;
+    if (changes.settings || changes.usage) refreshBadge();
+    if (!changes.settings) return;
     const before = (changes.settings.oldValue as { sites?: string[] } | undefined)?.sites ?? [];
     const after = (changes.settings.newValue as { sites?: string[] } | undefined)?.sites ?? [];
     if (before.join() !== after.join()) resync();

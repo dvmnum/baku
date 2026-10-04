@@ -14,7 +14,7 @@ The MVP (v0.1) is done and verified in headless Chromium: the fade works, untrac
 
 - **Stack:** WXT 0.21 + TypeScript, vanilla DOM for popup and options (no framework; keep the bundle tiny). If the UI grows, Preact or Svelte is the agreed next step.
 - **No backend.** All data lives in `chrome.storage.local`. Privacy is a selling point.
-- **Permissions:** only `storage`, `scripting` and `activeTab` at install. Sites are requested one by one through `optional_host_permissions` when the user adds them. Never add `<all_urls>` / `host_permissions` to the real build. The `BAKU_E2E` env flag exists only for tests.
+- **Permissions:** only `storage`, `scripting` and `activeTab` at install. Sites are requested one by one through `optional_host_permissions` when the user adds them. Never add `<all_urls>` / `host_permissions` to the real build. The `--mode e2e` build (or the `BAKU_E2E` env flag) exists only for tests.
 - **Time tracking:** content-script heartbeats every 5 s; the background credits `min(now - lastBeatAt, 5s)`. `lastBeatAt` lives in `storage.session`, so it survives service-worker sleep and doesn't double count across tabs. Activity means tab visible + window focused + input within the last 60 s, OR a video is playing.
 - **One shared limit** for all sites (per-site limits are v1.0).
 - **"5 more minutes":** a 10 s forced wait before confirming, max 2 per day. The extension counts from the current moment, so the fade clears immediately.
@@ -25,7 +25,7 @@ The MVP (v0.1) is done and verified in headless Chromium: the fade works, untrac
 ## Layout
 
 ```
-entrypoints/background.ts   heartbeat accounting, dynamic content-script registration
+entrypoints/background.ts   heartbeat accounting, dynamic content-script registration, toolbar badge
 entrypoints/content.ts      activity detection, heartbeats, CSS filter (registration: 'runtime')
 entrypoints/popup/          progress ring, track/untrack current site, "5 more minutes"
 entrypoints/options/        today's stats, site list, limit / fade speed / mode
@@ -45,7 +45,7 @@ npm install
 npm run dev            # Chrome with HMR
 npm run build          # .output/chrome-mv3
 npm run typecheck
-npm run test:e2e       # builds with BAKU_E2E=1, runs Playwright (first time: npx playwright install chromium); run `npm run build` again before shipping
+npm run test:e2e       # builds with --mode e2e, runs Playwright (first time: npx playwright install chromium); run `npm run build` again before shipping
 ```
 
 ## Roadmap
@@ -53,10 +53,10 @@ npm run test:e2e       # builds with BAKU_E2E=1, runs Playwright (first time: np
 **MVP polish (next):**
 
 - Real icon and store assets: screenshots, a promo GIF of a site fading out.
-- Badge on the toolbar icon with minutes left.
 - An onboarding page on first install that suggests popular sites.
 - Test on real YouTube, VK and TikTok (SPA navigation, fullscreen video, iframes).
-- Handle a custom `fadeSeconds` value that isn't one of the select options.
+
+Done: toolbar badge with minutes left (vermilion, gray at 0, empty with no sites); a non-preset `fadeSeconds` shows as a "Custom" option in settings.
 
 **v1.0:**
 

@@ -122,10 +122,36 @@ function renderSites(): void {
 function renderForm(): void {
   const limit = $<HTMLInputElement>('limit');
   if (document.activeElement !== limit) limit.value = String(settings.limitMinutes);
-  $<HTMLSelectElement>('fade').value = String(settings.fadeSeconds);
+  renderFadeSelect();
   document
     .querySelectorAll<HTMLInputElement>('input[name="mode"]')
     .forEach((r) => (r.checked = r.value === settings.mode));
+}
+
+/**
+ * The select only offers presets, but storage may hold any value (older
+ * builds, manual edits, future sync). Show it as an extra "custom" option
+ * instead of silently displaying an empty select.
+ */
+function renderFadeSelect(): void {
+  const select = $<HTMLSelectElement>('fade');
+  const value = String(settings.fadeSeconds);
+  select.querySelector('option[data-custom]')?.remove();
+  const isPreset = [...select.options].some((o) => o.value === value);
+  if (!isPreset) {
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.dataset.custom = '';
+    opt.textContent = t('optFadeCustom', [fmtSeconds(settings.fadeSeconds)]);
+    select.append(opt);
+  }
+  select.value = value;
+}
+
+function fmtSeconds(seconds: number): string {
+  if (seconds < 60) return `${seconds} ${t('optSeconds')}`;
+  const m = Math.round((seconds / 60) * 10) / 10;
+  return `${m} ${t('optMinutes')}`;
 }
 
 function bind(): void {

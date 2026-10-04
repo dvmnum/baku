@@ -1,7 +1,7 @@
 import { defineConfig } from 'wxt';
 
 export default defineConfig({
-  manifest: {
+  manifest: ({ mode }) => ({
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
     default_locale: 'en',
@@ -9,9 +9,9 @@ export default defineConfig({
     permissions: ['storage', 'scripting', 'activeTab'],
     optional_host_permissions: ['*://*/*'],
     // E2E tests can't click permission prompts, so grant everything up front there.
-    ...(process.env.BAKU_E2E ? { host_permissions: ['*://*/*'] } : {}),
+    ...(mode === 'e2e' || process.env.BAKU_E2E ? { host_permissions: ['*://*/*'] } : {}),
     action: {
       default_title: '__MSG_extName__',
     },
-  },
+  }),
 });
