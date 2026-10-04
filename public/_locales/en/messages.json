@@ -107,7 +107,7 @@
     "message": "Mode"
   },
   "optModeSoft": {
-    "message": "Soft: grayscale only"
+    "message": "Soft: gray and a little dimmer"
   },
   "optModeHard": {
     "message": "Hard: 15 minutes later, blur and dim too"

@@ -8,7 +8,7 @@ Browser extension that slowly fades time-wasting sites to grayscale once your da
 
 - Add sites (YouTube, VK, TikTok…) and set a shared daily limit (30 min by default).
 - Time only counts while you are actually there: the tab is visible, the window is focused and you have touched the mouse or keyboard in the last minute, or a video is playing.
-- When the limit runs out, the site fades to grayscale (30 s, 2.5 min or 10 min). In hard mode, after 15 more minutes it also blurs and dims.
+- When the limit runs out, the site fades to grayscale and dims a little, so bright pages don't turn glaring white (30 s, 2.5 min or 10 min). In hard mode, after 15 more minutes it also blurs and loses contrast.
 - "5 more minutes" is there, but you have to wait 10 seconds before confirming, and you only get it twice a day.
 - Everything resets at local midnight. All data stays in `chrome.storage.local`, with no server and no analytics.
 

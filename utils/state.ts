@@ -40,6 +40,11 @@ export const MAX_EXTENSIONS_PER_DAY = 2;
 /** In hard mode, blur kicks in this long after full grayscale. */
 export const HARD_STAGE_DELAY_SECONDS = 15 * 60;
 export const HARD_STAGE_RAMP_SECONDS = 5 * 60;
+/**
+ * How much brightness drops at full grayscale. Saturated yellows and cyans
+ * turn near-white in grayscale, so bright pages get glaring without this.
+ */
+export const DIM_AT_FULL_FADE = 0.2;
 
 export function today(now = new Date()): string {
   const y = now.getFullYear();
@@ -92,20 +97,23 @@ export function limitSeconds(settings: Settings, usage: Usage): number {
 export interface FadeLevel {
   /** 0..1 */
   grayscale: number;
+  /** CSS brightness() factor, 1 = untouched; ramps down together with grayscale. */
+  brightness: number;
   /** 0..1, only used in hard mode */
   hard: number;
 }
 
 export function fadeLevel(settings: Settings, usage: Usage): FadeLevel {
   const over = usage.seconds - limitSeconds(settings, usage);
-  if (over <= 0) return { grayscale: 0, hard: 0 };
+  if (over <= 0) return { grayscale: 0, brightness: 1, hard: 0 };
   const grayscale = clamp01(over / Math.max(1, settings.fadeSeconds));
+  const brightness = 1 - grayscale * DIM_AT_FULL_FADE;
   let hard = 0;
   if (settings.mode === 'hard') {
     const hardOver = over - settings.fadeSeconds - HARD_STAGE_DELAY_SECONDS;
     hard = clamp01(hardOver / HARD_STAGE_RAMP_SECONDS);
   }
-  return { grayscale, hard };
+  return { grayscale, brightness, hard };
 }
 
 function clamp01(x: number): number {

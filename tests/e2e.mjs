@@ -53,7 +53,7 @@ try {
   await page.waitForTimeout(1600); // CSS transition
 
   const filter = await page.evaluate(() => getComputedStyle(document.documentElement).filter);
-  filter.includes('grayscale(1)') ? ok(`tracked site faded: ${filter}`) : fail(`tracked site filter: ${filter}`);
+  filter.includes('grayscale(1)') && filter.includes('brightness(0.8)') ? ok(`tracked site faded: ${filter}`) : fail(`tracked site filter: ${filter}`);
 
   const other = await ctx.newPage();
   await other.goto(`http://127.0.0.1:${port}/`);

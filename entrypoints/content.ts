@@ -43,10 +43,11 @@ export default defineContentScript({
       const tracked = matchSite(location.hostname, settings.sites) !== null;
       const level = tracked
         ? fadeLevel(settings, normalizeUsage(rawUsage))
-        : { grayscale: 0, hard: 0 };
+        : { grayscale: 0, brightness: 1, hard: 0 };
 
       const parts: string[] = [];
       if (level.grayscale > 0) parts.push(`grayscale(${level.grayscale.toFixed(3)})`);
+      if (level.brightness < 1) parts.push(`brightness(${level.brightness.toFixed(3)})`);
       if (level.hard > 0) {
         parts.push(`blur(${(level.hard * 1.5).toFixed(2)}px)`);
         parts.push(`contrast(${(1 - level.hard * 0.25).toFixed(3)})`);
