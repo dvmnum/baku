@@ -1,0 +1,150 @@
+{
+  "extName": {
+    "message": "Baku"
+  },
+  "extDescription": {
+    "message": "Fades time-wasting sites to grayscale once your daily limit runs out."
+  },
+  "popupUsed": {
+    "message": "$USED$ of $LIMIT$ min",
+    "placeholders": {
+      "used": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      }
+    }
+  },
+  "popupLeft": {
+    "message": "$MIN$ min left today",
+    "placeholders": {
+      "min": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupOver": {
+    "message": "Limit reached. Baku is eating the colors."
+  },
+  "popupNoSites": {
+    "message": "Add a site you lose time on"
+  },
+  "popupTrack": {
+    "message": "Track this site"
+  },
+  "popupUntrack": {
+    "message": "Stop tracking"
+  },
+  "popupTracked": {
+    "message": "Tracked"
+  },
+  "popupNotTracked": {
+    "message": "Not tracked"
+  },
+  "popupUnsupported": {
+    "message": "Baku doesn't work on this page"
+  },
+  "popupPermissionDenied": {
+    "message": "No access to the site, so Baku can't fade it"
+  },
+  "extraButton": {
+    "message": "5 more minutes"
+  },
+  "extraWait": {
+    "message": "Sure? Think for $SEC$ s",
+    "placeholders": {
+      "sec": {
+        "content": "$1"
+      }
+    }
+  },
+  "extraConfirm": {
+    "message": "Yes, give me 5 minutes"
+  },
+  "extraLeft": {
+    "message": "Extensions left today: $N$ of $MAX$",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "extraNone": {
+    "message": "No more extensions today"
+  },
+  "openSettings": {
+    "message": "Settings"
+  },
+  "optTitle": {
+    "message": "Baku settings"
+  },
+  "optLimit": {
+    "message": "Daily limit"
+  },
+  "optLimitHint": {
+    "message": "Shared across all tracked sites"
+  },
+  "optMinutes": {
+    "message": "min"
+  },
+  "optFade": {
+    "message": "Fade speed"
+  },
+  "optFadeFast": {
+    "message": "Fast, 30 s"
+  },
+  "optFadeNormal": {
+    "message": "Smooth, 2.5 min"
+  },
+  "optFadeSlow": {
+    "message": "Slow, 10 min"
+  },
+  "optMode": {
+    "message": "Mode"
+  },
+  "optModeSoft": {
+    "message": "Soft: grayscale only"
+  },
+  "optModeHard": {
+    "message": "Hard: 15 minutes later, blur and dim too"
+  },
+  "optSites": {
+    "message": "Tracked sites"
+  },
+  "optSitesEmpty": {
+    "message": "Nothing yet. Add YouTube, VK, or whatever eats your time."
+  },
+  "optAdd": {
+    "message": "Add"
+  },
+  "optInvalidDomain": {
+    "message": "Doesn't look like a site address"
+  },
+  "optRemove": {
+    "message": "Remove"
+  },
+  "optNoAccess": {
+    "message": "No access. Click to grant"
+  },
+  "optToday": {
+    "message": "Today"
+  },
+  "optTodayEmpty": {
+    "message": "No time on tracked sites yet"
+  },
+  "optLimitHitAt": {
+    "message": "Faded at $TIME$",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSaved": {
+    "message": "Saved"
+  }
+}

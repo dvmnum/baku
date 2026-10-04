@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baku</title>
+    <meta name="manifest.open_in_tab" content="true" />
+    <link rel="stylesheet" href="../../assets/shared.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main>
+      <header class="brand"><span class="kanji">獏</span><span data-i18n="optTitle"></span></header>
+
+      <section class="card">
+        <h2 data-i18n="optToday"></h2>
+        <p class="muted" id="today-empty" data-i18n="optTodayEmpty"></p>
+        <ul class="stats" id="today-list"></ul>
+        <p class="muted small" id="limit-hit"></p>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="optSites"></h2>
+        <ul class="sites" id="site-list"></ul>
+        <p class="muted" id="sites-empty" data-i18n="optSitesEmpty"></p>
+        <form id="add-form" class="add">
+          <input id="add-input" type="text" placeholder="youtube.com" autocomplete="off" spellcheck="false" />
+          <button class="primary" type="submit" data-i18n="optAdd"></button>
+        </form>
+        <p class="error small hidden" id="add-error"></p>
+      </section>
+
+      <section class="card">
+        <label class="row">
+          <span>
+            <span class="label" data-i18n="optLimit"></span>
+            <span class="muted small block" data-i18n="optLimitHint"></span>
+          </span>
+          <span class="inline">
+            <input id="limit" type="number" min="1" max="1440" step="1" />
+            <span class="muted" data-i18n="optMinutes"></span>
+          </span>
+        </label>
+
+        <label class="row">
+          <span class="label" data-i18n="optFade"></span>
+          <select id="fade">
+            <option value="30" data-i18n="optFadeFast"></option>
+            <option value="150" data-i18n="optFadeNormal"></option>
+            <option value="600" data-i18n="optFadeSlow"></option>
+          </select>
+        </label>
+
+        <fieldset class="row column">
+          <legend class="label" data-i18n="optMode"></legend>
+          <label class="radio"><input type="radio" name="mode" value="soft" /> <span data-i18n="optModeSoft"></span></label>
+          <label class="radio"><input type="radio" name="mode" value="hard" /> <span data-i18n="optModeHard"></span></label>
+        </fieldset>
+        <p class="saved small" id="saved" data-i18n="optSaved"></p>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

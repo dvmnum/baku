@@ -1,0 +1,123 @@
+import { browser } from 'wxt/browser';
+import { defineBackground } from 'wxt/utils/define-background';
+import { matchSite, originsFor } from '@/utils/domain';
+import { HEARTBEAT_MS, type Message } from '@/utils/messages';
+import { getSettings, getUsage, limitSeconds, setUsage } from '@/utils/state';
+
+const SCRIPT_ID = 'baku-fade';
+const CONTENT_SCRIPT_FILE = '/content-scripts/content.js';
+
+export default defineBackground(() => {
+  // --- Time tracking -------------------------------------------------------
+  //
+  // Content scripts on tracked sites send a heartbeat every HEARTBEAT_MS while
+  // the user is actually there (tab visible, window focused, not idle — or a
+  // video is playing). We credit wall-clock time since the last counted beat,
+  // capped at one interval, so two visible tabs never double-count and a
+  // sleeping service worker loses nothing (the timestamp lives in session
+  // storage).
+
+  let queue: Promise<unknown> = Promise.resolve();
+  const serial = <T>(fn: () => Promise<T>): Promise<T> => {
+    const run = queue.then(fn, fn);
+    queue = run.catch(() => undefined);
+    return run;
+  };
+
+  async function onHeartbeat(hostname: string): Promise<void> {
+    const settings = await getSettings();
+    const site = matchSite(hostname, settings.sites);
+    if (!site) return;
+
+    const now = Date.now();
+    const { lastBeatAt } = (await browser.storage.session.get('lastBeatAt')) as {
+      lastBeatAt?: number;
+    };
+    const gap = lastBeatAt ? now - lastBeatAt : Infinity;
+    const creditMs = Math.max(0, Math.min(gap, HEARTBEAT_MS));
+    await browser.storage.session.set({ lastBeatAt: now });
+    if (creditMs === 0) return;
+
+    const usage = await getUsage();
+    const credit = creditMs / 1000;
+    const wasUnder = usage.seconds < limitSeconds(settings, usage);
+    usage.seconds += credit;
+    usage.perSite[site] = (usage.perSite[site] ?? 0) + credit;
+    if (wasUnder && usage.seconds >= limitSeconds(settings, usage) && !usage.limitHitAt) {
+      usage.limitHitAt = now;
+    }
+    await setUsage(usage);
+  }
+
+  browser.runtime.onMessage.addListener((raw: unknown) => {
+    const msg = raw as Message;
+    if (msg?.type === 'heartbeat') {
+      return serial(() => onHeartbeat(msg.hostname)).then(() => undefined);
+    }
+    return undefined;
+  });
+
+  // --- Content script registration -----------------------------------------
+  //
+  // The fade script only runs on sites the user added AND granted access to.
+  // We keep one dynamic registration in sync with that list.
+
+  async function grantedSites(): Promise<string[]> {
+    const { sites } = await getSettings();
+    const checks = await Promise.all(
+      sites.map((s) => browser.permissions.contains({ origins: originsFor(s) })),
+    );
+    return sites.filter((_, i) => checks[i]);
+  }
+
+  async function syncRegistration(): Promise<void> {
+    const sites = await grantedSites();
+    const existing = await browser.scripting.getRegisteredContentScripts({ ids: [SCRIPT_ID] });
+    if (existing.length) {
+      await browser.scripting.unregisterContentScripts({ ids: [SCRIPT_ID] });
+    }
+    if (!sites.length) return;
+    await browser.scripting.registerContentScripts([
+      {
+        id: SCRIPT_ID,
+        matches: sites.flatMap(originsFor),
+        js: [CONTENT_SCRIPT_FILE],
+        runAt: 'document_start',
+        allFrames: false,
+        persistAcrossSessions: true,
+      },
+    ]);
+  }
+
+  /** Inject into tabs that were already open when a site got added. */
+  async function injectIntoOpenTabs(sites: string[]): Promise<void> {
+    if (!sites.length) return;
+    const tabs = await browser.tabs.query({ url: sites.flatMap(originsFor) });
+    await Promise.all(
+      tabs.map((tab) =>
+        tab.id == null
+          ? undefined
+          : browser.scripting
+              .executeScript({ target: { tabId: tab.id }, files: [CONTENT_SCRIPT_FILE] })
+              .catch(() => undefined),
+      ),
+    );
+  }
+
+  const resync = () =>
+    serial(async () => {
+      await syncRegistration();
+      await injectIntoOpenTabs(await grantedSites());
+    }).catch((e) => console.error('[baku] sync failed', e));
+
+  browser.runtime.onInstalled.addListener(resync);
+  browser.runtime.onStartup.addListener(resync);
+  browser.permissions.onAdded.addListener(resync);
+  browser.permissions.onRemoved.addListener(resync);
+  browser.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local' || !changes.settings) return;
+    const before = (changes.settings.oldValue as { sites?: string[] } | undefined)?.sites ?? [];
+    const after = (changes.settings.newValue as { sites?: string[] } | undefined)?.sites ?? [];
+    if (before.join() !== after.join()) resync();
+  });
+});

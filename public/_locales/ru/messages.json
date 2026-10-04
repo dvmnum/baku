@@ -1,0 +1,150 @@
+{
+  "extName": {
+    "message": "Baku"
+  },
+  "extDescription": {
+    "message": "Залипательные сайты выцветают в серый, когда дневной лимит исчерпан."
+  },
+  "popupUsed": {
+    "message": "$USED$ из $LIMIT$ мин",
+    "placeholders": {
+      "used": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      }
+    }
+  },
+  "popupLeft": {
+    "message": "Сегодня осталось $MIN$ мин",
+    "placeholders": {
+      "min": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupOver": {
+    "message": "Лимит исчерпан. Баку ест краски."
+  },
+  "popupNoSites": {
+    "message": "Добавь сайт, на котором залипаешь"
+  },
+  "popupTrack": {
+    "message": "Отслеживать этот сайт"
+  },
+  "popupUntrack": {
+    "message": "Не отслеживать"
+  },
+  "popupTracked": {
+    "message": "Отслеживается"
+  },
+  "popupNotTracked": {
+    "message": "Не отслеживается"
+  },
+  "popupUnsupported": {
+    "message": "На этой странице Baku не работает"
+  },
+  "popupPermissionDenied": {
+    "message": "Нет доступа к сайту, Baku не сможет его обесцветить"
+  },
+  "extraButton": {
+    "message": "Ещё 5 минут"
+  },
+  "extraWait": {
+    "message": "Точно? Подумай $SEC$ с",
+    "placeholders": {
+      "sec": {
+        "content": "$1"
+      }
+    }
+  },
+  "extraConfirm": {
+    "message": "Да, дай 5 минут"
+  },
+  "extraLeft": {
+    "message": "Продлений сегодня: $N$ из $MAX$",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      },
+      "max": {
+        "content": "$2"
+      }
+    }
+  },
+  "extraNone": {
+    "message": "На сегодня продлений больше нет"
+  },
+  "openSettings": {
+    "message": "Настройки"
+  },
+  "optTitle": {
+    "message": "Настройки Baku"
+  },
+  "optLimit": {
+    "message": "Дневной лимит"
+  },
+  "optLimitHint": {
+    "message": "Общий на все отслеживаемые сайты"
+  },
+  "optMinutes": {
+    "message": "мин"
+  },
+  "optFade": {
+    "message": "Скорость выцветания"
+  },
+  "optFadeFast": {
+    "message": "Быстро, 30 с"
+  },
+  "optFadeNormal": {
+    "message": "Плавно, 2,5 мин"
+  },
+  "optFadeSlow": {
+    "message": "Медленно, 10 мин"
+  },
+  "optMode": {
+    "message": "Режим"
+  },
+  "optModeSoft": {
+    "message": "Мягкий: только серый"
+  },
+  "optModeHard": {
+    "message": "Жёсткий: через 15 минут ещё размытие и тусклость"
+  },
+  "optSites": {
+    "message": "Отслеживаемые сайты"
+  },
+  "optSitesEmpty": {
+    "message": "Пока пусто. Добавь YouTube, VK или что там у тебя жрёт время."
+  },
+  "optAdd": {
+    "message": "Добавить"
+  },
+  "optInvalidDomain": {
+    "message": "Не похоже на адрес сайта"
+  },
+  "optRemove": {
+    "message": "Убрать"
+  },
+  "optNoAccess": {
+    "message": "Нет доступа. Нажми, чтобы выдать"
+  },
+  "optToday": {
+    "message": "Сегодня"
+  },
+  "optTodayEmpty": {
+    "message": "Сегодня ещё не залипал"
+  },
+  "optLimitHitAt": {
+    "message": "Выцвело в $TIME$",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "optSaved": {
+    "message": "Сохранено"
+  }
+}

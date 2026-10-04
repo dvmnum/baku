@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baku</title>
+    <link rel="stylesheet" href="../../assets/shared.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="brand"><span class="kanji">獏</span><span>Baku</span></header>
+
+    <section class="meter">
+      <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+        <circle class="track" cx="60" cy="60" r="52" />
+        <circle class="fill" id="ring-fill" cx="60" cy="60" r="52" />
+      </svg>
+      <div class="meter-text">
+        <div class="big" id="used"></div>
+      </div>
+    </section>
+    <p class="status" id="status"></p>
+
+    <section class="site" id="site-block">
+      <div class="site-row">
+        <div>
+          <div class="domain" id="domain"></div>
+          <div class="muted small" id="site-state"></div>
+        </div>
+        <button id="toggle-site"></button>
+      </div>
+      <p class="muted small hidden" id="site-error"></p>
+    </section>
+
+    <section class="extra hidden" id="extra-block">
+      <button id="extra-btn" class="primary"></button>
+      <p class="muted small" id="extra-left"></p>
+    </section>
+
+    <footer>
+      <button class="link" id="open-settings" data-i18n="openSettings"></button>
+    </footer>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
