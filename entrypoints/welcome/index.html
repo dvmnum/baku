@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Baku</title>
+    <link rel="stylesheet" href="../../assets/shared.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main>
+      <header class="hero">
+        <span class="kanji" aria-hidden="true">獏</span>
+        <h1 data-i18n="welcomeTitle"></h1>
+        <p class="muted" data-i18n="welcomeIntro"></p>
+      </header>
+
+      <form id="setup" class="card">
+        <section class="step">
+          <h2 data-i18n="welcomeSitesTitle"></h2>
+          <div class="chips" id="site-chips"></div>
+          <div class="add">
+            <input id="other-input" type="text" data-i18n-placeholder="welcomeOtherPlaceholder" autocomplete="off" spellcheck="false" />
+            <button id="other-add" type="button" data-i18n="optAdd"></button>
+          </div>
+          <p class="error small hidden" id="other-error"></p>
+        </section>
+
+        <section class="step">
+          <h2 data-i18n="welcomeLimitTitle"></h2>
+          <p class="muted small" data-i18n="welcomeLimitHint"></p>
+          <div class="chips" id="limit-chips"></div>
+        </section>
+
+        <div class="actions">
+          <button class="primary big" id="start" type="submit" data-i18n="welcomeStart"></button>
+          <p class="muted small" data-i18n="welcomePermissionNote"></p>
+          <p class="error small hidden" id="start-error"></p>
+        </div>
+      </form>
+
+      <section id="done" class="card done hidden">
+        <h2 data-i18n="welcomeDoneTitle"></h2>
+        <p data-i18n="welcomeDoneText"></p>
+        <p class="error small hidden" id="done-denied" data-i18n="welcomeDenied"></p>
+        <div><button id="open-settings" type="button" data-i18n="openSettings"></button></div>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

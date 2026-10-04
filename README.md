@@ -25,7 +25,7 @@ npm run typecheck
 
 To load manually: `chrome://extensions` → Developer mode → Load unpacked → `.output/chrome-mv3`.
 
-`npx wxt build --mode e2e` (or `BAKU_E2E=1 npm run build`) produces a build with host permissions granted up front, for automated tests that can't click permission prompts. Don't ship it. `npm run test:e2e` builds it and runs the Playwright smoke test.
+`npx wxt build --mode e2e` (or `BAKU_E2E=1 npm run build`) produces a build with host permissions granted up front, for automated tests that can't click permission prompts. Don't ship it. `npm run test:e2e` builds it into `.output/chrome-mv3-e2e` and runs the Playwright smoke test.
 
 ## Structure
 
@@ -35,6 +35,7 @@ entrypoints/
   content.ts      activity detection, heartbeats, applies the CSS filter
   popup/          progress ring, track/untrack current site, "5 more minutes"
   options/        today's stats, site list, limit / fade speed / mode
+  welcome/        onboarding on first install: pick sites + daily limit
 utils/
   state.ts        settings & usage types, defaults, fade math
   domain.ts       domain normalization and matching

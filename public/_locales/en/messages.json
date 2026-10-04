@@ -157,5 +157,41 @@
   },
   "optSeconds": {
     "message": "s"
+  },
+  "welcomeTitle": {
+    "message": "Meet Baku"
+  },
+  "welcomeIntro": {
+    "message": "Pick the sites you lose time on. Once your daily limit runs out, they slowly fade to gray. Nothing gets blocked; they just stop being fun."
+  },
+  "welcomeSitesTitle": {
+    "message": "1. Which sites?"
+  },
+  "welcomeOtherPlaceholder": {
+    "message": "Another site, e.g. pinterest.com"
+  },
+  "welcomeLimitTitle": {
+    "message": "2. How much time a day?"
+  },
+  "welcomeLimitHint": {
+    "message": "Shared across all these sites. You can change it any time in settings."
+  },
+  "welcomeStart": {
+    "message": "Start"
+  },
+  "welcomePermissionNote": {
+    "message": "Chrome will ask for access to these sites only. Baku doesn't see anything else."
+  },
+  "welcomeNeedSite": {
+    "message": "Pick at least one site"
+  },
+  "welcomeDoneTitle": {
+    "message": "Done. Baku is on watch."
+  },
+  "welcomeDoneText": {
+    "message": "Pin the Baku icon to the toolbar: it shows how many minutes you have left today."
+  },
+  "welcomeDenied": {
+    "message": "No access was granted. The sites are saved; you can grant access in settings."
   }
 }

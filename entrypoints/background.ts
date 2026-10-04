@@ -134,6 +134,9 @@ export default defineBackground(() => {
 
   const refreshBadge = () => void updateBadge().catch((e) => console.error('[baku] badge failed', e));
 
+  browser.runtime.onInstalled.addListener(({ reason }) => {
+    if (reason === 'install') void browser.tabs.create({ url: browser.runtime.getURL('/welcome.html') });
+  });
   browser.runtime.onInstalled.addListener(resync);
   browser.runtime.onStartup.addListener(resync);
   browser.runtime.onInstalled.addListener(refreshBadge);

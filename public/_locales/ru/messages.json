@@ -157,5 +157,41 @@
   },
   "optSeconds": {
     "message": "с"
+  },
+  "welcomeTitle": {
+    "message": "Это Baku"
+  },
+  "welcomeIntro": {
+    "message": "Выбери сайты, на которых залипаешь. Когда дневной лимит кончится, они медленно выцветут в серый. Ничего не блокируется, просто становится неинтересно."
+  },
+  "welcomeSitesTitle": {
+    "message": "1. Какие сайты?"
+  },
+  "welcomeOtherPlaceholder": {
+    "message": "Другой сайт, например pinterest.com"
+  },
+  "welcomeLimitTitle": {
+    "message": "2. Сколько времени в день?"
+  },
+  "welcomeLimitHint": {
+    "message": "Общий на все эти сайты. Потом можно поменять в настройках."
+  },
+  "welcomeStart": {
+    "message": "Поехали"
+  },
+  "welcomePermissionNote": {
+    "message": "Chrome попросит доступ только к этим сайтам. Остальное Baku не видит."
+  },
+  "welcomeNeedSite": {
+    "message": "Выбери хотя бы один сайт"
+  },
+  "welcomeDoneTitle": {
+    "message": "Готово. Baku на страже."
+  },
+  "welcomeDoneText": {
+    "message": "Закрепи иконку Baku на панели: на ней видно, сколько минут осталось сегодня."
+  },
+  "welcomeDenied": {
+    "message": "Доступ не выдан. Сайты сохранены, доступ можно выдать в настройках."
   }
 }

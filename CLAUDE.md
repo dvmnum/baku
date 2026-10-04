@@ -29,6 +29,7 @@ entrypoints/background.ts   heartbeat accounting, dynamic content-script registr
 entrypoints/content.ts      activity detection, heartbeats, CSS filter (registration: 'runtime')
 entrypoints/popup/          progress ring, track/untrack current site, "5 more minutes"
 entrypoints/options/        today's stats, site list, limit / fade speed / mode
+entrypoints/welcome/        onboarding on first install: pick sites + daily limit
 utils/state.ts              Settings/Usage types, defaults, fade math
 utils/domain.ts             normalizeDomain, matchSite, originsFor
 utils/i18n.ts               t(), applyI18n() for [data-i18n]
@@ -45,7 +46,7 @@ npm install
 npm run dev            # Chrome with HMR
 npm run build          # .output/chrome-mv3
 npm run typecheck
-npm run test:e2e       # builds with --mode e2e, runs Playwright (first time: npx playwright install chromium); run `npm run build` again before shipping
+npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, runs Playwright (first time: npx playwright install chromium)
 ```
 
 ## Roadmap
@@ -53,10 +54,9 @@ npm run test:e2e       # builds with --mode e2e, runs Playwright (first time: np
 **MVP polish (next):**
 
 - Real icon and store assets: screenshots, a promo GIF of a site fading out.
-- An onboarding page on first install that suggests popular sites.
 - Test on real YouTube, VK and TikTok (SPA navigation, fullscreen video, iframes).
 
-Done: toolbar badge with minutes left (vermilion, gray at 0, empty with no sites); a non-preset `fadeSeconds` shows as a "Custom" option in settings.
+Done: toolbar badge with minutes left (vermilion, gray at 0, empty with no sites); a non-preset `fadeSeconds` shows as a "Custom" option in settings; onboarding page (`welcome.html`) opens on first install with popular-site chips (RU-centric order for Russian UI), a custom site field and limit presets, and asks for all chosen origins in one permission prompt.
 
 **v1.0:**
 

@@ -11,7 +11,8 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { chromium } from 'playwright';
 
-const EXT = resolve('.output/chrome-mv3');
+// `wxt build --mode e2e` writes here, separate from the shippable .output/chrome-mv3.
+const EXT = resolve('.output/chrome-mv3-e2e');
 const fixture = readFileSync(resolve('tests/fixture.html'));
 const server = createServer((_, res) => res.end(fixture)).listen(0);
 const port = server.address().port;
@@ -86,6 +87,24 @@ try {
   fade.value === '6' && /6/.test(fade.label ?? '')
     ? ok(`custom fade shown: ${fade.label}`)
     : fail(`fade select: ${JSON.stringify(fade)}`);
+
+  // Onboarding: opens itself on first install; picking sites + limit saves them.
+  const welcome = ctx.pages().find((p) => p.url().endsWith('/welcome.html'));
+  welcome ? ok('welcome page opened on install') : fail('welcome page did not open on install');
+  if (welcome) {
+    await welcome.reload();
+    await welcome.click('label.chip:has(input[value="youtube.com"])');
+    await welcome.fill('#other-input', 'https://www.Example.org/path');
+    await welcome.press('#other-input', 'Enter');
+    await welcome.click('label.chip:has(input[name="limit"][value="60"])');
+    await welcome.click('#start');
+    await welcome.waitForSelector('#done:not(.hidden)', { timeout: 3000 }).catch(() => undefined);
+    const { settings } = await sw.evaluate(() => chrome.storage.local.get('settings'));
+    const want = ['fake.test', 'youtube.com', 'example.org'];
+    want.every((s) => settings.sites.includes(s)) && settings.limitMinutes === 60
+      ? ok(`welcome saved: ${settings.sites.join(', ')} @ ${settings.limitMinutes} min`)
+      : fail(`welcome settings: ${JSON.stringify(settings)}`);
+  }
 } finally {
   await ctx.close();
   server.close();
