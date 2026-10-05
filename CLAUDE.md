@@ -19,6 +19,8 @@ The MVP (v0.1) is done and verified in headless Chromium: the fade works, untrac
 - **One shared limit** for all sites (per-site limits are v1.0).
 - **"5 more minutes":** a 10 s forced wait before confirming, max 2 per day. The extension counts from the current moment, so the fade clears immediately.
 - **The filter goes on `<html>`**, which keeps `position: fixed` working.
+- **UI style:** clean and simple, Geologica, neutral surfaces, jade only for what's live (ring, switch, current site); everything goes gray when time is out. No Japanese ornament in the UI (only the name). The popup header is a small tapir mark + "Baku".
+- **Tone:** plain and clear for numbers, buttons and labels. A light "go take a break" voice only at emotional moments (almost out, out, waiting before an extension, no extensions left), never shaming. Those lines rotate daily (`popupAlmost_N`, `popupRest_N`, `popupThink_N`).
 - **License:** the repo is private with "All rights reserved" for now. The plan is to switch to GPL-3.0 when it goes public at launch.
 - **Distribution:** Chrome Web Store first (it also covers Yandex Browser, Edge, Opera and Brave), then Firefox AMO.
 
@@ -27,13 +29,14 @@ The MVP (v0.1) is done and verified in headless Chromium: the fade works, untrac
 ```
 entrypoints/background.ts   heartbeat accounting, dynamic content-script registration, toolbar badge
 entrypoints/content.ts      activity detection, heartbeats, CSS filter (registration: 'runtime')
-entrypoints/popup/          progress ring, track/untrack current site, "5 more minutes"
+entrypoints/popup/          timer ring (m:ss), current-site card, today list, "5 more minutes"; 9 states, see main.ts
 entrypoints/options/        today's stats, site list, limit / fade speed / mode
 entrypoints/welcome/        onboarding on first install: pick sites + daily limit
 utils/state.ts              Settings/Usage types, defaults, fade math
 utils/domain.ts             normalizeDomain, matchSite, originsFor
-utils/i18n.ts               t(), applyI18n() for [data-i18n]
-assets/shared.css           design tokens (light/dark): jade --accent (matches the icon), vermilion --warn for errors
+utils/i18n.ts               t(), tp() for plurals (key_one/_few/_many/_other), applyI18n() for [data-i18n], [data-i18n-placeholder], [data-i18n-aria]
+assets/shared.css           design tokens (light/dark, follows the system), bundled Geologica font; jade --accent only for live/progress, ink --primary-bg buttons, --warn for errors
+public/fonts/               Geologica variable woff2 (latin + cyrillic), OFL license
 public/_locales/{en,ru}/    all UI strings; placeholders like $USED$
 public/icon/                PNG icons, generated from assets/icon.svg by `npm run icons`
 assets/icon.svg             icon source: white tapir-baku on a deep jade tile (Torii's sibling style)
@@ -55,6 +58,8 @@ npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, run
 ## Roadmap
 
 **MVP polish (next):**
+
+- Redesign the options page and onboarding in the popup's style (light + dark).
 
 - Store assets: screenshots, a promo GIF of a site fading out.
 - Optional: the toolbar icon fades from jade to gray as the limit runs out (`action.setIcon` with ImageData).

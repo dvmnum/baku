@@ -1,31 +1,88 @@
 body {
-  width: 300px;
-  padding: 16px;
+  width: 320px;
+  padding: 12px 16px 14px;
+  background: var(--surface);
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.hd {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
 }
 
-.small {
-  font-size: 12px;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-.meter {
-  position: relative;
-  width: 140px;
-  height: 140px;
-  margin: 4px auto 0;
+.mark {
+  width: 22px;
+  height: 14px;
+  margin-top: 1px;
+  color: var(--text);
 }
+
+button.icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  display: grid;
+  place-items: center;
+}
+
+button.icon:hover {
+  background: var(--soft);
+  color: var(--text);
+}
+
+/* Empty state ---------------------------------------------------------------- */
+
+.empty {
+  padding: 22px 4px 16px;
+  text-align: center;
+}
+
+.empty h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.empty p {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+/* Timer ring ----------------------------------------------------------------- */
 
 .ring {
+  position: relative;
+  width: 172px;
+  height: 172px;
+  margin: 8px auto 14px;
+}
+
+.ring svg {
   width: 100%;
   height: 100%;
-  transform: rotate(-90deg);
+  overflow: visible;
 }
 
 .ring circle {
   fill: none;
-  stroke-width: 9;
+  stroke-width: 6;
   stroke-linecap: round;
 }
 
@@ -33,79 +90,219 @@ body {
   stroke: var(--ring-track);
 }
 
-.ring .fill {
+.ring .value {
   stroke: var(--accent);
-  transition: stroke-dashoffset 0.6s ease, stroke 0.6s ease;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 55%, transparent));
+  transition: stroke-dasharray 0.6s ease;
 }
 
-body.over .ring .fill {
-  stroke: var(--gray);
-}
-
-.meter-text {
+.ring-text {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.big {
-  font-size: 15px;
+.ring-text b {
+  font-size: 32px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
 }
 
-.status {
-  margin: -4px 0 0;
-  text-align: center;
+.ring-text span {
+  margin-top: 4px;
+  font-size: 12.5px;
   color: var(--muted);
 }
 
-body.over .status {
-  color: var(--text);
+body.over .ring-text b {
+  color: var(--gray);
 }
 
-.site {
-  background: var(--surface);
-  border: 1px solid var(--line);
+.hint {
+  margin: -4px 0 14px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* "5 more minutes" ------------------------------------------------------------- */
+
+button.wide {
+  display: block;
+  width: 100%;
+  padding: 12px;
   border-radius: 10px;
-  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.site-row {
+.note {
+  margin: 6px 0 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.done {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--soft);
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.extra + .current {
+  margin-top: 14px;
+}
+
+/* Current tab --------------------------------------------------------------- */
+
+.current {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
+  min-height: 56px;
+  padding: 10px 10px 10px 14px;
+  border-radius: 12px;
+  background: var(--soft);
 }
 
-.domain {
+.cs {
+  flex: 1;
+  min-width: 0;
+}
+
+.cs b {
+  display: block;
+  font-size: 15px;
   font-weight: 600;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.site.unsupported .domain {
-  font-weight: 400;
+.cs small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  font-size: 12.5px;
   color: var(--muted);
 }
 
-.site p {
-  margin: 8px 0 0;
+.current.warn .cs small {
+  color: var(--warn);
 }
 
-.extra {
+.current.muted .cs b {
+  color: var(--muted);
+}
+
+.current button.primary {
+  flex: none;
+  min-height: 38px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+button.switch {
+  flex: none;
+  position: relative;
+  width: 42px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 13px;
+  background: var(--accent);
+}
+
+button.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 19px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  transition: left 0.15s ease;
+}
+
+button.ghost {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 11px;
+  border-radius: 10px;
+  background: transparent;
+  font-weight: 500;
+}
+
+/* Today list ---------------------------------------------------------------- */
+
+.today-head {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 6px;
-  text-align: center;
+  justify-content: space-between;
+  margin: 16px 0 2px;
+  font-size: 12.5px;
+  color: var(--muted);
 }
 
-.extra p {
+.list {
+  list-style: none;
   margin: 0;
+  padding: 0;
+  max-height: 178px;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
-footer {
-  text-align: center;
+.list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+}
+
+.list li:first-child {
+  border-top: 0;
+}
+
+.list .s {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list .t {
+  font-variant-numeric: tabular-nums;
+}
+
+.list .t.zero {
+  color: var(--muted);
+}
+
+.list li.cur .s,
+.list li.cur .t {
+  font-weight: 600;
+  color: var(--accent);
 }

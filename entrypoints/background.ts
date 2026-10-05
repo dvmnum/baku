@@ -7,7 +7,7 @@ import { getSettings, getUsage, limitSeconds, setUsage } from '@/utils/state';
 const SCRIPT_ID = 'baku-fade';
 const CONTENT_SCRIPT_FILE = '/content-scripts/content.js';
 // Badge colors mirror --accent and --gray from assets/shared.css (light theme).
-const BADGE_ACTIVE = '#127a6d';
+const BADGE_ACTIVE = '#0d7d68';
 const BADGE_OUT = '#8c8a87';
 
 export default defineBackground(() => {

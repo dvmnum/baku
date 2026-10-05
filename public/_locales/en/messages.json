@@ -8,33 +8,8 @@
   "extDescription": {
     "message": "Fades time-wasting sites to grayscale once your daily limit runs out."
   },
-  "popupUsed": {
-    "message": "$USED$ of $LIMIT$ min",
-    "placeholders": {
-      "used": {
-        "content": "$1"
-      },
-      "limit": {
-        "content": "$2"
-      }
-    }
-  },
-  "popupLeft": {
-    "message": "$MIN$ min left today",
-    "placeholders": {
-      "min": {
-        "content": "$1"
-      }
-    }
-  },
-  "popupOver": {
-    "message": "Limit reached. Baku is eating the colors."
-  },
-  "popupNoSites": {
-    "message": "Add a site you lose time on"
-  },
   "popupTrack": {
-    "message": "Track this site"
+    "message": "Track"
   },
   "popupUntrack": {
     "message": "Stop tracking"
@@ -46,7 +21,7 @@
     "message": "Not tracked"
   },
   "popupUnsupported": {
-    "message": "Baku doesn't work on this page"
+    "message": "Baku doesn't work here"
   },
   "popupPermissionDenied": {
     "message": "No access to the site, so Baku can't fade it"
@@ -55,7 +30,7 @@
     "message": "5 more minutes"
   },
   "extraWait": {
-    "message": "Sure? Think for $SEC$ s",
+    "message": "Think for $SEC$ more s",
     "placeholders": {
       "sec": {
         "content": "$1"
@@ -65,19 +40,8 @@
   "extraConfirm": {
     "message": "Yes, give me 5 minutes"
   },
-  "extraLeft": {
-    "message": "Extensions left today: $N$ of $MAX$",
-    "placeholders": {
-      "n": {
-        "content": "$1"
-      },
-      "max": {
-        "content": "$2"
-      }
-    }
-  },
   "extraNone": {
-    "message": "No more extensions today"
+    "message": "No more extensions. The internet isn't going anywhere, tomorrow it's all in color again."
   },
   "openSettings": {
     "message": "Settings"
@@ -196,5 +160,105 @@
   },
   "welcomeDenied": {
     "message": "No access was granted. The sites are saved; you can grant access in settings."
+  },
+  "popupCounting": {
+    "message": "Counting"
+  },
+  "popupThisSite": {
+    "message": "This site"
+  },
+  "popupNoAccess": {
+    "message": "No access to the site"
+  },
+  "popupAllow": {
+    "message": "Allow"
+  },
+  "popupUnsupportedTitle": {
+    "message": "This page"
+  },
+  "popupOf": {
+    "message": "of $TIME$",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupDoneToday": {
+    "message": "that's it for today"
+  },
+  "popupEmptyTitle": {
+    "message": "Where do you get stuck?"
+  },
+  "popupEmptyText": {
+    "message": "Add those sites. When your daily limit runs out, they turn gray."
+  },
+  "popupPickPopular": {
+    "message": "Pick from popular"
+  },
+  "popupToday": {
+    "message": "Today"
+  },
+  "popupSites_one": {
+    "message": "$N$ site",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupSites_other": {
+    "message": "$N$ sites",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupAlmost_1": {
+    "message": "Time to wrap up"
+  },
+  "popupAlmost_2": {
+    "message": "Last few minutes"
+  },
+  "popupAlmost_3": {
+    "message": "Finish what you were doing"
+  },
+  "popupRest_1": {
+    "message": "Sites are gray now. Good moment to stretch"
+  },
+  "popupRest_2": {
+    "message": "Your eyes will thank you"
+  },
+  "popupRest_3": {
+    "message": "Good time for a walk"
+  },
+  "popupRest_4": {
+    "message": "Maybe do something offline"
+  },
+  "popupThink_1": {
+    "message": "Maybe tea instead?"
+  },
+  "popupThink_2": {
+    "message": "Is it worth it?"
+  },
+  "popupThink_3": {
+    "message": "Sure you need it?"
+  },
+  "extraLeft_one": {
+    "message": "$N$ more time today",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "extraLeft_other": {
+    "message": "$N$ more times today",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
   }
 }

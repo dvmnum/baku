@@ -88,6 +88,42 @@ try {
     ? ok(`custom fade shown: ${fade.label}`)
     : fail(`fade select: ${JSON.stringify(fade)}`);
 
+  // Popup, opened as a tab. tabs.query is stubbed so the "active tab" is the tracked site.
+  const id = new URL(sw.url()).host;
+  const popup = await ctx.newPage();
+  await popup.addInitScript((port) => {
+    chrome.tabs.query = async () => [{ url: `http://fake.test:${port}/` }];
+  }, port);
+  await popup.goto(`chrome-extension://${id}/popup.html`);
+  await popup.waitForTimeout(500);
+  const pop = await popup.evaluate(() => ({
+    time: document.getElementById('time-left').textContent,
+    rows: document.querySelectorAll('#list li').length,
+    current: document.querySelector('#list li.cur .s')?.textContent,
+    switchShown: !document.getElementById('cur-switch').classList.contains('hidden'),
+  }));
+  /^\d+:\d\d$/.test(pop.time) && pop.rows === 1 && pop.current === 'fake.test' && pop.switchShown
+    ? ok(`popup: ${pop.time} left, current site highlighted`)
+    : fail(`popup: ${JSON.stringify(pop)}`);
+
+  // Over the limit: "5 more minutes" with the forced wait, then confirm.
+  await sw.evaluate(() =>
+    chrome.storage.local.get('usage').then(({ usage }) =>
+      chrome.storage.local.set({ usage: { ...usage, seconds: 1900, extraSeconds: 0, extensionsUsed: 0 } }),
+    ),
+  );
+  await popup.waitForTimeout(300);
+  await popup.click('#extra-btn');
+  const waiting = await popup.evaluate(() => document.getElementById('extra-btn').disabled);
+  await popup.waitForTimeout(10_500);
+  await popup.click('#extra-btn');
+  await popup.waitForTimeout(300);
+  const after = await sw.evaluate(() => chrome.storage.local.get('usage').then(({ usage }) => usage));
+  waiting && after.extensionsUsed === 1 && after.seconds < 1800 + after.extraSeconds
+    ? ok('popup: "5 more minutes" waits, then extends the limit')
+    : fail(`popup extension: waiting=${waiting} usage=${JSON.stringify(after)}`);
+  await popup.close();
+
   // Onboarding: opens itself on first install; picking sites + limit saves them.
   const welcome = ctx.pages().find((p) => p.url().endsWith('/welcome.html'));
   welcome ? ok('welcome page opened on install') : fail('welcome page did not open on install');

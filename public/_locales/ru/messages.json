@@ -8,36 +8,11 @@
   "extDescription": {
     "message": "Залипательные сайты выцветают в серый, когда дневной лимит исчерпан."
   },
-  "popupUsed": {
-    "message": "$USED$ из $LIMIT$ мин",
-    "placeholders": {
-      "used": {
-        "content": "$1"
-      },
-      "limit": {
-        "content": "$2"
-      }
-    }
-  },
-  "popupLeft": {
-    "message": "Сегодня осталось $MIN$ мин",
-    "placeholders": {
-      "min": {
-        "content": "$1"
-      }
-    }
-  },
-  "popupOver": {
-    "message": "Лимит исчерпан. Баку ест краски."
-  },
-  "popupNoSites": {
-    "message": "Добавь сайт, на котором залипаешь"
-  },
   "popupTrack": {
-    "message": "Отслеживать этот сайт"
+    "message": "Следить"
   },
   "popupUntrack": {
-    "message": "Не отслеживать"
+    "message": "Не следить"
   },
   "popupTracked": {
     "message": "Отслеживается"
@@ -46,7 +21,7 @@
     "message": "Не отслеживается"
   },
   "popupUnsupported": {
-    "message": "На этой странице Baku не работает"
+    "message": "Здесь Baku не работает"
   },
   "popupPermissionDenied": {
     "message": "Нет доступа к сайту, Baku не сможет его обесцветить"
@@ -55,7 +30,7 @@
     "message": "Ещё 5 минут"
   },
   "extraWait": {
-    "message": "Точно? Подумай $SEC$ с",
+    "message": "Подумай ещё $SEC$ с",
     "placeholders": {
       "sec": {
         "content": "$1"
@@ -65,19 +40,8 @@
   "extraConfirm": {
     "message": "Да, дай 5 минут"
   },
-  "extraLeft": {
-    "message": "Продлений сегодня: $N$ из $MAX$",
-    "placeholders": {
-      "n": {
-        "content": "$1"
-      },
-      "max": {
-        "content": "$2"
-      }
-    }
-  },
   "extraNone": {
-    "message": "На сегодня продлений больше нет"
+    "message": "Продлений больше нет. Интернет никуда не денется, завтра всё снова будет цветным."
   },
   "openSettings": {
     "message": "Настройки"
@@ -196,5 +160,137 @@
   },
   "welcomeDenied": {
     "message": "Доступ не выдан. Сайты сохранены, доступ можно выдать в настройках."
+  },
+  "popupCounting": {
+    "message": "Идёт отсчёт"
+  },
+  "popupThisSite": {
+    "message": "Этот сайт"
+  },
+  "popupNoAccess": {
+    "message": "Нет доступа к сайту"
+  },
+  "popupAllow": {
+    "message": "Разрешить"
+  },
+  "popupUnsupportedTitle": {
+    "message": "Эта страница"
+  },
+  "popupOf": {
+    "message": "из $TIME$",
+    "placeholders": {
+      "time": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupDoneToday": {
+    "message": "на сегодня всё"
+  },
+  "popupEmptyTitle": {
+    "message": "Где ты залипаешь?"
+  },
+  "popupEmptyText": {
+    "message": "Добавь эти сайты. Когда дневной лимит кончится, они станут серыми."
+  },
+  "popupPickPopular": {
+    "message": "Выбрать из популярных"
+  },
+  "popupToday": {
+    "message": "Сегодня"
+  },
+  "popupSites_one": {
+    "message": "$N$ сайт",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupSites_few": {
+    "message": "$N$ сайта",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupSites_many": {
+    "message": "$N$ сайтов",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupSites_other": {
+    "message": "$N$ сайта",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "popupAlmost_1": {
+    "message": "Пора закругляться"
+  },
+  "popupAlmost_2": {
+    "message": "Последние минуты"
+  },
+  "popupAlmost_3": {
+    "message": "Самое время заканчивать"
+  },
+  "popupRest_1": {
+    "message": "Сайты уже серые. Хороший момент размяться"
+  },
+  "popupRest_2": {
+    "message": "Глаза скажут спасибо"
+  },
+  "popupRest_3": {
+    "message": "Самое время пройтись"
+  },
+  "popupRest_4": {
+    "message": "Можно сделать что-нибудь офлайн"
+  },
+  "popupThink_1": {
+    "message": "Может, лучше чаю?"
+  },
+  "popupThink_2": {
+    "message": "Оно того стоит?"
+  },
+  "popupThink_3": {
+    "message": "Точно нужно?"
+  },
+  "extraLeft_one": {
+    "message": "Можно ещё $N$ раз",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "extraLeft_few": {
+    "message": "Можно ещё $N$ раза",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "extraLeft_many": {
+    "message": "Можно ещё $N$ раз",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
+  },
+  "extraLeft_other": {
+    "message": "Можно ещё $N$ раза",
+    "placeholders": {
+      "n": {
+        "content": "$1"
+      }
+    }
   }
 }

@@ -8,38 +8,88 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <header class="brand"><span class="kanji">獏</span><span>Baku</span></header>
+    <header class="hd">
+      <span class="logo">
+        <svg class="mark" viewBox="17 35 93 59" aria-hidden="true">
+          <defs>
+            <mask id="mark-eye" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+              <rect width="128" height="128" fill="#fff" />
+              <circle cx="40" cy="51" r="3.4" fill="#000" />
+            </mask>
+          </defs>
+          <g fill="currentColor" mask="url(#mark-eye)">
+            <rect x="44" y="44" width="64" height="38" rx="19" />
+            <path
+              d="M60 44 Q48 38 38 43 Q30 47 25 56 Q21 64 21 72 Q21 76 25 76 Q28 76 29 72 Q31 66 36 66 L60 70 Z"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linejoin="round"
+            />
+            <circle cx="50" cy="40" r="5" />
+            <rect x="47" y="72" width="10" height="20" rx="3" />
+            <rect x="62" y="72" width="10" height="20" rx="3" />
+            <rect x="82" y="72" width="10" height="20" rx="3" />
+            <rect x="96" y="72" width="10" height="20" rx="3" />
+          </g>
+        </svg>
+        <span>Baku</span>
+      </span>
+      <button class="icon" id="open-settings" type="button" data-i18n-aria="openSettings">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+          />
+        </svg>
+      </button>
+    </header>
 
-    <section class="meter">
-      <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
-        <circle class="track" cx="60" cy="60" r="52" />
-        <circle class="fill" id="ring-fill" cx="60" cy="60" r="52" />
-      </svg>
-      <div class="meter-text">
-        <div class="big" id="used"></div>
-      </div>
+    <!-- First run: nothing tracked yet -->
+    <section class="empty hidden" id="empty">
+      <h1 data-i18n="popupEmptyTitle"></h1>
+      <p data-i18n="popupEmptyText"></p>
     </section>
-    <p class="status" id="status"></p>
 
-    <section class="site" id="site-block">
-      <div class="site-row">
-        <div>
-          <div class="domain" id="domain"></div>
-          <div class="muted small" id="site-state"></div>
+    <!-- Time left today -->
+    <section class="timer hidden" id="timer">
+      <div class="ring">
+        <svg viewBox="0 0 172 172" aria-hidden="true">
+          <circle class="track" cx="86" cy="86" r="74" />
+          <circle class="value" id="ring-value" cx="86" cy="86" r="74" transform="rotate(-90 86 86)" />
+        </svg>
+        <div class="ring-text">
+          <b id="time-left"></b>
+          <span id="time-sub"></span>
         </div>
-        <button id="toggle-site"></button>
       </div>
-      <p class="muted small hidden" id="site-error"></p>
+      <p class="hint hidden" id="hint"></p>
     </section>
 
-    <section class="extra hidden" id="extra-block">
-      <button id="extra-btn" class="primary"></button>
-      <p class="muted small" id="extra-left"></p>
+    <!-- "5 more minutes" once the limit is out -->
+    <section class="extra hidden" id="extra">
+      <button class="primary wide" id="extra-btn" type="button"></button>
+      <p class="note" id="extra-note"></p>
+      <p class="done hidden" id="extra-none" data-i18n="extraNone"></p>
     </section>
 
-    <footer>
-      <button class="link" id="open-settings" data-i18n="openSettings"></button>
-    </footer>
+    <!-- The active tab -->
+    <section class="current hidden" id="current">
+      <div class="cs">
+        <b id="cur-name"></b>
+        <small id="cur-state"><i class="live hidden" id="cur-live"></i><span id="cur-state-text"></span></small>
+      </div>
+      <button class="primary" id="cur-action" type="button"></button>
+      <button class="switch hidden" id="cur-switch" type="button" role="switch" aria-checked="true"
+        data-i18n-aria="popupUntrack"></button>
+    </section>
+    <button class="ghost hidden" id="pick-popular" type="button" data-i18n="popupPickPopular"></button>
+
+    <!-- Tracked sites with today's time -->
+    <section class="today hidden" id="today">
+      <div class="today-head"><span data-i18n="popupToday"></span><span id="today-count"></span></div>
+      <ul class="list" id="list"></ul>
+    </section>
 
     <script type="module" src="./main.ts"></script>
   </body>
