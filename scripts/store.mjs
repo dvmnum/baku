@@ -158,13 +158,12 @@ function slide(i, [title, sub], visual) {
   return `<!doctype html><meta charset="utf-8"><style>${BASE}${FEED_CSS}
   .wrap{position:relative;width:1280px;height:800px;overflow:hidden}
   .txt{position:absolute;left:72px;top:96px;width:430px}
-  .n{font-size:15px;font-weight:600;color:#7fe0c6;letter-spacing:.06em}
-  h1{margin:14px 0 0;font-size:46px;line-height:1.08;font-weight:700;letter-spacing:-.02em}
+  h1{margin:0;font-size:46px;line-height:1.08;font-weight:700;letter-spacing:-.02em}
   p{margin:20px 0 0;font-size:20px;line-height:1.45;color:#cfe7e1}
   .brand{position:absolute;left:72px;bottom:64px;display:flex;align-items:center;gap:12px;font-size:20px;font-weight:700}.brand img{width:40px;height:40px}
   .vis{position:absolute;right:64px;top:0;bottom:0;width:680px;display:flex;align-items:center;justify-content:center;gap:24px}
   </style><div class="wrap"><div class="bg"></div>
-  <div class="txt"><div class="n">0${i + 1}</div><h1>${title}</h1><p>${sub}</p></div>
+  <div class="txt"><h1>${title}</h1><p>${sub}</p></div>
   <div class="brand"><img src="${ICON}">Baku</div>
   <div class="vis">${visual}</div></div>`;
 }
