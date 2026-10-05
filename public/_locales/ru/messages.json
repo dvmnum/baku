@@ -419,7 +419,7 @@
     "message": "Сообщить о проблеме"
   },
   "optLinkSource": {
-    "message": "Исходный код (GPL-3.0)"
+    "message": "GitHub"
   },
   "optLinkPrivacy": {
     "message": "Конфиденциальность"

@@ -533,19 +533,28 @@ li.open .ed-wrap {
   display: block;
 }
 
+/* Boosty's orange, as a quiet text link rather than a loud button */
 a.boosty {
   flex: none;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: #f15f2c;
-  color: #fff;
+  color: #e8582a;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
 }
 
+a.boosty::after {
+  content: ' →';
+}
+
 a.boosty:hover {
-  background: #ff6d39;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  a.boosty {
+    color: #ff7a4a;
+  }
 }
 
 .links {
