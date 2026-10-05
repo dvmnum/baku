@@ -170,7 +170,7 @@ try {
   await popup.waitForTimeout(300);
   await popup.click('#extra-btn');
   const waiting = await popup.evaluate(() => document.getElementById('extra-btn').disabled);
-  await popup.waitForTimeout(10_500);
+  await popup.waitForTimeout(5_500);
   await popup.click('#extra-btn');
   await popup.waitForTimeout(300);
   const after = await sw.evaluate(() => chrome.storage.local.get('usage').then(({ usage }) => usage));

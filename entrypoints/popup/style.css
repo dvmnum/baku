@@ -146,6 +146,42 @@ button.wide {
   font-weight: 600;
 }
 
+/* The pause before an extension: a bar fills the button like a slow breath. */
+button.wide.thinking {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  opacity: 1;
+  background: var(--soft);
+  border-color: var(--soft);
+  color: var(--text);
+}
+
+button.wide.thinking::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  transform-origin: left;
+  animation: think-fill var(--think, 5s) linear forwards;
+}
+
+@keyframes think-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button.wide.thinking::before {
+    animation: none;
+  }
+}
+
 .note {
   margin: 6px 0 0;
   text-align: center;

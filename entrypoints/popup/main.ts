@@ -16,7 +16,8 @@ import {
   type Usage,
 } from '@/utils/state';
 
-const THINK_SECONDS = 10;
+/** Pause before "5 more minutes" can be confirmed: long enough to break autopilot, short enough not to feel like a penalty. */
+const THINK_SECONDS = 5;
 const RING_LEN = 2 * Math.PI * 74;
 /** Show "almost done" below this many seconds left. */
 const ALMOST_SECONDS = 5 * 60;
@@ -180,6 +181,8 @@ function renderExtra(over: boolean): void {
   $('extra-none').classList.toggle('hidden', left > 0);
   if (left <= 0) return;
 
+  btn.classList.toggle('thinking', think !== null && think > 0);
+  btn.style.setProperty('--think', `${THINK_SECONDS}s`);
   if (think === null) {
     btn.textContent = t('extraButton');
     btn.disabled = false;
