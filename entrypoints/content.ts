@@ -82,10 +82,16 @@ export default defineContentScript({
       return false;
     }
 
+    /**
+     * Visible and touched within the last minute, or a video is playing.
+     * Window focus is deliberately not required: our own popup, a screen
+     * recorder overlay or devtools take focus while the user keeps scrolling
+     * the feed underneath, and that time must count.
+     */
     function isBeingUsed(): boolean {
       if (document.visibilityState !== 'visible') return false;
       if (videoPlaying()) return true;
-      return document.hasFocus() && Date.now() - lastInputAt < IDLE_MS;
+      return Date.now() - lastInputAt < IDLE_MS;
     }
 
     // --- Loop ----------------------------------------------------------------

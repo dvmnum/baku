@@ -149,6 +149,16 @@ try {
     ? ok(`popup: ${pop.time} left, current site highlighted`)
     : fail(`popup: ${JSON.stringify(pop)}`);
 
+  // When heartbeats stop, the popup timer must stop too, never jump back up.
+  await page.goto('about:blank');
+  await sw.evaluate(() => chrome.storage.session.set({ lastBeatAt: Date.now() - 1000 }));
+  await popup.reload();
+  await popup.waitForTimeout(3000);
+  const toSec = (s) => s.split(':').reduce((a, b) => a * 60 + Number(b), 0);
+  const tA = toSec(await popup.evaluate(() => document.getElementById('time-left').textContent));
+  await popup.waitForTimeout(5000);
+  const tB = toSec(await popup.evaluate(() => document.getElementById('time-left').textContent));
+  tB <= tA ? ok(`popup timer never jumps back (${tA} s -> ${tB} s)`) : fail(`popup timer jumped back: ${tA} s -> ${tB} s`);
   // Over the limit: "5 more minutes" with the forced wait, then confirm.
   await sw.evaluate(() =>
     chrome.storage.local.get('usage').then(({ usage }) =>

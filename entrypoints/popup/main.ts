@@ -131,10 +131,20 @@ function render(): void {
   renderList();
 }
 
+/**
+ * Smallest time left shown so far for a given limit. Interpolation between
+ * heartbeats can overshoot when a beat is late; the timer then holds instead
+ * of jumping back up. A different limit (another site, an extension) resets it.
+ */
+let shown: { key: string; left: number } | null = null;
+
 function renderTimer(): void {
   if (!settings.sites.length) return;
   const limit = limitSeconds(settings, usage, limitSite());
-  const left = secondsLeft();
+  const key = `${limitSite() ?? ''}:${limit}`;
+  let left = secondsLeft();
+  if (shown?.key === key) left = Math.min(left, shown.left);
+  shown = { key, left };
   const over = isOver();
 
   const value = $('ring-value');
