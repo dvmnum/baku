@@ -14,6 +14,7 @@
     "typecheck": "wxt prepare && tsc --noEmit",
     "postinstall": "wxt prepare",
     "icons": "node scripts/make-icons.mjs",
+    "store": "wxt build --mode e2e && node scripts/store.mjs",
     "test:e2e": "wxt build --mode e2e && node tests/e2e.mjs"
   },
   "devDependencies": {

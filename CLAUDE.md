@@ -48,6 +48,8 @@ public/_locales/{en,ru}/    all UI strings; placeholders like $USED$
 public/icon/                PNG icons, generated from assets/icon.svg by `npm run icons`
 assets/icon.svg             icon source: white tapir-baku on a deep jade tile (Torii's sibling style)
 scripts/make-icons.mjs      renders the PNGs with Playwright
+scripts/store.mjs           store screenshots/promo/marquee from the real UI (`npm run store`)
+store/                      listing-{ru,en}.md, privacy-policy.md, privacy.html, screenshots/, promo, marquee
 tests/e2e.mjs               Playwright smoke test
 ```
 
@@ -59,6 +61,8 @@ npm run dev            # Chrome with HMR
 npm run build          # .output/chrome-mv3
 npm run typecheck
 npm run icons          # rebuild public/icon/*.png after editing assets/icon.svg
+npm run store          # rebuild store/ images from the real UI (e2e build)
+npm run zip            # .output/baku-<version>-chrome.zip for upload
 npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, runs Playwright (first time: npx playwright install chromium)
 ```
 
@@ -66,7 +70,7 @@ npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, run
 
 **Before publishing 1.0:**
 
-- Store listing: ru/en texts, permission justifications, privacy policy page, screenshots, promo images (crop from `public/img/baku-night.webp`), `npm run zip`.
+- Store material is ready in `store/` (listing ru/en with permission justifications and data-usage answers, privacy policy md + html, screenshots, promo and marquee). Rebuild images with `npm run store`, package with `npm run zip`. Left: host `store/privacy.html` at a public URL and upload.
 - Test on real YouTube, VK and TikTok (SPA navigation, fullscreen video, iframes). YouTube and VK were checked by the owner. VK revealed the vk.com → vk.ru move, fixed with domain aliases.
 
 **Done in 1.0:** icon (white tapir on deep jade); toolbar badge (minutes left for the active site's limit); onboarding with popular-site chips (RU-centric order for Russian UI) and one permission prompt; popup redesign (9 states, live m:ss timer, rotating "go rest" lines); settings redesign with per-site limits and fade strength; Geologica bundled; light + dark everywhere.

@@ -6,7 +6,7 @@
     "message": "Baku"
   },
   "extDescription": {
-    "message": "Fades time-wasting sites to grayscale once your daily limit runs out."
+    "message": "Distracting sites slowly fade to gray when your daily limit runs out. Nothing is blocked, they just stop being fun."
   },
   "popupTrack": {
     "message": "Track"
@@ -345,7 +345,7 @@
     "message": "Messages and other useful pages: no time, never gray."
   },
   "optExclPlaceholder": {
-    "message": "A page, e.g. $SITE$/im",
+    "message": "A page: $SITE$/…",
     "placeholders": {
       "site": {
         "content": "$1"
