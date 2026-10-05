@@ -45,7 +45,7 @@ img { display: block; max-width: 100%; height: auto; }
 /* first screen */
 .hero { text-align: center; padding: 52px 0 24px; }
 .hero h1 { margin: 0 auto; max-width: 840px; font-size: clamp(30px, 7vw, 66px); overflow-wrap: break-word; line-height: 1.04; font-weight: 700; letter-spacing: -.035em; }
-.hero h1 em { font-style: normal; background: linear-gradient(90deg, #7ff0cf, var(--moon)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero h1 em { white-space: nowrap; font-style: normal; background: linear-gradient(90deg, #7ff0cf, var(--moon)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero p { margin: 20px auto 0; max-width: 620px; font-size: clamp(16px, 2vw, 19px); color: var(--ink-2); }
 .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 32px; }
 .note { margin-top: 14px; font-size: 13.5px; color: var(--ink-3); }
