@@ -1,4 +1,4 @@
-# Baku 獏
+# Baku
 
 Browser extension that slowly fades time-wasting sites to grayscale once your daily limit runs out. Nothing gets blocked; the sites just stop being fun.
 
@@ -7,8 +7,9 @@ Browser extension that slowly fades time-wasting sites to grayscale once your da
 ## How it works
 
 - Add sites (YouTube, VK, TikTok…) and set a shared daily limit (30 min by default).
+- Any site can get its own limit instead (say, YouTube 20 min). It's counted separately and doesn't spend the shared one.
 - Time only counts while you are actually there: the tab is visible, the window is focused and you have touched the mouse or keyboard in the last minute, or a video is playing.
-- When the limit runs out, the site fades to grayscale and dims a little, so bright pages don't turn glaring white (30 s, 2.5 min or 10 min). In hard mode, after 15 more minutes it also blurs and loses contrast.
+- When the limit runs out, the site fades to grayscale and dims a little, so bright pages don't turn glaring white. You pick how gray (60%, 80% or fully) and how fast (30 s, 2.5 min or 10 min). In hard mode, after 15 more minutes it also blurs and loses contrast.
 - "5 more minutes" is there, but you have to wait 10 seconds before confirming, and you only get it twice a day.
 - Everything resets at local midnight. All data stays in `chrome.storage.local`, with no server and no analytics.
 
@@ -33,8 +34,8 @@ To load manually: `chrome://extensions` → Developer mode → Load unpacked →
 entrypoints/
   background.ts   time accounting (heartbeats → storage), content script registration
   content.ts      activity detection, heartbeats, applies the CSS filter
-  popup/          progress ring, track/untrack current site, "5 more minutes"
-  options/        today's stats, site list, limit / fade speed / mode
+  popup/          time-left ring, current site, today's list, "5 more minutes"
+  options/        daily limit, sites with own limits, fade strength / speed / mode
   welcome/        onboarding on first install: pick sites + daily limit
 utils/
   state.ts        settings & usage types, defaults, fade math
@@ -48,6 +49,11 @@ public/_locales/  en, ru
 - **No host permissions at install.** Each site is requested via `optional_host_permissions` when added, and the fade script is registered dynamically with `scripting.registerContentScripts` only for granted sites.
 - **MV3 service worker sleeps.** There are no timers in the background. Content scripts send a heartbeat every 5 s, and the background credits `min(now - lastBeat, 5s)`. `lastBeat` lives in `storage.session`, so parallel tabs never double count and nothing breaks when the worker restarts.
 - **The filter goes on `<html>`**, which keeps `position: fixed` elements working.
+
+## Credits
+
+- Font: [Geologica](https://github.com/monokromskriftforlag/geologisk), SIL Open Font License 1.1 (`public/fonts/OFL.txt`).
+- Illustration `public/img/baku-night.webp`: generated with ChatGPT for this project.
 
 ## License
 

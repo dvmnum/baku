@@ -2,7 +2,7 @@ import { browser } from 'wxt/browser';
 import { defineBackground } from 'wxt/utils/define-background';
 import { matchSite, originsFor } from '@/utils/domain';
 import { HEARTBEAT_MS, type Message } from '@/utils/messages';
-import { getSettings, getUsage, limitSeconds, setUsage } from '@/utils/state';
+import { getSettings, getUsage, limitSeconds, secondsLeft, setUsage, usedSeconds } from '@/utils/state';
 
 const SCRIPT_ID = 'baku-fade';
 const CONTENT_SCRIPT_FILE = '/content-scripts/content.js';
@@ -43,10 +43,11 @@ export default defineBackground(() => {
 
     const usage = await getUsage();
     const credit = creditMs / 1000;
-    const wasUnder = usage.seconds < limitSeconds(settings, usage);
+    // The site counts against its own limit if it has one, else the shared one.
+    const wasUnder = usedSeconds(settings, usage, site) < limitSeconds(settings, usage, site);
     usage.seconds += credit;
     usage.perSite[site] = (usage.perSite[site] ?? 0) + credit;
-    if (wasUnder && usage.seconds >= limitSeconds(settings, usage) && !usage.limitHitAt) {
+    if (wasUnder && usedSeconds(settings, usage, site) >= limitSeconds(settings, usage, site) && !usage.limitHitAt) {
       usage.limitHitAt = now;
     }
     await setUsage(usage);
@@ -115,9 +116,21 @@ export default defineBackground(() => {
 
   // --- Toolbar badge ---------------------------------------------------------
   //
-  // Minutes left today, vermilion while there's time and gray once it's gone.
-  // Empty when no sites are tracked. Usage rolls over at midnight only when
+  // Minutes left today for the active tab's limit: its own if the site has one,
+  // otherwise the shared one. Jade while there's time, gray once it's gone,
+  // empty when no sites are tracked. Usage rolls over at midnight only when
   // read, so we also refresh on tab/window switches to catch the new day.
+
+  /** Tracked site of the active tab; tab.url is only visible for sites we have access to. */
+  async function activeSite(sites: string[]): Promise<string | null> {
+    const [tab] = await browser.tabs.query({ active: true, lastFocusedWindow: true });
+    if (!tab?.url) return null;
+    try {
+      return matchSite(new URL(tab.url).hostname, sites);
+    } catch {
+      return null;
+    }
+  }
 
   async function updateBadge(): Promise<void> {
     const [settings, usage] = await Promise.all([getSettings(), getUsage()]);
@@ -125,7 +138,7 @@ export default defineBackground(() => {
       await browser.action.setBadgeText({ text: '' });
       return;
     }
-    const left = Math.max(0, limitSeconds(settings, usage) - usage.seconds);
+    const left = secondsLeft(settings, usage, await activeSite(settings.sites));
     const minutes = Math.ceil(left / 60);
     await browser.action.setBadgeText({ text: minutes > 999 ? '999+' : String(minutes) });
     await browser.action.setBadgeBackgroundColor({ color: minutes > 0 ? BADGE_ACTIVE : BADGE_OUT });
@@ -142,6 +155,9 @@ export default defineBackground(() => {
   browser.runtime.onInstalled.addListener(refreshBadge);
   browser.runtime.onStartup.addListener(refreshBadge);
   browser.tabs.onActivated.addListener(refreshBadge);
+  browser.tabs.onUpdated.addListener((_id, info) => {
+    if (info.url) refreshBadge();
+  });
   browser.windows.onFocusChanged.addListener(refreshBadge);
   browser.permissions.onAdded.addListener(resync);
   browser.permissions.onRemoved.addListener(resync);

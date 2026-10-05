@@ -31,6 +31,7 @@
   --primary-fg: #ffffff;
   --warn: #c8432d;
   --ring-track: #e8ebee;
+  --seg-on: #ffffff;
   --gray: #a9aeb5;
   color-scheme: light dark;
 }
@@ -50,6 +51,7 @@
     --primary-fg: #111214;
     --warn: #ff7b5e;
     --ring-track: #2a2d32;
+    --seg-on: #2e3137;
     --gray: #5f656d;
   }
 }

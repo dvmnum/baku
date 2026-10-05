@@ -8,7 +8,7 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 // Popular time sinks. Russian-speaking users see the RU-centric ones first.
 const SITES_RU = ['youtube.com', 'vk.com', 'tiktok.com', 'dzen.ru', 'pikabu.ru', 'instagram.com', 'reddit.com', 'x.com', 'twitch.tv'];
 const SITES_EN = ['youtube.com', 'tiktok.com', 'instagram.com', 'reddit.com', 'x.com', 'facebook.com', 'twitch.tv', 'netflix.com', 'vk.com'];
-const LIMITS = [15, 30, 60, 90];
+const LIMITS = [15, 30, 45, 60, 90];
 
 async function init(): Promise<void> {
   applyI18n();

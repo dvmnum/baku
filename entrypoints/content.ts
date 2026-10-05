@@ -5,6 +5,7 @@ import { HEARTBEAT_MS, IDLE_MS, type HeartbeatMessage } from '@/utils/messages';
 import {
   DEFAULT_SETTINGS,
   fadeLevel,
+  normalizeSettings,
   normalizeUsage,
   type Settings,
   type Usage,
@@ -40,9 +41,9 @@ export default defineContentScript({
     let applied = '';
 
     function render(): void {
-      const tracked = matchSite(location.hostname, settings.sites) !== null;
-      const level = tracked
-        ? fadeLevel(settings, normalizeUsage(rawUsage))
+      const site = matchSite(location.hostname, settings.sites);
+      const level = site
+        ? fadeLevel(settings, normalizeUsage(rawUsage), site)
         : { grayscale: 0, brightness: 1, hard: 0 };
 
       const parts: string[] = [];
@@ -108,14 +109,14 @@ export default defineContentScript({
     browser.storage.onChanged.addListener((changes, area) => {
       if (area !== 'local') return;
       if (changes.settings) {
-        settings = { ...DEFAULT_SETTINGS, ...(changes.settings.newValue as Partial<Settings>) };
+        settings = normalizeSettings(changes.settings.newValue as Partial<Settings>);
       }
       if (changes.usage) rawUsage = changes.usage.newValue as Usage | undefined;
       render();
     });
 
     browser.storage.local.get(['settings', 'usage']).then((data) => {
-      settings = { ...DEFAULT_SETTINGS, ...(data.settings as Partial<Settings> | undefined) };
+      settings = normalizeSettings(data.settings as Partial<Settings> | undefined);
       rawUsage = data.usage as Usage | undefined;
       render();
       timer = setInterval(tick, HEARTBEAT_MS);

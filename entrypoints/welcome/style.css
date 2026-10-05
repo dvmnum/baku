@@ -1,11 +1,13 @@
 main {
   max-width: 600px;
   margin: 0 auto;
-  padding: 48px 16px 64px;
+  padding: 32px 16px 64px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
+/* Hero ---------------------------------------------------------------------- */
 
 .hero {
   display: flex;
@@ -15,30 +17,36 @@ main {
   gap: 8px;
 }
 
-.hero .kanji {
-  color: var(--accent);
-  font-size: 56px;
-  line-height: 1;
+.art {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 14px;
+  border-radius: 18px;
 }
 
 .hero h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .hero p {
+  max-width: 470px;
   margin: 0;
-  max-width: 460px;
+  color: var(--muted);
 }
 
+/* Steps --------------------------------------------------------------------- */
+
 .card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  padding: 20px;
+  border-radius: 14px;
+  background: var(--surface);
 }
 
 .step {
@@ -49,18 +57,21 @@ main {
 
 h2 {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 p {
   margin: 0;
 }
 
-.small {
-  font-size: 12px;
+.hint {
+  font-size: 12.5px;
+  color: var(--muted);
 }
 
 .error {
+  font-size: 12.5px;
   color: var(--warn);
 }
 
@@ -74,17 +85,17 @@ p {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 7px 12px;
-  border: 1px solid var(--line);
+  padding: 8px 14px;
   border-radius: 999px;
-  background: var(--surface);
+  background: var(--soft);
+  color: var(--text);
   cursor: pointer;
   user-select: none;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
 
 .chip:hover {
-  border-color: var(--muted);
+  background: color-mix(in srgb, var(--text) 8%, var(--soft));
 }
 
 .chip input {
@@ -94,14 +105,13 @@ p {
 }
 
 .chip:has(input:checked) {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--primary-bg);
+  color: var(--primary-fg);
 }
 
 .chip:has(input:focus-visible) {
   outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline-offset: 2px;
 }
 
 .add {
@@ -112,20 +122,48 @@ p {
 .add input {
   flex: 1;
   min-width: 0;
+  padding: 11px 12px;
+  border-radius: 10px;
+  background: var(--soft);
+}
+
+.add input::placeholder {
+  color: var(--muted);
+}
+
+.add button {
+  border-radius: 10px;
+  padding: 0 16px;
+  background: var(--soft);
+  border-color: transparent;
+  font-weight: 500;
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 8px;
 }
 
 button.big {
-  padding: 10px 22px;
+  padding: 13px 22px;
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
+}
+
+.actions .hint {
+  text-align: center;
 }
 
 .done {
   gap: 12px;
+}
+
+button.ghost {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: transparent;
+  font-weight: 500;
 }

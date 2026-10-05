@@ -10,55 +10,79 @@
   </head>
   <body>
     <main>
-      <header class="brand"><span class="kanji">獏</span><span data-i18n="optTitle"></span></header>
+      <header class="hd">
+        <span class="logo">
+          <svg class="mark" viewBox="17 35 93 59" aria-hidden="true">
+            <defs>
+              <mask id="mark-eye" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128">
+                <rect width="128" height="128" fill="#fff" />
+                <circle cx="40" cy="51" r="3.4" fill="#000" />
+              </mask>
+            </defs>
+            <g fill="currentColor" mask="url(#mark-eye)">
+              <rect x="44" y="44" width="64" height="38" rx="19" />
+              <path
+                d="M60 44 Q48 38 38 43 Q30 47 25 56 Q21 64 21 72 Q21 76 25 76 Q28 76 29 72 Q31 66 36 66 L60 70 Z"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linejoin="round"
+              />
+              <circle cx="50" cy="40" r="5" />
+              <rect x="47" y="72" width="10" height="20" rx="3" />
+              <rect x="62" y="72" width="10" height="20" rx="3" />
+              <rect x="82" y="72" width="10" height="20" rx="3" />
+              <rect x="96" y="72" width="10" height="20" rx="3" />
+            </g>
+          </svg>
+          <span>Baku</span>
+        </span>
+      </header>
 
       <section class="card">
-        <h2 data-i18n="optToday"></h2>
-        <p class="muted" id="today-empty" data-i18n="optTodayEmpty"></p>
-        <ul class="stats" id="today-list"></ul>
-        <p class="muted small" id="limit-hit"></p>
+        <div class="ch"><h2 data-i18n="optLimit"></h2><span class="sub" id="limit-sub"></span></div>
+        <div class="limit">
+          <button class="step" id="limit-minus" type="button" data-i18n-aria="optLess">−</button>
+          <div class="val"><b id="limit"></b><span data-i18n="optMinutes"></span></div>
+          <button class="step" id="limit-plus" type="button" data-i18n-aria="optMore">+</button>
+        </div>
+        <div class="presets" id="presets"></div>
       </section>
 
       <section class="card">
-        <h2 data-i18n="optSites"></h2>
-        <ul class="sites" id="site-list"></ul>
-        <p class="muted" id="sites-empty" data-i18n="optSitesEmpty"></p>
-        <form id="add-form" class="add">
-          <input id="add-input" type="text" placeholder="youtube.com" autocomplete="off" spellcheck="false" />
+        <div class="ch"><h2 data-i18n="optSites"></h2></div>
+        <form class="add" id="add-form">
+          <input id="add-input" type="text" data-i18n-placeholder="optAddPlaceholder" autocomplete="off" spellcheck="false" />
           <button class="primary" type="submit" data-i18n="optAdd"></button>
         </form>
-        <p class="error small hidden" id="add-error"></p>
+        <p class="err hidden" id="add-error" role="alert"></p>
+        <div class="lhead" id="list-head">
+          <span data-i18n="optColSite"></span><span data-i18n="optColToday"></span><span data-i18n="optColLimit"></span><span></span>
+        </div>
+        <ul class="list" id="site-list"></ul>
+        <p class="empty hidden" id="sites-empty" data-i18n="optSitesEmpty"></p>
       </section>
 
       <section class="card">
-        <label class="row">
-          <span>
-            <span class="label" data-i18n="optLimit"></span>
-            <span class="muted small block" data-i18n="optLimitHint"></span>
-          </span>
-          <span class="inline">
-            <input id="limit" type="number" min="1" max="1440" step="1" />
-            <span class="muted" data-i18n="optMinutes"></span>
-          </span>
-        </label>
-
-        <label class="row">
-          <span class="label" data-i18n="optFade"></span>
-          <select id="fade">
-            <option value="30" data-i18n="optFadeFast"></option>
-            <option value="150" data-i18n="optFadeNormal"></option>
-            <option value="600" data-i18n="optFadeSlow"></option>
-          </select>
-        </label>
-
-        <fieldset class="row column">
-          <legend class="label" data-i18n="optMode"></legend>
-          <label class="radio"><input type="radio" name="mode" value="soft" /> <span data-i18n="optModeSoft"></span></label>
-          <label class="radio"><input type="radio" name="mode" value="hard" /> <span data-i18n="optModeHard"></span></label>
-        </fieldset>
-        <p class="saved small" id="saved" data-i18n="optSaved"></p>
+        <div class="ch"><h2 data-i18n="optFade"></h2></div>
+        <div class="preview">
+          <figure>
+            <img src="/img/baku-night.webp" alt="" width="1200" height="675" />
+            <figcaption data-i18n="optBefore"></figcaption>
+          </figure>
+          <span class="arrow" aria-hidden="true">→</span>
+          <figure>
+            <img src="/img/baku-night.webp" alt="" width="1200" height="675" id="preview-after" />
+            <figcaption id="preview-after-cap"></figcaption>
+          </figure>
+        </div>
+        <div class="field"><span class="fl" data-i18n="optStrength"></span><div class="seg" id="strength"></div></div>
+        <div class="field"><span class="fl" data-i18n="optSpeed"></span><div class="seg" id="speed"></div></div>
+        <div class="field"><span class="fl" data-i18n="optMode"></span><div class="seg" id="mode"></div></div>
       </section>
+
+      <p class="foot" data-i18n="optPrivacy"></p>
     </main>
+    <div class="saved" id="saved" role="status" data-i18n="optSaved"></div>
     <script type="module" src="./main.ts"></script>
   </body>
 </html>

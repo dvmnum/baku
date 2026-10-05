@@ -3,13 +3,15 @@ import { matchSite, normalizeDomain, originsFor } from '@/utils/domain';
 import { HEARTBEAT_MS } from '@/utils/messages';
 import { applyI18n, t, tp } from '@/utils/i18n';
 import {
-  EXTENSION_SECONDS,
   MAX_EXTENSIONS_PER_DAY,
   getSettings,
   getUsage,
+  grantExtension,
   limitSeconds,
+  ownLimitSite,
   setSettings,
   setUsage,
+  usedSeconds,
   type Settings,
   type Usage,
 } from '@/utils/state';
@@ -92,14 +94,24 @@ function isCounting(): boolean {
   return trackedCurrent() !== null && hasAccess && Date.now() - lastBeatAt < HEARTBEAT_MS + 1500;
 }
 
+/**
+ * The limit the popup is about: the active site's own limit if it has one,
+ * otherwise the shared one (also for untracked and unsupported pages).
+ */
+function limitSite(): string | null {
+  return ownLimitSite(trackedCurrent(), settings);
+}
+
 /** Seconds left today, interpolated between heartbeats while time is being counted. */
 function secondsLeft(): number {
   const pending = isCounting() ? Math.min(Date.now() - lastBeatAt, HEARTBEAT_MS) / 1000 : 0;
-  return Math.max(0, limitSeconds(settings, usage) - usage.seconds - pending);
+  const site = limitSite();
+  return Math.max(0, limitSeconds(settings, usage, site) - usedSeconds(settings, usage, site) - pending);
 }
 
 function isOver(): boolean {
-  return usage.seconds >= limitSeconds(settings, usage);
+  const site = limitSite();
+  return usedSeconds(settings, usage, site) >= limitSeconds(settings, usage, site);
 }
 
 function render(): void {
@@ -120,7 +132,7 @@ function render(): void {
 
 function renderTimer(): void {
   if (!settings.sites.length) return;
-  const limit = limitSeconds(settings, usage);
+  const limit = limitSeconds(settings, usage, limitSite());
   const left = secondsLeft();
   const over = isOver();
 
@@ -130,6 +142,7 @@ function renderTimer(): void {
   value.style.visibility = len > 0 ? 'visible' : 'hidden';
   $('time-left').textContent = clock(over ? 0 : left);
   $('time-sub').textContent = over ? t('popupDoneToday') : t('popupOf', [clock(limit)]);
+  $('time-own').classList.toggle('hidden', over || !limitSite());
 
   // One gentle line under the ring, only where it helps.
   const hint = $('hint');
@@ -227,6 +240,13 @@ function renderList(): void {
       time.className = secs < 1 ? 't zero' : 't';
       time.textContent = clock(secs);
       li.append(name, time);
+      const own = settings.siteLimits[site];
+      if (own != null) {
+        const cap = document.createElement('span');
+        cap.className = 'cap';
+        cap.textContent = `/ ${clock(own * 60)}`;
+        li.append(cap);
+      }
       return li;
     }),
   );
@@ -272,15 +292,11 @@ function onExtra(): void {
 }
 
 async function grantExtra(): Promise<void> {
-  const fresh = await getUsage();
-  if (fresh.extensionsUsed >= MAX_EXTENSIONS_PER_DAY) return;
-  // Extend from the current moment, so the fade clears right away.
-  const s = await getSettings();
-  const base = Math.max(fresh.seconds, limitSeconds(s, fresh));
-  fresh.extraSeconds += base - limitSeconds(s, fresh) + EXTENSION_SECONDS;
-  fresh.extensionsUsed += 1;
+  const [s, fresh] = await Promise.all([getSettings(), getUsage()]);
   think = null;
-  await setUsage(fresh);
+  // Extends the limit the active site counts against, from the current moment.
+  if (grantExtension(s, fresh, ownLimitSite(trackedCurrent(), s))) await setUsage(fresh);
+  else render();
 }
 
 // --- Helpers ---------------------------------------------------------------

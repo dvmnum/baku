@@ -67,6 +67,24 @@ try {
   const badge = await sw.evaluate(() => chrome.action.getBadgeText({}));
   badge === '0' ? ok('badge shows 0 min left') : fail(`badge: ${JSON.stringify(badge)}`);
 
+  // Own limit: the shared limit is huge, but the site's own 3 s run out; fade capped at 80%.
+  await sw.evaluate(() =>
+    chrome.storage.local.set({
+      settings: { sites: ['fake.test'], limitMinutes: 30, siteLimits: { 'fake.test': 0.05 }, fadeSeconds: 6, fadeStrength: 0.8, mode: 'soft' },
+      usage: null,
+    }),
+  );
+  await page.reload();
+  for (let i = 0; i < 16; i++) {
+    await page.mouse.move(100 + (i % 5) * 10, 200);
+    await page.waitForTimeout(1000);
+  }
+  await page.waitForTimeout(1600);
+  const ownFilter = await page.evaluate(() => getComputedStyle(document.documentElement).filter);
+  ownFilter.includes('grayscale(0.8)') && ownFilter.includes('brightness(0.84)')
+    ? ok(`own site limit fades it, capped at 80%: ${ownFilter}`)
+    : fail(`own limit filter: ${ownFilter}`);
+
   await sw.evaluate(() =>
     chrome.storage.local.set({
       settings: { sites: ['fake.test'], limitMinutes: 30, fadeSeconds: 6, mode: 'soft' },
@@ -80,13 +98,21 @@ try {
   const opts = await ctx.newPage();
   await opts.goto(`chrome-extension://${new URL(sw.url()).host}/options.html`);
   await opts.waitForTimeout(500);
-  const fade = await opts.evaluate(() => {
-    const s = document.getElementById('fade');
-    return { value: s.value, label: s.selectedOptions[0]?.textContent };
-  });
-  fade.value === '6' && /6/.test(fade.label ?? '')
-    ? ok(`custom fade shown: ${fade.label}`)
-    : fail(`fade select: ${JSON.stringify(fade)}`);
+  const fade = await opts.evaluate(() => document.querySelector('#speed button.on')?.textContent ?? '');
+  /6/.test(fade) ? ok(`custom fade shown: ${fade}`) : fail(`speed: ${JSON.stringify(fade)}`);
+
+  // Options: give the site its own limit through the inline editor.
+  await opts.click('#site-list li button.lim');
+  await opts.click('#site-list li.open .seg button:last-child');
+  await opts.waitForTimeout(300);
+  await opts.click('#site-list li.open .stepper button:last-child');
+  await opts.waitForTimeout(300);
+  const own = await sw.evaluate(() => chrome.storage.local.get('settings').then(({ settings }) => settings.siteLimits));
+  own['fake.test'] === 20 ? ok('options: own limit set to 20 min') : fail(`options own limit: ${JSON.stringify(own)}`);
+  await opts.click('#site-list li.open .seg button:first-child');
+  await opts.waitForTimeout(300);
+  const back = await sw.evaluate(() => chrome.storage.local.get('settings').then(({ settings }) => settings.siteLimits));
+  back['fake.test'] === undefined ? ok('options: back to the shared limit') : fail(`options shared: ${JSON.stringify(back)}`);
 
   // Popup, opened as a tab. tabs.query is stubbed so the "active tab" is the tracked site.
   const id = new URL(sw.url()).host;
@@ -109,7 +135,9 @@ try {
   // Over the limit: "5 more minutes" with the forced wait, then confirm.
   await sw.evaluate(() =>
     chrome.storage.local.get('usage').then(({ usage }) =>
-      chrome.storage.local.set({ usage: { ...usage, seconds: 1900, extraSeconds: 0, extensionsUsed: 0 } }),
+      chrome.storage.local.set({
+        usage: { ...usage, seconds: 1900, perSite: { 'fake.test': 1900 }, extraSeconds: 0, extensionsUsed: 0 },
+      }),
     ),
   );
   await popup.waitForTimeout(300);
@@ -119,7 +147,7 @@ try {
   await popup.click('#extra-btn');
   await popup.waitForTimeout(300);
   const after = await sw.evaluate(() => chrome.storage.local.get('usage').then(({ usage }) => usage));
-  waiting && after.extensionsUsed === 1 && after.seconds < 1800 + after.extraSeconds
+  waiting && after.extensionsUsed === 1 && after.perSite['fake.test'] < 1800 + after.extraSeconds
     ? ok('popup: "5 more minutes" waits, then extends the limit')
     : fail(`popup extension: waiting=${waiting} usage=${JSON.stringify(after)}`);
   await popup.close();

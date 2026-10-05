@@ -5,10 +5,14 @@ export type FadeMode = 'soft' | 'hard';
 export interface Settings {
   /** Bare domains, e.g. "youtube.com". Subdomains match automatically. */
   sites: string[];
-  /** Shared daily limit across all sites, in minutes. */
+  /** Shared daily limit for sites without their own, in minutes. */
   limitMinutes: number;
-  /** How long the fade from color to full grayscale takes, in seconds. */
+  /** Per-site daily limits in minutes. A site listed here doesn't use the shared limit. */
+  siteLimits: Record<string, number>;
+  /** How long the fade from color to full strength takes, in seconds. */
   fadeSeconds: number;
+  /** How gray a site gets once faded: 0.6, 0.8 or 1. */
+  fadeStrength: number;
   /** soft = grayscale only; hard = grayscale, then blur and low contrast. */
   mode: FadeMode;
 }
@@ -18,20 +22,24 @@ export interface Usage {
   date: string;
   /** Total counted seconds today across all sites. */
   seconds: number;
-  /** Per-site seconds today, for stats. */
+  /** Per-site seconds today. */
   perSite: Record<string, number>;
-  /** Extra seconds granted today via "5 more minutes". */
+  /** Extra seconds granted today to the shared limit via "5 more minutes". */
   extraSeconds: number;
-  /** How many times "5 more minutes" was used today. */
+  /** Extra seconds granted today to sites with their own limit. */
+  extraPerSite: Record<string, number>;
+  /** How many times "5 more minutes" was used today, across all limits. */
   extensionsUsed: number;
-  /** Epoch ms when the limit was first crossed today, for stats. */
+  /** Epoch ms when a limit was first crossed today. */
   limitHitAt: number | null;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   sites: [],
   limitMinutes: 30,
+  siteLimits: {},
   fadeSeconds: 150,
+  fadeStrength: 1,
   mode: 'soft',
 };
 
@@ -59,14 +67,19 @@ export function emptyUsage(): Usage {
     seconds: 0,
     perSite: {},
     extraSeconds: 0,
+    extraPerSite: {},
     extensionsUsed: 0,
     limitHitAt: null,
   };
 }
 
+export function normalizeSettings(raw: Partial<Settings> | undefined): Settings {
+  return { ...DEFAULT_SETTINGS, ...raw, siteLimits: { ...raw?.siteLimits } };
+}
+
 export async function getSettings(): Promise<Settings> {
   const { settings } = await browser.storage.local.get('settings');
-  return { ...DEFAULT_SETTINGS, ...(settings as Partial<Settings> | undefined) };
+  return normalizeSettings(settings as Partial<Settings> | undefined);
 }
 
 export async function setSettings(patch: Partial<Settings>): Promise<Settings> {
@@ -81,21 +94,66 @@ export async function getUsage(): Promise<Usage> {
   return normalizeUsage(usage as Usage | undefined);
 }
 
-export function normalizeUsage(usage: Usage | undefined): Usage {
+/** Today's usage with any fields added after 0.1 filled in. */
+export function normalizeUsage(usage: Partial<Usage> | undefined): Usage {
   if (!usage || usage.date !== today()) return emptyUsage();
-  return usage;
+  return { ...emptyUsage(), ...usage, perSite: { ...usage.perSite }, extraPerSite: { ...usage.extraPerSite } };
 }
 
 export async function setUsage(usage: Usage): Promise<void> {
   await browser.storage.local.set({ usage });
 }
 
-export function limitSeconds(settings: Settings, usage: Usage): number {
+// --- Limits ------------------------------------------------------------------
+//
+// Every tracked site counts against exactly one limit: its own, if it has one,
+// otherwise the shared one. A site with its own limit doesn't spend shared time.
+
+/** Which limit a site counts against: the site itself, or null for the shared one. */
+export function ownLimitSite(site: string | null, settings: Settings): string | null {
+  return site && settings.siteLimits[site] != null ? site : null;
+}
+
+/** Seconds allowed today for the limit `site` belongs to (null = shared). */
+export function limitSeconds(settings: Settings, usage: Usage, site: string | null = null): number {
+  const own = ownLimitSite(site, settings);
+  if (own) return (settings.siteLimits[own] ?? 0) * 60 + (usage.extraPerSite[own] ?? 0);
   return settings.limitMinutes * 60 + usage.extraSeconds;
 }
 
+/** Seconds used today against the limit `site` belongs to (null = shared). */
+export function usedSeconds(settings: Settings, usage: Usage, site: string | null = null): number {
+  const own = ownLimitSite(site, settings);
+  if (own) return usage.perSite[own] ?? 0;
+  let sum = 0;
+  for (const [s, secs] of Object.entries(usage.perSite)) {
+    if (settings.siteLimits[s] == null) sum += secs;
+  }
+  return sum;
+}
+
+export function secondsLeft(settings: Settings, usage: Usage, site: string | null = null): number {
+  return Math.max(0, limitSeconds(settings, usage, site) - usedSeconds(settings, usage, site));
+}
+
+/**
+ * Grants "5 more minutes" to the limit `site` belongs to, counted from now so
+ * the fade clears right away. Returns false when today's extensions are spent.
+ */
+export function grantExtension(settings: Settings, usage: Usage, site: string | null): boolean {
+  if (usage.extensionsUsed >= MAX_EXTENSIONS_PER_DAY) return false;
+  const over = Math.max(0, usedSeconds(settings, usage, site) - limitSeconds(settings, usage, site));
+  const own = ownLimitSite(site, settings);
+  if (own) usage.extraPerSite[own] = (usage.extraPerSite[own] ?? 0) + over + EXTENSION_SECONDS;
+  else usage.extraSeconds += over + EXTENSION_SECONDS;
+  usage.extensionsUsed += 1;
+  return true;
+}
+
+// --- Fade --------------------------------------------------------------------
+
 export interface FadeLevel {
-  /** 0..1 */
+  /** 0..fadeStrength */
   grayscale: number;
   /** CSS brightness() factor, 1 = untouched; ramps down together with grayscale. */
   brightness: number;
@@ -103,10 +161,11 @@ export interface FadeLevel {
   hard: number;
 }
 
-export function fadeLevel(settings: Settings, usage: Usage): FadeLevel {
-  const over = usage.seconds - limitSeconds(settings, usage);
+export function fadeLevel(settings: Settings, usage: Usage, site: string | null = null): FadeLevel {
+  const over = usedSeconds(settings, usage, site) - limitSeconds(settings, usage, site);
   if (over <= 0) return { grayscale: 0, brightness: 1, hard: 0 };
-  const grayscale = clamp01(over / Math.max(1, settings.fadeSeconds));
+  const progress = clamp01(over / Math.max(1, settings.fadeSeconds));
+  const grayscale = progress * clamp01(settings.fadeStrength);
   const brightness = 1 - grayscale * DIM_AT_FULL_FADE;
   let hard = 0;
   if (settings.mode === 'hard') {

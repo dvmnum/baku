@@ -46,44 +46,38 @@
   "openSettings": {
     "message": "Настройки"
   },
-  "optTitle": {
-    "message": "Настройки Baku"
-  },
   "optLimit": {
-    "message": "Дневной лимит"
-  },
-  "optLimitHint": {
-    "message": "Общий на все отслеживаемые сайты"
+    "message": "Лимит в день"
   },
   "optMinutes": {
     "message": "мин"
   },
   "optFade": {
-    "message": "Скорость выцветания"
+    "message": "Выцветание"
   },
   "optFadeFast": {
-    "message": "Быстро, 30 с"
+    "message": "Быстро"
   },
   "optFadeNormal": {
-    "message": "Плавно, 2,5 мин"
+    "message": "Плавно"
   },
   "optFadeSlow": {
-    "message": "Медленно, 10 мин"
+    "message": "Медленно"
   },
   "optMode": {
     "message": "Режим"
   },
   "optModeSoft": {
-    "message": "Мягкий: серый и чуть темнее"
+    "message": "Мягкий"
   },
   "optModeHard": {
-    "message": "Жёсткий: через 15 минут ещё размытие и тусклость"
+    "message": "Жёсткий"
   },
   "optSites": {
-    "message": "Отслеживаемые сайты"
+    "message": "Сайты"
   },
   "optSitesEmpty": {
-    "message": "Пока пусто. Добавь YouTube, VK или что там у тебя жрёт время."
+    "message": "Пока пусто. Добавь сайт, на котором залипаешь."
   },
   "optAdd": {
     "message": "Добавить"
@@ -91,36 +85,11 @@
   "optInvalidDomain": {
     "message": "Не похоже на адрес сайта"
   },
-  "optRemove": {
-    "message": "Убрать"
-  },
-  "optNoAccess": {
-    "message": "Нет доступа. Нажми, чтобы выдать"
-  },
-  "optToday": {
-    "message": "Сегодня"
-  },
-  "optTodayEmpty": {
-    "message": "Сегодня ещё не залипал"
-  },
-  "optLimitHitAt": {
-    "message": "Выцвело в $TIME$",
-    "placeholders": {
-      "time": {
-        "content": "$1"
-      }
-    }
-  },
   "optSaved": {
     "message": "Сохранено"
   },
   "optFadeCustom": {
-    "message": "Своя, $VALUE$",
-    "placeholders": {
-      "value": {
-        "content": "$1"
-      }
-    }
+    "message": "Своя"
   },
   "optSeconds": {
     "message": "с"
@@ -292,5 +261,110 @@
         "content": "$1"
       }
     }
+  },
+  "optLimitShared": {
+    "message": "Общий на все сайты"
+  },
+  "optLimitRest": {
+    "message": "Для сайтов без своего лимита"
+  },
+  "optLess": {
+    "message": "Меньше"
+  },
+  "optMore": {
+    "message": "Больше"
+  },
+  "optAddPlaceholder": {
+    "message": "Добавить сайт, например twitch.tv"
+  },
+  "optColSite": {
+    "message": "Сайт"
+  },
+  "optColToday": {
+    "message": "за сегодня"
+  },
+  "optColLimit": {
+    "message": "лимит"
+  },
+  "optGrantAccess": {
+    "message": "Разрешить доступ"
+  },
+  "optOwnLimitTitle": {
+    "message": "Свой лимит для этого сайта"
+  },
+  "optRemoveSite": {
+    "message": "Убрать $SITE$",
+    "placeholders": {
+      "site": {
+        "content": "$1"
+      }
+    }
+  },
+  "optShared": {
+    "message": "общий"
+  },
+  "optSharedTab": {
+    "message": "Общий"
+  },
+  "optOwnTab": {
+    "message": "Свой"
+  },
+  "optHintShared": {
+    "message": "Тратит общий лимит, $MIN$ мин в день",
+    "placeholders": {
+      "min": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHintOwn": {
+    "message": "Считается отдельно и не тратит общий лимит"
+  },
+  "optBefore": {
+    "message": "до"
+  },
+  "optAfter": {
+    "message": "после · $PCT$%",
+    "placeholders": {
+      "pct": {
+        "content": "$1"
+      }
+    }
+  },
+  "optStrength": {
+    "message": "Насколько серым"
+  },
+  "optStrengthLight": {
+    "message": "Слегка"
+  },
+  "optStrengthMid": {
+    "message": "Заметно"
+  },
+  "optStrengthFull": {
+    "message": "Полностью"
+  },
+  "optSpeed": {
+    "message": "Скорость"
+  },
+  "optFadeFastSub": {
+    "message": "30 с"
+  },
+  "optFadeNormalSub": {
+    "message": "2,5 мин"
+  },
+  "optFadeSlowSub": {
+    "message": "10 мин"
+  },
+  "optModeSoftSub": {
+    "message": "только серый"
+  },
+  "optModeHardSub": {
+    "message": "+ размытие через 15 мин"
+  },
+  "optPrivacy": {
+    "message": "Всё хранится только в этом браузере. Baku ничего никуда не отправляет."
+  },
+  "popupOwnLimit": {
+    "message": "свой лимит"
   }
 }

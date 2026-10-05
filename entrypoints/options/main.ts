@@ -5,9 +5,38 @@ import { getSettings, getUsage, setSettings, type FadeMode, type Settings, type 
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
+const LIMIT_STEP = 5;
+const LIMIT_MIN = 5;
+const LIMIT_MAX = 600;
+const PRESETS = [15, 30, 45, 60, 90];
+const STRENGTHS: [number, string][] = [
+  [0.6, 'optStrengthLight'],
+  [0.8, 'optStrengthMid'],
+  [1, 'optStrengthFull'],
+];
+const SPEEDS: [number, string, string][] = [
+  [30, 'optFadeFast', 'optFadeFastSub'],
+  [150, 'optFadeNormal', 'optFadeNormalSub'],
+  [600, 'optFadeSlow', 'optFadeSlowSub'],
+];
+const MODES: [FadeMode, string, string][] = [
+  ['soft', 'optModeSoft', 'optModeSoftSub'],
+  ['hard', 'optModeHard', 'optModeHardSub'],
+];
+/** Default for a site's own limit when switching it from shared. */
+const OWN_LIMIT_DEFAULT = 15;
+
 let settings: Settings;
 let usage: Usage;
 let access: Record<string, boolean> = {};
+/** Site whose limit editor is open. */
+let editing: string | null = null;
+
+interface Row {
+  li: HTMLLIElement;
+  update: () => void;
+}
+const rows = new Map<string, Row>();
 
 async function init(): Promise<void> {
   applyI18n();
@@ -21,15 +50,15 @@ async function init(): Promise<void> {
     if (changes.settings) {
       settings = await getSettings();
       await refreshAccess();
-      renderSites();
-      renderForm();
     }
-    if (changes.usage) {
-      usage = await getUsage();
-      renderToday();
-    }
+    if (changes.usage) usage = await getUsage();
+    renderAll();
   });
   browser.permissions.onAdded.addListener(async () => {
+    await refreshAccess();
+    renderSites();
+  });
+  browser.permissions.onRemoved.addListener(async () => {
     await refreshAccess();
     renderSites();
   });
@@ -37,124 +66,191 @@ async function init(): Promise<void> {
 
 async function refreshAccess(): Promise<void> {
   const entries = await Promise.all(
-    settings.sites.map(
-      async (s) => [s, await browser.permissions.contains({ origins: originsFor(s) })] as const,
-    ),
+    settings.sites.map(async (s) => [s, await browser.permissions.contains({ origins: originsFor(s) })] as const),
   );
   access = Object.fromEntries(entries);
 }
 
 function renderAll(): void {
-  renderToday();
+  renderLimit();
   renderSites();
-  renderForm();
+  renderFade();
 }
 
-function fmt(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  if (m < 1) return `<1 ${t('optMinutes')}`;
-  if (m < 60) return `${m} ${t('optMinutes')}`;
-  return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
-}
+// --- Daily limit -------------------------------------------------------------
 
-function renderToday(): void {
-  const entries = Object.entries(usage.perSite)
-    .filter(([, s]) => s >= 1)
-    .sort((a, b) => b[1] - a[1]);
-  const max = entries[0]?.[1] ?? 1;
-  $('today-empty').classList.toggle('hidden', entries.length > 0);
-
-  const list = $('today-list');
-  list.replaceChildren(
-    ...entries.map(([site, secs]) => {
-      const li = document.createElement('li');
-      const name = el('span', 'name', site);
-      const bar = el('span', 'bar');
-      const fill = document.createElement('span');
-      fill.style.width = `${Math.max(2, (secs / max) * 100)}%`;
-      bar.append(fill);
-      li.append(name, bar, el('span', 'time', fmt(secs)));
-      return li;
-    }),
-  );
-
-  const hit = $('limit-hit');
-  if (usage.limitHitAt) {
-    const time = new Date(usage.limitHitAt).toLocaleTimeString(undefined, {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    hit.textContent = t('optLimitHitAt', [time]);
-    hit.classList.remove('hidden');
-  } else {
-    hit.classList.add('hidden');
-  }
-}
-
-function renderSites(): void {
-  $('sites-empty').classList.toggle('hidden', settings.sites.length > 0);
-  $('site-list').replaceChildren(
-    ...settings.sites.map((site) => {
-      const li = document.createElement('li');
-      const left = el('span');
-      left.append(el('span', 'name', site));
-      if (!access[site]) {
-        const grant = el('button', 'warn', t('optNoAccess')) as HTMLButtonElement;
-        grant.type = 'button';
-        grant.style.marginLeft = '10px';
-        grant.addEventListener('click', () => {
-          void browser.permissions.request({ origins: originsFor(site) });
-        });
-        left.append(grant);
-      }
-      const remove = el('button', '', t('optRemove')) as HTMLButtonElement;
-      remove.type = 'button';
-      remove.addEventListener('click', () => {
-        void setSettings({ sites: settings.sites.filter((s) => s !== site) });
-        void browser.permissions.remove({ origins: originsFor(site) }).catch(() => undefined);
-      });
-      li.append(left, remove);
-      return li;
+function renderLimit(): void {
+  $('limit').textContent = String(settings.limitMinutes);
+  const anyOwn = settings.sites.some((s) => settings.siteLimits[s] != null);
+  $('limit-sub').textContent = t(anyOwn ? 'optLimitRest' : 'optLimitShared');
+  $('presets').replaceChildren(
+    ...PRESETS.map((m) => {
+      const b = button(String(m), m === settings.limitMinutes ? 'on' : '');
+      b.addEventListener('click', () => void save({ limitMinutes: m }));
+      return b;
     }),
   );
 }
 
-function renderForm(): void {
-  const limit = $<HTMLInputElement>('limit');
-  if (document.activeElement !== limit) limit.value = String(settings.limitMinutes);
-  renderFadeSelect();
-  document
-    .querySelectorAll<HTMLInputElement>('input[name="mode"]')
-    .forEach((r) => (r.checked = r.value === settings.mode));
+function setLimit(minutes: number): void {
+  void save({ limitMinutes: Math.min(LIMIT_MAX, Math.max(LIMIT_MIN, minutes)) });
+}
+
+// --- Sites -------------------------------------------------------------------
+
+function sortedSites(): string[] {
+  return [...settings.sites].sort(
+    (a, b) => (usage.perSite[b] ?? 0) - (usage.perSite[a] ?? 0) || a.localeCompare(b),
+  );
 }
 
 /**
- * The select only offers presets, but storage may hold any value (older
- * builds, manual edits, future sync). Show it as an extra "custom" option
- * instead of silently displaying an empty select.
+ * Rebuilds the list only when the set or order of sites changes; otherwise
+ * updates rows in place, so an open editor doesn't flicker or lose focus.
  */
-function renderFadeSelect(): void {
-  const select = $<HTMLSelectElement>('fade');
-  const value = String(settings.fadeSeconds);
-  select.querySelector('option[data-custom]')?.remove();
-  const isPreset = [...select.options].some((o) => o.value === value);
-  if (!isPreset) {
-    const opt = document.createElement('option');
-    opt.value = value;
-    opt.dataset.custom = '';
-    opt.textContent = t('optFadeCustom', [fmtSeconds(settings.fadeSeconds)]);
-    select.append(opt);
+function renderSites(): void {
+  const order = sortedSites();
+  const list = $('site-list');
+  $('sites-empty').classList.toggle('hidden', order.length > 0);
+  $('list-head').classList.toggle('hidden', order.length === 0);
+
+  const same = order.length === rows.size && order.every((s, i) => list.children[i] === rows.get(s)?.li);
+  if (!same) {
+    for (const site of [...rows.keys()]) if (!order.includes(site)) rows.delete(site);
+    for (const site of order) if (!rows.has(site)) rows.set(site, createRow(site));
+    list.replaceChildren(...order.map((s) => rows.get(s)!.li));
   }
-  select.value = value;
+  if (editing && !order.includes(editing)) editing = null;
+  for (const row of rows.values()) row.update();
 }
 
-function fmtSeconds(seconds: number): string {
-  if (seconds < 60) return `${seconds} ${t('optSeconds')}`;
-  const m = Math.round((seconds / 60) * 10) / 10;
-  return `${m} ${t('optMinutes')}`;
+function createRow(site: string): Row {
+  const li = document.createElement('li');
+  const name = span('s', site);
+  const time = span('t');
+  const grant = button(t('optGrantAccess'), 'grant');
+  grant.type = 'button';
+  grant.addEventListener('click', () => {
+    // Must be called synchronously in the user gesture.
+    void browser.permissions.request({ origins: originsFor(site) });
+  });
+  const chip = button('', 'lim');
+  chip.title = t('optOwnLimitTitle');
+  chip.addEventListener('click', () => {
+    editing = editing === site ? null : site;
+    for (const row of rows.values()) row.update();
+  });
+  const remove = button('×', 'x');
+  remove.setAttribute('aria-label', t('optRemoveSite', [site]));
+  remove.addEventListener('click', () => {
+    const siteLimits = { ...settings.siteLimits };
+    delete siteLimits[site];
+    void save({ sites: settings.sites.filter((s) => s !== site), siteLimits });
+    void browser.permissions.remove({ origins: originsFor(site) }).catch(() => undefined);
+  });
+
+  // Inline editor: shared or own limit for this site.
+  const wrap = el('div', 'ed-wrap');
+  const inner = el('div');
+  const box = el('div', 'editor');
+  const edRow = el('div', 'ed-row');
+  const seg = el('div', 'seg');
+  const shared = button(t('optSharedTab'));
+  const own = button(t('optOwnTab'));
+  seg.append(shared, own);
+  const stepper = el('div', 'stepper');
+  const minus = button('−');
+  minus.setAttribute('aria-label', t('optLess'));
+  const val = el('b');
+  const plus = button('+');
+  plus.setAttribute('aria-label', t('optMore'));
+  stepper.append(minus, val, plus);
+  edRow.append(seg, stepper);
+  const hint = el('p', 'ed-hint');
+  box.append(edRow, hint);
+  inner.append(box);
+  wrap.append(inner);
+
+  let draft = OWN_LIMIT_DEFAULT;
+  const setOwn = (minutes: number | null) => {
+    const siteLimits = { ...settings.siteLimits };
+    if (minutes == null) delete siteLimits[site];
+    else siteLimits[site] = Math.min(LIMIT_MAX, Math.max(LIMIT_MIN, minutes));
+    void save({ siteLimits });
+  };
+  shared.addEventListener('click', () => {
+    const cur = settings.siteLimits[site];
+    if (cur == null) return;
+    draft = cur;
+    setOwn(null);
+  });
+  own.addEventListener('click', () => {
+    if (settings.siteLimits[site] == null) setOwn(draft);
+  });
+  minus.addEventListener('click', () => setOwn((settings.siteLimits[site] ?? draft) - LIMIT_STEP));
+  plus.addEventListener('click', () => setOwn((settings.siteLimits[site] ?? draft) + LIMIT_STEP));
+
+  li.append(name, time, grant, chip, remove, wrap);
+
+  const update = () => {
+    const secs = usage.perSite[site] ?? 0;
+    const hasAccess = access[site] !== false;
+    time.textContent = clock(secs);
+    time.className = secs < 1 ? 't zero' : 't';
+    time.hidden = !hasAccess;
+    grant.hidden = hasAccess;
+
+    const cur = settings.siteLimits[site];
+    const isOwn = cur != null;
+    chip.className = isOwn ? 'lim own' : 'lim';
+    chip.textContent = isOwn ? minutes(cur) : t('optShared');
+    chip.setAttribute('aria-expanded', String(editing === site));
+    li.classList.toggle('open', editing === site);
+
+    shared.className = isOwn ? '' : 'on';
+    own.className = isOwn ? 'on' : '';
+    stepper.classList.toggle('off', !isOwn);
+    val.textContent = minutes(isOwn ? cur : draft);
+    hint.textContent = isOwn ? t('optHintOwn') : t('optHintShared', [settings.limitMinutes]);
+  };
+  return { li, update };
 }
+
+// --- Fading ------------------------------------------------------------------
+
+function renderFade(): void {
+  const strength = settings.fadeStrength;
+  $('preview-after').style.filter = `grayscale(${strength}) brightness(${1 - strength * 0.2})`;
+  $('preview-after-cap').textContent = t('optAfter', [Math.round(strength * 100)]);
+
+  $('strength').replaceChildren(
+    ...STRENGTHS.map(([v, key]) =>
+      seg(t(key), `${Math.round(v * 100)}%`, Math.abs(v - strength) < 0.01, () => save({ fadeStrength: v })),
+    ),
+  );
+
+  // Storage may hold a non-preset speed (older builds, manual edits); show it instead of hiding it.
+  const speeds = SPEEDS.map(([v, k, sub]) => [v, t(k), t(sub)] as const);
+  const custom = !SPEEDS.some(([v]) => v === settings.fadeSeconds)
+    ? [[settings.fadeSeconds, t('optFadeCustom'), fmtSeconds(settings.fadeSeconds)] as const]
+    : [];
+  $('speed').replaceChildren(
+    ...[...speeds, ...custom].map(([v, title, sub]) =>
+      seg(title, sub, v === settings.fadeSeconds, () => save({ fadeSeconds: v })),
+    ),
+  );
+
+  $('mode').replaceChildren(
+    ...MODES.map(([v, k, sub]) => seg(t(k), t(sub), v === settings.mode, () => save({ mode: v }))),
+  );
+}
+
+// --- Events ------------------------------------------------------------------
 
 function bind(): void {
+  $('limit-minus').addEventListener('click', () => setLimit(settings.limitMinutes - LIMIT_STEP));
+  $('limit-plus').addEventListener('click', () => setLimit(settings.limitMinutes + LIMIT_STEP));
+
   $('add-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const input = $<HTMLInputElement>('add-input');
@@ -174,29 +270,10 @@ function bind(): void {
       }
       // Keep the site even without access; the list shows a "grant" button.
       const fresh = await getSettings();
-      if (!fresh.sites.includes(domain)) await setSettings({ sites: [...fresh.sites, domain] });
+      if (!fresh.sites.includes(domain)) await save({ sites: [...fresh.sites, domain] });
       input.value = '';
     });
   });
-
-  $<HTMLInputElement>('limit').addEventListener('change', (e) => {
-    const v = Math.round(Number((e.target as HTMLInputElement).value));
-    if (!Number.isFinite(v) || v < 1) {
-      renderForm();
-      return;
-    }
-    void save({ limitMinutes: Math.min(1440, v) });
-  });
-
-  $<HTMLSelectElement>('fade').addEventListener('change', (e) => {
-    void save({ fadeSeconds: Number((e.target as HTMLSelectElement).value) });
-  });
-
-  document.querySelectorAll<HTMLInputElement>('input[name="mode"]').forEach((r) =>
-    r.addEventListener('change', () => {
-      if (r.checked) void save({ mode: r.value as FadeMode });
-    }),
-  );
 }
 
 let savedTimer: ReturnType<typeof setTimeout> | undefined;
@@ -205,13 +282,56 @@ async function save(patch: Partial<Settings>): Promise<void> {
   const s = $('saved');
   s.classList.add('show');
   clearTimeout(savedTimer);
-  savedTimer = setTimeout(() => s.classList.remove('show'), 1200);
+  savedTimer = setTimeout(() => s.classList.remove('show'), 1100);
 }
 
-function el(tag: string, cls = '', text = ''): HTMLElement {
+// --- Helpers -----------------------------------------------------------------
+
+function clock(seconds: number): string {
+  const s = Math.floor(seconds);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = String(s % 60).padStart(2, '0');
+  return h ? `${h}:${String(m).padStart(2, '0')}:${sec}` : `${m}:${sec}`;
+}
+
+function minutes(n: number): string {
+  return `${n} ${t('optMinutes')}`;
+}
+
+function fmtSeconds(seconds: number): string {
+  if (seconds < 60) return `${seconds} ${t('optSeconds')}`;
+  return minutes(Math.round((seconds / 60) * 10) / 10);
+}
+
+function seg(title: string, sub: string, on: boolean, onClick: () => void): HTMLButtonElement {
+  const b = button(title, on ? 'on' : '');
+  const small = document.createElement('small');
+  small.textContent = sub;
+  b.append(small);
+  b.setAttribute('aria-pressed', String(on));
+  b.addEventListener('click', onClick);
+  return b;
+}
+
+function button(text: string, cls = ''): HTMLButtonElement {
+  const b = document.createElement('button');
+  b.type = 'button';
+  if (cls) b.className = cls;
+  b.textContent = text;
+  return b;
+}
+
+function span(cls: string, text = ''): HTMLSpanElement {
+  const s = document.createElement('span');
+  s.className = cls;
+  s.textContent = text;
+  return s;
+}
+
+function el(tag: string, cls = ''): HTMLElement {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
-  if (text) e.textContent = text;
   return e;
 }
 

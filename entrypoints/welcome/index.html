@@ -10,9 +10,9 @@
   <body>
     <main>
       <header class="hero">
-        <span class="kanji" aria-hidden="true">獏</span>
+        <img class="art" src="/img/baku-night.webp" alt="" width="1200" height="675" />
         <h1 data-i18n="welcomeTitle"></h1>
-        <p class="muted" data-i18n="welcomeIntro"></p>
+        <p data-i18n="welcomeIntro"></p>
       </header>
 
       <form id="setup" class="card">
@@ -23,27 +23,27 @@
             <input id="other-input" type="text" data-i18n-placeholder="welcomeOtherPlaceholder" autocomplete="off" spellcheck="false" />
             <button id="other-add" type="button" data-i18n="optAdd"></button>
           </div>
-          <p class="error small hidden" id="other-error"></p>
+          <p class="error hidden" id="other-error" role="alert"></p>
         </section>
 
         <section class="step">
           <h2 data-i18n="welcomeLimitTitle"></h2>
-          <p class="muted small" data-i18n="welcomeLimitHint"></p>
+          <p class="hint" data-i18n="welcomeLimitHint"></p>
           <div class="chips" id="limit-chips"></div>
         </section>
 
         <div class="actions">
           <button class="primary big" id="start" type="submit" data-i18n="welcomeStart"></button>
-          <p class="muted small" data-i18n="welcomePermissionNote"></p>
-          <p class="error small hidden" id="start-error"></p>
+          <p class="hint" data-i18n="welcomePermissionNote"></p>
+          <p class="error hidden" id="start-error" role="alert"></p>
         </div>
       </form>
 
       <section id="done" class="card done hidden">
         <h2 data-i18n="welcomeDoneTitle"></h2>
         <p data-i18n="welcomeDoneText"></p>
-        <p class="error small hidden" id="done-denied" data-i18n="welcomeDenied"></p>
-        <div><button id="open-settings" type="button" data-i18n="openSettings"></button></div>
+        <p class="error hidden" id="done-denied" data-i18n="welcomeDenied"></p>
+        <div><button class="ghost" id="open-settings" type="button" data-i18n="openSettings"></button></div>
       </section>
     </main>
     <script type="module" src="./main.ts"></script>

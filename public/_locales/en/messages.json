@@ -46,44 +46,38 @@
   "openSettings": {
     "message": "Settings"
   },
-  "optTitle": {
-    "message": "Baku settings"
-  },
   "optLimit": {
     "message": "Daily limit"
-  },
-  "optLimitHint": {
-    "message": "Shared across all tracked sites"
   },
   "optMinutes": {
     "message": "min"
   },
   "optFade": {
-    "message": "Fade speed"
+    "message": "Fading"
   },
   "optFadeFast": {
-    "message": "Fast, 30 s"
+    "message": "Fast"
   },
   "optFadeNormal": {
-    "message": "Smooth, 2.5 min"
+    "message": "Smooth"
   },
   "optFadeSlow": {
-    "message": "Slow, 10 min"
+    "message": "Slow"
   },
   "optMode": {
     "message": "Mode"
   },
   "optModeSoft": {
-    "message": "Soft: gray and a little dimmer"
+    "message": "Soft"
   },
   "optModeHard": {
-    "message": "Hard: 15 minutes later, blur and dim too"
+    "message": "Hard"
   },
   "optSites": {
-    "message": "Tracked sites"
+    "message": "Sites"
   },
   "optSitesEmpty": {
-    "message": "Nothing yet. Add YouTube, VK, or whatever eats your time."
+    "message": "Nothing yet. Add a site you lose time on."
   },
   "optAdd": {
     "message": "Add"
@@ -91,36 +85,11 @@
   "optInvalidDomain": {
     "message": "Doesn't look like a site address"
   },
-  "optRemove": {
-    "message": "Remove"
-  },
-  "optNoAccess": {
-    "message": "No access. Click to grant"
-  },
-  "optToday": {
-    "message": "Today"
-  },
-  "optTodayEmpty": {
-    "message": "No time on tracked sites yet"
-  },
-  "optLimitHitAt": {
-    "message": "Faded at $TIME$",
-    "placeholders": {
-      "time": {
-        "content": "$1"
-      }
-    }
-  },
   "optSaved": {
     "message": "Saved"
   },
   "optFadeCustom": {
-    "message": "Custom, $VALUE$",
-    "placeholders": {
-      "value": {
-        "content": "$1"
-      }
-    }
+    "message": "Custom"
   },
   "optSeconds": {
     "message": "s"
@@ -260,5 +229,110 @@
         "content": "$1"
       }
     }
+  },
+  "optLimitShared": {
+    "message": "Shared by all sites"
+  },
+  "optLimitRest": {
+    "message": "For sites without their own limit"
+  },
+  "optLess": {
+    "message": "Less"
+  },
+  "optMore": {
+    "message": "More"
+  },
+  "optAddPlaceholder": {
+    "message": "Add a site, e.g. twitch.tv"
+  },
+  "optColSite": {
+    "message": "Site"
+  },
+  "optColToday": {
+    "message": "today"
+  },
+  "optColLimit": {
+    "message": "limit"
+  },
+  "optGrantAccess": {
+    "message": "Allow access"
+  },
+  "optOwnLimitTitle": {
+    "message": "Own limit for this site"
+  },
+  "optRemoveSite": {
+    "message": "Remove $SITE$",
+    "placeholders": {
+      "site": {
+        "content": "$1"
+      }
+    }
+  },
+  "optShared": {
+    "message": "shared"
+  },
+  "optSharedTab": {
+    "message": "Shared"
+  },
+  "optOwnTab": {
+    "message": "Own"
+  },
+  "optHintShared": {
+    "message": "Uses the shared limit, $MIN$ min a day",
+    "placeholders": {
+      "min": {
+        "content": "$1"
+      }
+    }
+  },
+  "optHintOwn": {
+    "message": "Counted separately, doesn't use the shared limit"
+  },
+  "optBefore": {
+    "message": "before"
+  },
+  "optAfter": {
+    "message": "after · $PCT$%",
+    "placeholders": {
+      "pct": {
+        "content": "$1"
+      }
+    }
+  },
+  "optStrength": {
+    "message": "How gray"
+  },
+  "optStrengthLight": {
+    "message": "A little"
+  },
+  "optStrengthMid": {
+    "message": "Noticeably"
+  },
+  "optStrengthFull": {
+    "message": "Fully"
+  },
+  "optSpeed": {
+    "message": "Speed"
+  },
+  "optFadeFastSub": {
+    "message": "30 s"
+  },
+  "optFadeNormalSub": {
+    "message": "2.5 min"
+  },
+  "optFadeSlowSub": {
+    "message": "10 min"
+  },
+  "optModeSoftSub": {
+    "message": "gray only"
+  },
+  "optModeHardSub": {
+    "message": "+ blur after 15 min"
+  },
+  "optPrivacy": {
+    "message": "Everything stays in this browser. Baku doesn't send anything anywhere."
+  },
+  "popupOwnLimit": {
+    "message": "own limit"
   }
 }
