@@ -68,7 +68,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 /* the before/after demo: drag to fade the illustration */
 .demo { position: relative; margin: 46px auto 0; max-width: 980px; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; border: 1px solid var(--line);
-  box-shadow: 0 40px 120px -30px rgba(52, 209, 168, .28), 0 30px 80px -40px rgba(0, 0, 0, .85); user-select: none; touch-action: pan-y; cursor: ew-resize; --pos: 55%; }
+  box-shadow: 0 40px 120px -30px rgba(52, 209, 168, .28), 0 30px 80px -40px rgba(0, 0, 0, .85); user-select: none; touch-action: pan-y; cursor: ew-resize; --pos: 50%; }
 .demo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .demo .gray { filter: grayscale(1) brightness(.8); clip-path: inset(0 0 0 var(--pos)); }
 .demo .handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: rgba(255, 255, 255, .85); box-shadow: 0 0 18px rgba(0, 0, 0, .4); }
