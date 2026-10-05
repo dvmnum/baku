@@ -66,25 +66,29 @@ export default defineBackground(() => {
   // The fade script only runs on sites the user added AND granted access to.
   // We keep one dynamic registration in sync with that list.
 
-  async function grantedSites(): Promise<string[]> {
+  /**
+   * Match patterns we may run on: every origin of every tracked site that has
+   * been granted. Checked per origin, so a site added before an alias existed
+   * (say vk.com before vk.ru) keeps working on the domain it was granted for.
+   */
+  async function grantedOrigins(): Promise<string[]> {
     const { sites } = await getSettings();
-    const checks = await Promise.all(
-      sites.map((s) => browser.permissions.contains({ origins: originsFor(s) })),
-    );
-    return sites.filter((_, i) => checks[i]);
+    const origins = [...new Set(sites.flatMap(originsFor))];
+    const checks = await Promise.all(origins.map((o) => browser.permissions.contains({ origins: [o] })));
+    return origins.filter((_, i) => checks[i]);
   }
 
   async function syncRegistration(): Promise<void> {
-    const sites = await grantedSites();
+    const origins = await grantedOrigins();
     const existing = await browser.scripting.getRegisteredContentScripts({ ids: [SCRIPT_ID] });
     if (existing.length) {
       await browser.scripting.unregisterContentScripts({ ids: [SCRIPT_ID] });
     }
-    if (!sites.length) return;
+    if (!origins.length) return;
     await browser.scripting.registerContentScripts([
       {
         id: SCRIPT_ID,
-        matches: sites.flatMap(originsFor),
+        matches: origins,
         js: [CONTENT_SCRIPT_FILE],
         runAt: 'document_start',
         allFrames: false,
@@ -94,9 +98,9 @@ export default defineBackground(() => {
   }
 
   /** Inject into tabs that were already open when a site got added. */
-  async function injectIntoOpenTabs(sites: string[]): Promise<void> {
-    if (!sites.length) return;
-    const tabs = await browser.tabs.query({ url: sites.flatMap(originsFor) });
+  async function injectIntoOpenTabs(origins: string[]): Promise<void> {
+    if (!origins.length) return;
+    const tabs = await browser.tabs.query({ url: origins });
     await Promise.all(
       tabs.map((tab) =>
         tab.id == null
@@ -111,7 +115,7 @@ export default defineBackground(() => {
   const resync = () =>
     serial(async () => {
       await syncRegistration();
-      await injectIntoOpenTabs(await grantedSites());
+      await injectIntoOpenTabs(await grantedOrigins());
     }).catch((e) => console.error('[baku] sync failed', e));
 
   // --- Toolbar badge ---------------------------------------------------------

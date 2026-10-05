@@ -1,5 +1,5 @@
 import { browser } from 'wxt/browser';
-import { matchSite, normalizeDomain, originsFor } from '@/utils/domain';
+import { matchDomain, matchSite, normalizeDomain, originsFor, originsForDomain } from '@/utils/domain';
 import { HEARTBEAT_MS } from '@/utils/messages';
 import { applyI18n, t, tp } from '@/utils/i18n';
 import {
@@ -78,8 +78,9 @@ async function init(): Promise<void> {
 }
 
 async function refreshAccess(): Promise<void> {
-  const site = currentDomain ? matchSite(currentDomain, settings.sites) : null;
-  hasAccess = site ? await browser.permissions.contains({ origins: originsFor(site) }) : true;
+  // Access to the domain that's actually open (vk.ru for a site added as vk.com).
+  const match = currentDomain ? matchDomain(currentDomain, settings.sites) : null;
+  hasAccess = match ? await browser.permissions.contains({ origins: originsForDomain(match.domain) }) : true;
   if (hasAccess) accessDenied = false;
 }
 

@@ -29,7 +29,7 @@ const ctx = await chromium.launchPersistentContext('', {
   args: [
     `--disable-extensions-except=${EXT}`,
     `--load-extension=${EXT}`,
-    '--host-resolver-rules=MAP fake.test 127.0.0.1',
+    '--host-resolver-rules=MAP fake.test 127.0.0.1, MAP vk.ru 127.0.0.1',
   ],
 });
 
@@ -66,6 +66,23 @@ try {
 
   const badge = await sw.evaluate(() => chrome.action.getBadgeText({}));
   badge === '0' ? ok('badge shows 0 min left') : fail(`badge: ${JSON.stringify(badge)}`);
+
+  // VK moved to vk.ru: tracking vk.com must cover it too.
+  await sw.evaluate(() =>
+    chrome.storage.local.set({ settings: { sites: ['vk.com'], limitMinutes: 30 }, usage: null }),
+  );
+  await new Promise((r) => setTimeout(r, 1500));
+  const vk = await ctx.newPage();
+  await vk.goto(`http://vk.ru:${port}/`);
+  for (let i = 0; i < 12; i++) {
+    await vk.mouse.move(100 + (i % 5) * 10, 200);
+    await vk.waitForTimeout(1000);
+  }
+  const vkUsage = await sw.evaluate(() => chrome.storage.local.get('usage').then(({ usage }) => usage));
+  vkUsage?.perSite?.['vk.com'] >= 5
+    ? ok(`vk.ru counts toward vk.com: ${vkUsage.perSite['vk.com'].toFixed(1)} s`)
+    : fail(`vk.ru not counted for vk.com: ${JSON.stringify(vkUsage)}`);
+  await vk.close();
 
   // Own limit: the shared limit is huge, but the site's own 3 s run out; fade capped at 80%.
   await sw.evaluate(() =>
