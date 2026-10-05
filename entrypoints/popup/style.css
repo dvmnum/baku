@@ -300,12 +300,69 @@ button.ghost {
 
 .today-head {
   display: flex;
-  justify-content: space-between;
-  margin: 16px 0 2px;
-  font-size: 12.5px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
   color: var(--muted);
+  font-size: 13px;
+  text-align: left;
 }
 
+.today-head:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.today-head .label {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+
+.today-head .total {
+  font-variant-numeric: tabular-nums;
+}
+
+.today-head .chev {
+  transition: transform 0.2s ease;
+}
+
+.today.open .chev {
+  transform: rotate(180deg);
+}
+
+/* Folded by default; slides open like the editor in settings. */
+.list-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.26s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.2s ease;
+}
+
+.list-wrap > div {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.today.open .list-wrap {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list-wrap,
+  .today-head .chev {
+    transition: none;
+  }
+}
 .list {
   list-style: none;
   margin: 0;

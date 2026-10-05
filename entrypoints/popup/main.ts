@@ -76,6 +76,17 @@ async function init(): Promise<void> {
   $('cur-action').addEventListener('click', onCurrentAction);
   $('cur-switch').addEventListener('click', untrackCurrent);
   $('extra-btn').addEventListener('click', onExtra);
+  // The site list is secondary: folded by default, remembered per browser.
+  setListOpen(readListOpen());
+  $('today-toggle').addEventListener('click', () => {
+    const open = $('today').classList.contains('open');
+    setListOpen(!open);
+    try {
+      localStorage.setItem(LIST_OPEN_KEY, open ? '0' : '1');
+    } catch {
+      // Storage can be unavailable; the list just starts folded next time.
+    }
+  });
   $('pick-popular').addEventListener('click', () => {
     void browser.tabs.create({ url: browser.runtime.getURL('/welcome.html') });
     window.close();
@@ -251,7 +262,9 @@ function renderList(): void {
   const rows = [...settings.sites].sort(
     (a, b) => (usage.perSite[b] ?? 0) - (usage.perSite[a] ?? 0) || a.localeCompare(b),
   );
-  $('today-count').textContent = tp('popupSites', rows.length);
+  $('today-count').textContent = `· ${rows.length}`;
+  $('today-count').title = tp('popupSites', rows.length);
+  $('today-total').textContent = clock(rows.reduce((sum, s) => sum + (usage.perSite[s] ?? 0), 0));
   $('list').replaceChildren(
     ...rows.map((site) => {
       const secs = usage.perSite[site] ?? 0;
@@ -324,6 +337,21 @@ async function grantExtra(): Promise<void> {
 }
 
 // --- Helpers ---------------------------------------------------------------
+
+const LIST_OPEN_KEY = 'baku.listOpen';
+
+function readListOpen(): boolean {
+  try {
+    return localStorage.getItem(LIST_OPEN_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function setListOpen(open: boolean): void {
+  $('today').classList.toggle('open', open);
+  $('today-toggle').setAttribute('aria-expanded', String(open));
+}
 
 function extensionsLeft(): number {
   return MAX_EXTENSIONS_PER_DAY - usage.extensionsUsed;

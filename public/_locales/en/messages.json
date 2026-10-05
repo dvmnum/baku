@@ -165,9 +165,6 @@
   "popupPickPopular": {
     "message": "Pick from popular"
   },
-  "popupToday": {
-    "message": "Today"
-  },
   "popupSites_one": {
     "message": "$N$ site",
     "placeholders": {
@@ -370,5 +367,8 @@
         "content": "$1"
       }
     }
+  },
+  "popupAllSites": {
+    "message": "All sites"
   }
 }

@@ -34,7 +34,7 @@ Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 =
 ```
 entrypoints/background.ts   heartbeat accounting, dynamic content-script registration, toolbar badge
 entrypoints/content.ts      activity detection, heartbeats, CSS filter (registration: 'runtime')
-entrypoints/popup/          timer ring (m:ss), current-site card, today list, "5 more minutes"; 9 states, see main.ts
+entrypoints/popup/          timer ring (m:ss), current-site card, "All sites" list folded behind a toggle (state in localStorage), "5 more minutes"; 9 states, see main.ts
 entrypoints/options/        daily limit (stepper + presets), sites with today's time and own-limit editor, fade strength / speed / mode with a before/after preview
 entrypoints/welcome/        onboarding on first install: illustration, pick sites + daily limit
 utils/state.ts              Settings/Usage types, defaults, limit math (limitSeconds/usedSeconds/grantExtension), fade math

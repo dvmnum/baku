@@ -165,9 +165,6 @@
   "popupPickPopular": {
     "message": "Выбрать из популярных"
   },
-  "popupToday": {
-    "message": "Сегодня"
-  },
   "popupSites_one": {
     "message": "$N$ сайт",
     "placeholders": {
@@ -402,5 +399,8 @@
         "content": "$1"
       }
     }
+  },
+  "popupAllSites": {
+    "message": "Все сайты"
   }
 }

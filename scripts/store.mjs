@@ -84,6 +84,8 @@ async function capture(lang, scheme) {
     const p = await ctx.newPage();
     await p.addInitScript((url) => {
       chrome.tabs.query = async () => [{ url }];
+      // Show the site list unfolded: the screenshots talk about time per site.
+      localStorage.setItem('baku.listOpen', '1');
     }, url);
     await p.setViewportSize({ width: 320, height: 640 });
     await p.goto(`chrome-extension://${id}/popup.html`);

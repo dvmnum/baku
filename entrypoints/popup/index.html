@@ -88,8 +88,14 @@
 
     <!-- Tracked sites with today's time -->
     <section class="today hidden" id="today">
-      <div class="today-head"><span data-i18n="popupToday"></span><span id="today-count"></span></div>
-      <ul class="list" id="list"></ul>
+      <button class="today-head" id="today-toggle" type="button" aria-expanded="false" aria-controls="list-wrap">
+        <span class="label"><span data-i18n="popupAllSites"></span><span class="count" id="today-count"></span></span>
+        <span class="total" id="today-total"></span>
+        <svg class="chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <div class="list-wrap" id="list-wrap"><div><ul class="list" id="list"></ul></div></div>
     </section>
 
     <script type="module" src="./main.ts"></script>
