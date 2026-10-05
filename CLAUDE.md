@@ -8,7 +8,7 @@ The owner talks in Russian, casually. Code, comments and commits are in English.
 
 ## Status
 
-Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (13 checks); typecheck and build are clean. What's left before publishing is store material (see Roadmap).
+Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (18 checks); typecheck and build are clean. What's left before publishing is store material (see Roadmap).
 
 Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 = the first public release (everything above).
 
@@ -71,7 +71,7 @@ npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, run
 
 **Before publishing 1.0:**
 
-- Store material is ready in `store/` (listing ru/en with permission justifications and data-usage answers, privacy policy md + html, screenshots, promo and marquee). Rebuild images with `npm run store`, package with `npm run zip`. Privacy policy URL: https://dvmnum.github.io/baku/privacy.html (`npm run privacy` regenerates `site/privacy.html` from `store/privacy-policy.md`). Left: make the repo public, enable Pages (Source: GitHub Actions), upload.
+- Store material is ready in `store/` (listing ru/en with permission justifications and data-usage answers, privacy policy md + html, screenshots, promo and marquee). Rebuild images with `npm run store`, package with `npm run zip`. Privacy policy URL: https://dvmnum.github.io/baku/privacy.html (`npm run privacy` regenerates `site/privacy.html` from `store/privacy-policy.md`). The repo is public and Pages is live (first deploys hit a GitHub Actions outage; run #4 succeeded). Left: upload the zip and fill the listing.
 - Test on real YouTube, VK and TikTok (SPA navigation, fullscreen video, iframes). YouTube and VK were checked by the owner. VK revealed the vk.com → vk.ru move, fixed with domain aliases.
 
 **Done in 1.0:** icon (white tapir on deep jade); toolbar badge (minutes left for the active site's limit); onboarding with popular-site chips (RU-centric order for Russian UI) and one permission prompt; popup redesign (9 states, live m:ss timer, rotating "go rest" lines); settings redesign with per-site limits and fade strength; Geologica bundled; light + dark everywhere.
