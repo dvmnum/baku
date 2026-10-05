@@ -42,7 +42,7 @@ const COPY = {
       ['Sites fade to gray when time is up', "Nothing gets blocked. The feed just turns gray and dull."],
       ["See what's left at a glance", "Today's timer, the current site and time per site."],
       ['Own limit for any site', 'YouTube 20 minutes, TikTok 10, the rest share one limit.'],
-      ["Messages don't count", 'VK messages, Instagram Direct and other useful pages never cost time or go gray.'],
+      ["Messages don't count", 'Instagram Direct, X messages and other useful pages never cost time or go gray.'],
       ['5 more minutes, if you really need it', 'After a short pause, and only twice a day.'],
     ],
     marquee: ["Time's up.", 'So is the color.'],
@@ -54,10 +54,26 @@ const today = () => {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
-const SITES = ['youtube.com', 'vk.com', 'reddit.com', 'tiktok.com', 'instagram.com', 'x.com'];
-const PER = { 'youtube.com': 785, 'vk.com': 292, 'reddit.com': 63 };
-const usage = (extra = {}) => ({ date: today(), seconds: 1140, perSite: PER, extraSeconds: 0, extraPerSite: {}, extensionsUsed: 0, limitHitAt: null, ...extra });
-const settings = (extra = {}) => ({ sites: SITES, limitMinutes: 30, siteLimits: { 'youtube.com': 20, 'tiktok.com': 10 }, exclusions: {}, fadeSeconds: 150, fadeStrength: 1, mode: 'soft', ...extra });
+/**
+ * The sites shown in each language's screenshots. VK is a Russian-speaking thing,
+ * so the English set uses Reddit and Instagram Direct instead.
+ */
+const SCENE = {
+  ru: {
+    sites: ['youtube.com', 'vk.com', 'reddit.com', 'tiktok.com', 'instagram.com', 'x.com'],
+    per: { 'youtube.com': 785, 'vk.com': 292, 'reddit.com': 63 },
+    feed: 'https://vk.com/feed', feedSite: 'vk.com',
+    messages: 'https://vk.com/im', messagesSite: 'vk.com', myExclusion: '/groups',
+  },
+  en: {
+    sites: ['youtube.com', 'reddit.com', 'instagram.com', 'tiktok.com', 'x.com', 'twitch.tv'],
+    per: { 'youtube.com': 785, 'reddit.com': 292, 'instagram.com': 63 },
+    feed: 'https://www.reddit.com/r/all/', feedSite: 'reddit.com',
+    messages: 'https://www.instagram.com/direct/inbox/', messagesSite: 'instagram.com', myExclusion: '/explore',
+  },
+};
+const usage = (sc, extra = {}) => ({ date: today(), seconds: 1140, perSite: sc.per, extraSeconds: 0, extraPerSite: {}, extensionsUsed: 0, limitHitAt: null, ...extra });
+const settings = (sc, extra = {}) => ({ sites: sc.sites, limitMinutes: 30, siteLimits: { 'youtube.com': 20, 'tiktok.com': 10 }, exclusions: {}, fadeSeconds: 150, fadeStrength: 1, mode: 'soft', ...extra });
 
 // --- Capture real UI ---------------------------------------------------------
 
@@ -103,14 +119,15 @@ async function capture(lang, scheme) {
   };
 
   const shots = {};
-  shots.tracked = await popup('https://www.youtube.com/watch', settings(), usage(), { beat: true });
-  shots.shared = await popup('https://vk.com/feed', settings(), usage(), { beat: true });
-  shots.excluded = await popup('https://vk.com/im', settings(), usage());
-  shots.think = await popup('https://vk.com/feed', settings(), usage({ perSite: { ...PER, 'vk.com': 1900 } }), { click: true });
+  const sc = SCENE[lang];
+  shots.tracked = await popup('https://www.youtube.com/watch', settings(sc), usage(sc), { beat: true });
+  shots.shared = await popup(sc.feed, settings(sc), usage(sc), { beat: true });
+  shots.excluded = await popup(sc.messages, settings(sc), usage(sc));
+  shots.think = await popup(sc.feed, settings(sc), usage(sc, { perSite: { ...sc.per, [sc.feedSite]: 1900 } }), { click: true });
 
   // Settings: the sites card with an editor open.
   const opts = async (site, s) => {
-    await seed(s, usage());
+    await seed(s, usage(SCENE[lang]));
     const p = await ctx.newPage();
     await p.setViewportSize({ width: 640, height: 1400 });
     await p.goto(`chrome-extension://${id}/options.html`);
@@ -125,8 +142,8 @@ async function capture(lang, scheme) {
     await p.close();
     return png;
   };
-  shots.ownLimit = await opts('youtube.com', settings());
-  shots.exclusions = await opts('vk.com', settings({ exclusions: { 'vk.com': ['/groups'] } }));
+  shots.ownLimit = await opts('youtube.com', settings(sc));
+  shots.exclusions = await opts(sc.messagesSite, settings(sc, { exclusions: { [sc.messagesSite]: [sc.myExclusion] } }));
 
   await ctx.close();
   return shots;
