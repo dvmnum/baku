@@ -33,7 +33,7 @@ entrypoints/welcome/        onboarding on first install: pick sites + daily limi
 utils/state.ts              Settings/Usage types, defaults, fade math
 utils/domain.ts             normalizeDomain, matchSite, originsFor
 utils/i18n.ts               t(), applyI18n() for [data-i18n]
-assets/shared.css           design tokens (light/dark), vermilion accent
+assets/shared.css           design tokens (light/dark): jade --accent (matches the icon), vermilion --warn for errors
 public/_locales/{en,ru}/    all UI strings; placeholders like $USED$
 public/icon/                PNG icons, generated from assets/icon.svg by `npm run icons`
 assets/icon.svg             icon source: white tapir-baku on a deep jade tile (Torii's sibling style)

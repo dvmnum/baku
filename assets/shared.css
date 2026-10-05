@@ -4,8 +4,10 @@
   --text: #1d1b19;
   --muted: #7a746c;
   --line: #e4ded5;
-  --accent: #b5452f; /* vermilion, torii red */
-  --accent-soft: #f3e1dc;
+  --accent: #127a6d; /* jade, matches the icon; one step darker for 5:1 contrast with white */
+  --accent-soft: #dcefe9;
+  --on-accent: #ffffff;
+  --warn: #b5452f; /* vermilion, for errors and missing access */
   --ring-track: #e9e3da;
   --gray: #8c8a87;
   color-scheme: light dark;
@@ -18,8 +20,10 @@
     --text: #ece8e2;
     --muted: #8f897f;
     --line: #2e2b28;
-    --accent: #e0664d;
-    --accent-soft: #3a2420;
+    --accent: #3fc4a2;
+    --accent-soft: #163a33;
+    --on-accent: #0c2b27;
+    --warn: #e0664d;
     --ring-track: #2c2926;
     --gray: #6f6c68;
   }
@@ -59,7 +63,7 @@ button:disabled {
 button.primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 button.primary:hover:not(:disabled) {
