@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Baku: a white tapir-shaped baku on a deep jade rounded square, Torii's sibling.
+       PNGs in public/icon are built from this file: npm run icons -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2=".35" y2="1">
+      <stop offset="0" stop-color="#3fc4a2"/>
+      <stop offset=".55" stop-color="#15887a"/>
+      <stop offset="1" stop-color="#0b4a52"/>
+    </linearGradient>
+    <radialGradient id="sun" cx=".5" cy=".42" r=".5">
+      <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".22"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="eye">
+      <rect width="128" height="128" fill="#fff"/>
+      <circle cx="40" cy="51" r="3" fill="#000"/>
+    </mask>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#bg)"/>
+  <circle cx="64" cy="58" r="44" fill="url(#sun)"/>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#gloss)"/>
+  <g fill="#fff" mask="url(#eye)">
+    <!-- body -->
+    <rect x="44" y="44" width="64" height="38" rx="19"/>
+    <!-- head tapering into a drooping snout -->
+    <path d="M60 44 Q48 38 38 43 Q30 47 25 56 Q21 64 21 72 Q21 76 25 76 Q28 76 29 72 Q31 66 36 66 L60 70 Z" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+    <!-- ear -->
+    <circle cx="50" cy="40" r="5"/>
+    <!-- legs -->
+    <rect x="47" y="72" width="10" height="20" rx="3"/>
+    <rect x="62" y="72" width="10" height="20" rx="3"/>
+    <rect x="82" y="72" width="10" height="20" rx="3"/>
+    <rect x="96" y="72" width="10" height="20" rx="3"/>
+  </g>
+</svg>

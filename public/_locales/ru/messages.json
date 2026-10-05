@@ -402,5 +402,34 @@
   },
   "popupAllSites": {
     "message": "Все сайты"
+  },
+  "optSupportTitle": {
+    "message": "Baku бесплатный и без рекламы"
+  },
+  "optSupportText": {
+    "message": "Если он помог меньше залипать — поддержи проект на Boosty."
+  },
+  "optSupportButton": {
+    "message": "Поддержать на Boosty"
+  },
+  "optLinkSite": {
+    "message": "Сайт"
+  },
+  "optLinkIssue": {
+    "message": "Сообщить о проблеме"
+  },
+  "optLinkSource": {
+    "message": "Исходный код (GPL-3.0)"
+  },
+  "optLinkPrivacy": {
+    "message": "Конфиденциальность"
+  },
+  "optVersion": {
+    "message": "Версия $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
   }
 }

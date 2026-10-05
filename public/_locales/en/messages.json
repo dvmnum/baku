@@ -370,5 +370,34 @@
   },
   "popupAllSites": {
     "message": "All sites"
+  },
+  "optSupportTitle": {
+    "message": "Baku is free and ad-free"
+  },
+  "optSupportText": {
+    "message": "If it helped you scroll less, support the project on Boosty."
+  },
+  "optSupportButton": {
+    "message": "Support on Boosty"
+  },
+  "optLinkSite": {
+    "message": "Website"
+  },
+  "optLinkIssue": {
+    "message": "Report a problem"
+  },
+  "optLinkSource": {
+    "message": "Source code (GPL-3.0)"
+  },
+  "optLinkPrivacy": {
+    "message": "Privacy policy"
+  },
+  "optVersion": {
+    "message": "Version $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
   }
 }

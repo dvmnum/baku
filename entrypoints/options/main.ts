@@ -41,6 +41,7 @@ const rows = new Map<string, Row>();
 
 async function init(): Promise<void> {
   applyI18n();
+  $('version').textContent = t('optVersion', [browser.runtime.getManifest().version]);
   [settings, usage] = await Promise.all([getSettings(), getUsage()]);
   await refreshAccess();
   renderAll();

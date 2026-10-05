@@ -35,7 +35,7 @@ Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 =
 entrypoints/background.ts   heartbeat accounting, dynamic content-script registration, toolbar badge
 entrypoints/content.ts      activity detection, heartbeats, CSS filter (registration: 'runtime')
 entrypoints/popup/          timer ring (m:ss), current-site card, "All sites" list folded behind a toggle (state in localStorage), "5 more minutes"; 9 states, see main.ts
-entrypoints/options/        daily limit (stepper + presets), sites with today's time and own-limit editor, fade strength / speed / mode with a before/after preview
+entrypoints/options/        daily limit (stepper + presets), sites with today's time and own-limit editor, fade strength / speed / mode with a before/after preview, About (Boosty, site, issues, source, privacy, version)
 entrypoints/welcome/        onboarding on first install: illustration, pick sites + daily limit
 utils/state.ts              Settings/Usage types, defaults, limit math (limitSeconds/usedSeconds/grantExtension), fade math
 utils/exclusions.ts         built-in excluded pages (messengers), isExcluded(), normalizeExclusion()
@@ -50,7 +50,7 @@ assets/icon.svg             icon source: white tapir-baku on a deep jade tile (T
 scripts/make-icons.mjs      renders the PNGs with Playwright
 scripts/store.mjs           store screenshots/promo/marquee from the real UI (`npm run store`)
 store/                      listing-{ru,en}.md, privacy-policy.md (source of the policy), screenshots/, promo, marquee
-site/                       GitHub Pages: index.html, privacy.html (generated), icon.png
+site/                       GitHub Pages, Torii-style: index.html (ru) + en/index.html, style.css, demo.js (drag-to-fade before/after), gallery.js, privacy.html (generated), img/ (WebP screenshots and og images from `npm run store`). Store buttons are href="#" + data-soon until the listing URL exists.
 tests/e2e.mjs               Playwright smoke test
 ```
 

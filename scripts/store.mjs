@@ -6,7 +6,7 @@
 // and store/marquee-1400x560-*.png. Needs the e2e build (the npm script makes it),
 // because tests and screenshots can't click permission prompts.
 
-import { mkdirSync, readFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { chromium } from 'playwright';
 
@@ -224,9 +224,42 @@ for (const lang of ['ru', 'en']) {
     .a{background:url(${ART}) 62% 50%/cover}
     </style><div class="w"><div class="t"><div class="b"><img src="${ICON}">${c.name}</div><h1>${c.marquee[0]}<br>${c.marquee[1]}</h1></div><div class="a"></div></div>`,
   1400, 560, join(OUT, `marquee-1400x560-${lang}.png`));
+
+  // The site (site/, GitHub Pages) shows the same screenshots as WebP, plus a link preview image.
+  const siteDir = resolve('site/img', lang);
+  mkdirSync(siteDir, { recursive: true });
+  for (const n of names) await toWebp(browser, join(dir, `${n}.png`), join(siteDir, `${n}.webp`), 1280, 800);
+  await render(browser, `<!doctype html><meta charset="utf-8"><style>${BASE}
+    .w{display:grid;grid-template-columns:500px 1fr;width:1200px;height:630px;overflow:hidden;background:${SKY}}
+    .t{display:flex;flex-direction:column;justify-content:center;padding:0 0 0 70px}
+    .b{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:700}.b img{width:44px;height:44px}
+    h1{margin:26px 0 0;font-size:50px;line-height:1.06;letter-spacing:-.02em;font-weight:700}
+    .a{background:url(${ART}) 62% 50%/cover}
+    </style><div class="w"><div class="t"><div class="b"><img src="${ICON}">${c.name}</div><h1>${c.marquee[0]}<br>${c.marquee[1]}</h1></div><div class="a"></div></div>`,
+  1200, 630, join(resolve('site/img'), `og-${lang}.png`));
   console.log(`store images: ${lang}`);
 }
 await browser.close();
+
+/** Re-encodes a PNG as WebP in the browser (no image tooling needed). */
+async function toWebp(browser, src, out, w, h) {
+  const p = await browser.newPage();
+  const data = await p.evaluate(
+    async ({ url, w, h }) => {
+      const img = new Image();
+      img.src = url;
+      await img.decode();
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      return c.toDataURL('image/webp', 0.86).split(',')[1];
+    },
+    { url: `data:image/png;base64,${file64(src)}`, w, h },
+  );
+  writeFileSync(out, Buffer.from(data, 'base64'));
+  await p.close();
+}
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
