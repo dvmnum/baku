@@ -26,7 +26,7 @@ Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 =
 - **The filter goes on `<html>`**, which keeps `position: fixed` working.
 - **UI style:** clean and simple, Geologica, neutral surfaces, jade only for what's live (ring, switch, current site); everything goes gray when time is out. No Japanese ornament in the UI (only the name). The popup header is a small tapir mark + "Baku".
 - **Tone:** plain and clear for numbers, buttons and labels. A light "go take a break" voice only at emotional moments (almost out, out, waiting before an extension, no extensions left), never shaming. Those lines rotate daily (`popupAlmost_N`, `popupRest_N`, `popupThink_N`).
-- **License:** the repo is private with "All rights reserved" for now. The plan is to switch to GPL-3.0 when it goes public at launch.
+- **License:** GPL-3.0-or-later for the code (chosen over MIT to keep forks and store clones open). The name, icon and illustration are excluded and stay © dvmnum (see README). The repo goes public at launch; `site/` is published to GitHub Pages (https://dvmnum.github.io/baku) by `.github/workflows/pages.yml`.
 - **Distribution:** Chrome Web Store first (it also covers Yandex Browser, Edge, Opera and Brave), then Firefox AMO.
 
 ## Layout
@@ -49,7 +49,8 @@ public/icon/                PNG icons, generated from assets/icon.svg by `npm ru
 assets/icon.svg             icon source: white tapir-baku on a deep jade tile (Torii's sibling style)
 scripts/make-icons.mjs      renders the PNGs with Playwright
 scripts/store.mjs           store screenshots/promo/marquee from the real UI (`npm run store`)
-store/                      listing-{ru,en}.md, privacy-policy.md, privacy.html, screenshots/, promo, marquee
+store/                      listing-{ru,en}.md, privacy-policy.md (source of the policy), screenshots/, promo, marquee
+site/                       GitHub Pages: index.html, privacy.html (generated), icon.png
 tests/e2e.mjs               Playwright smoke test
 ```
 
@@ -70,7 +71,7 @@ npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, run
 
 **Before publishing 1.0:**
 
-- Store material is ready in `store/` (listing ru/en with permission justifications and data-usage answers, privacy policy md + html, screenshots, promo and marquee). Rebuild images with `npm run store`, package with `npm run zip`. Left: host `store/privacy.html` at a public URL and upload.
+- Store material is ready in `store/` (listing ru/en with permission justifications and data-usage answers, privacy policy md + html, screenshots, promo and marquee). Rebuild images with `npm run store`, package with `npm run zip`. Privacy policy URL: https://dvmnum.github.io/baku/privacy.html (`npm run privacy` regenerates `site/privacy.html` from `store/privacy-policy.md`). Left: make the repo public, enable Pages (Source: GitHub Actions), upload.
 - Test on real YouTube, VK and TikTok (SPA navigation, fullscreen video, iframes). YouTube and VK were checked by the owner. VK revealed the vk.com → vk.ru move, fixed with domain aliases.
 
 **Done in 1.0:** icon (white tapir on deep jade); toolbar badge (minutes left for the active site's limit); onboarding with popular-site chips (RU-centric order for Russian UI) and one permission prompt; popup redesign (9 states, live m:ss timer, rotating "go rest" lines); settings redesign with per-site limits and fade strength; Geologica bundled; light + dark everywhere.

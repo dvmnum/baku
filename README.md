@@ -58,4 +58,8 @@ public/_locales/  en, ru
 
 ## License
 
-Proprietary, all rights reserved. See [LICENSE](LICENSE).
+The code is licensed under the [GNU General Public License v3.0 or later](LICENSE): you can use, study, change and share it, and anything you distribute that's built on it must stay open under the same license.
+
+The name Baku, the icon (`assets/icon.svg`, `public/icon/`) and the illustration (`public/img/baku-night.webp`) are not covered by the code license and remain © dvmnum. Forks must use their own name and artwork.
+
+Privacy policy: https://dvmnum.github.io/baku/privacy.html

@@ -65,7 +65,7 @@ Baku limits time on distracting sites the user chooses: once the daily limit run
 
 Leave the rest unchecked. Confirm all three certifications: data is not sold or transferred and isn't used for anything other than the extension's own function.
 
-**Privacy policy:** text in `store/privacy-policy.md`, a ready page in `store/privacy.html`. Host it at a public URL and enter the URL.
+**Privacy policy:** https://dvmnum.github.io/baku/privacy.html (source text in `store/privacy-policy.md`, rendered with `npm run privacy`).
 
 ---
 

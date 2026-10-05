@@ -2,6 +2,7 @@
   "name": "baku",
   "version": "1.0.0",
   "description": "Baku — fades time-wasting sites to grayscale after your daily limit",
+  "license": "GPL-3.0-or-later",
   "private": true,
   "type": "module",
   "scripts": {
@@ -15,6 +16,7 @@
     "postinstall": "wxt prepare",
     "icons": "node scripts/make-icons.mjs",
     "store": "wxt build --mode e2e && node scripts/store.mjs",
+    "privacy": "node scripts/privacy.mjs",
     "test:e2e": "wxt build --mode e2e && node tests/e2e.mjs"
   },
   "devDependencies": {

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baku — хватит залипать</title>
+<meta name="description" content="Browser extension: distracting sites fade to gray when your daily limit runs out. Nothing is blocked.">
+<link rel="icon" href="icon.png">
+<style>
+:root { --bg: #f4f5f7; --text: #0e0f11; --muted: #737880; --accent: #0d7d68; color-scheme: light dark; }
+@media (prefers-color-scheme: dark) { :root { --bg: #111214; --text: #f1f2f4; --muted: #8d939b; --accent: #34d1a8; } }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--text); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 560px; padding: 40px 16px; text-align: center; }
+img { width: 96px; height: 96px; }
+h1 { margin: 16px 0 6px; font-size: 34px; letter-spacing: -0.01em; }
+p { margin: 0 0 10px; color: var(--muted); }
+.links { margin-top: 26px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+a { color: var(--accent); text-decoration: none; font-weight: 600; }
+a:hover { text-decoration: underline; }
+</style>
+</head>
+<body><main>
+<img src="icon.png" alt="">
+<h1>Baku</h1>
+<p>Сайты, где залипаешь, плавно выцветают в серый, когда дневной лимит кончился. Ничего не блокируется, просто скучно.</p>
+<p>Distracting sites slowly fade to gray when your daily limit runs out. Nothing is blocked, they just stop being fun.</p>
+<div class="links">
+  <a href="privacy.html">Политика конфиденциальности / Privacy</a>
+  <a href="https://github.com/dvmnum/baku">GitHub</a>
+</div>
+</main></body>
+</html>
