@@ -26,7 +26,6 @@
       <a class="brand" href="./"><img src="../img/icon128.png" alt="" width="32" height="32">Baku</a>
       <nav class="nav">
         <a href="#features">Features</a>
-        <a href="#screens">Screenshots</a>
         <a href="#install">Install</a>
         <a href="#support">Support</a>
         <a class="lang" href="../" hreflang="ru">RU</a>
@@ -53,55 +52,41 @@
         <div class="demo-cap">Drag the slider: this is how a site looks when time is up.</div>
       </div>
 
-      <section id="features">
-        <h2 class="h2">What it does</h2>
-        <p class="lead">No block pages, no bans. Baku just makes doomscrolling dull.</p>
-        <div class="features">
-          <div class="feature">
-            <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 7h5M12 11h7M12 15h6"/></svg></div>
-            <h3>Fading instead of blocking</h3>
-            <p>The site stays open but slowly turns gray. You choose how gray and how fast.</p>
+      <section id="features" class="rows">
+        <div class="row">
+          <div class="txt">
+            <h2>Counts only when you're really there</h2>
+            <p>Scrolling, clicking or watching a video: time runs. A tab sitting in the background, or you off making tea: it stops.</p>
+            <p>What's left is right there in the popup and on the toolbar icon.</p>
           </div>
-          <div class="feature">
-            <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9 2h6"/></svg></div>
-            <h3>Time counted honestly</h3>
-            <p>Time runs only while you scroll, click or watch a video. A tab in the background doesn't count.</p>
-          </div>
-          <div class="feature">
-            <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 9h6M7 13h10M7 17h4"/></svg></div>
-            <h3>Own limit for any site</h3>
-            <p>YouTube 20 minutes, TikTok 10, the rest share one limit.</p>
-          </div>
-          <div class="feature">
-            <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></div>
-            <h3>Messages don't count</h3>
-            <p>Instagram Direct, X messages, Reddit chat and other useful pages never cost time or go gray.</p>
-          </div>
-          <div class="feature">
-            <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div>
-            <h3>5 more minutes, if you really need it</h3>
-            <p>You can extend, but after a short pause so it's not on autopilot. And only twice a day.</p>
-          </div>
-          <div class="feature">
-            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-            <h3>Private</h3>
-            <p>No server, no accounts, no analytics. Everything stays in your browser, with access only to the sites you add.</p>
-          </div>
+          <img class="ui" src="../img/en/ui-timer.webp" width="640" height="1100" loading="lazy" alt="The Baku popup: 6:54 of 20:00 and time per site">
         </div>
-      </section>
-
-      <section id="screens">
-        <h2 class="h2">How it looks</h2>
-        <p class="lead">Click a picture to open it full size.</p>
-        <div class="gallery">
-          <figure><a data-gallery href="../img/en/1-fade.webp"><img src="../img/en/1-fade.webp" width="1280" height="800" loading="lazy" alt="A feed half gray, the Baku popup next to it"></a><figcaption><b>Fading</b>: the feed turns gray when the limit runs out</figcaption></figure>
-          <figure><a data-gallery href="../img/en/2-timer.webp"><img src="../img/en/2-timer.webp" width="1280" height="800" loading="lazy" alt="The Baku popup with the timer in light and dark themes"></a><figcaption><b>Timer</b>: what's left and time per site</figcaption></figure>
-          <figure><a data-gallery href="../img/en/3-own-limit.webp"><img src="../img/en/3-own-limit.webp" width="1280" height="800" loading="lazy" alt="Settings: an own limit for YouTube"></a><figcaption><b>Own limit</b>: for any site</figcaption></figure>
-          <figure><a data-gallery href="../img/en/4-messages.webp"><img src="../img/en/4-messages.webp" width="1280" height="800" loading="lazy" alt="VK messages don't count"></a><figcaption><b>Messages</b>: never cost time</figcaption></figure>
-          <figure><a data-gallery href="../img/en/5-extension.webp"><img src="../img/en/5-extension.webp" width="1280" height="800" loading="lazy" alt="The pause before five more minutes"></a><figcaption><b>5 more minutes</b>: after a short pause</figcaption></figure>
+        <div class="row flip">
+          <div class="txt">
+            <h2>YouTube can have its own limit</h2>
+            <p>Twenty minutes for YouTube, ten for TikTok, and every other site shares one limit.</p>
+            <p>A site with its own limit is counted separately and never eats into the rest.</p>
+          </div>
+          <img class="ui" src="../img/en/ui-own-limit.webp" width="1100" height="1200" loading="lazy" alt="Settings: YouTube has its own 20-minute limit">
         </div>
+        <div class="row">
+          <div class="txt">
+            <h2>Messages are fine</h2>
+            <p>Instagram Direct, X messages and Reddit chat never cost time and never go gray. The feed next to them does.</p>
+            <p>You can add your own pages too.</p>
+          </div>
+          <img class="ui" src="../img/en/ui-messages.webp" width="640" height="1000" loading="lazy" alt="The Baku popup on a messages page: time doesn't count here">
+        </div>
+        <div class="row flip">
+          <div class="txt">
+            <h2>5 more minutes, but breathe first</h2>
+            <p>You can extend, but the button slowly fills for five seconds first. That's usually enough to change your mind.</p>
+            <p>And only twice a day.</p>
+          </div>
+          <img class="ui" src="../img/en/ui-pause.webp" width="640" height="1100" loading="lazy" alt="The pause before five more minutes">
+        </div>
+        <p class="private">No server, no accounts, no analytics. <span>Whatever Baku knows stays in your browser.</span></p>
       </section>
-
       <section>
         <div class="legend">
           <img src="../img/baku-night.webp" width="1200" height="675" loading="lazy" alt="">
@@ -141,6 +126,5 @@
     </footer>
   </div>
   <script src="../demo.js" defer></script>
-  <script src="../gallery.js" defer></script>
 </body>
 </html>

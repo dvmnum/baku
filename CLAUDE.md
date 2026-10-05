@@ -50,7 +50,7 @@ assets/icon.svg             icon source: white tapir-baku on a deep jade tile (T
 scripts/make-icons.mjs      renders the PNGs with Playwright
 scripts/store.mjs           store screenshots/promo/marquee from the real UI (`npm run store`)
 store/                      listing-{ru,en}.md, privacy-policy.md (source of the policy), screenshots/, promo, marquee
-site/                       GitHub Pages, Torii-style: index.html (ru) + en/index.html, style.css, demo.js (drag-to-fade before/after), gallery.js, privacy.html (generated), img/ (WebP screenshots and og images from `npm run store`). Store buttons are href="#" + data-soon until the listing URL exists.
+site/                       GitHub Pages, Torii-style: index.html (ru) + en/index.html, style.css, demo.js (drag-to-fade before/after), privacy.html (generated), img/ (og images, store screenshots and bare UI pieces `ui-*.webp` for the feature rows, all from `npm run store`). Feature rows pair a big headline with a real piece of the UI; no icon-card grids (the owner found them generic). Store buttons are href="#" + data-soon until the listing URL exists.
 tests/e2e.mjs               Playwright smoke test
 ```
 

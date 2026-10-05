@@ -229,6 +229,9 @@ for (const lang of ['ru', 'en']) {
   const siteDir = resolve('site/img', lang);
   mkdirSync(siteDir, { recursive: true });
   for (const n of names) await toWebp(browser, join(dir, `${n}.png`), join(siteDir, `${n}.webp`), 1280, 800);
+  // Bare UI pieces for the site's feature rows.
+  const ui = { 'ui-timer': light.tracked, 'ui-own-limit': light.ownLimit, 'ui-messages': dark.excluded, 'ui-pause': light.think };
+  for (const [n, buf] of Object.entries(ui)) await toWebp(browser, buf, join(siteDir, `${n}.webp`));
   await render(browser, `<!doctype html><meta charset="utf-8"><style>${BASE}
     .w{display:grid;grid-template-columns:500px 1fr;width:1200px;height:630px;overflow:hidden;background:${SKY}}
     .t{display:flex;flex-direction:column;justify-content:center;padding:0 0 0 70px}
@@ -241,7 +244,7 @@ for (const lang of ['ru', 'en']) {
 }
 await browser.close();
 
-/** Re-encodes a PNG as WebP in the browser (no image tooling needed). */
+/** Re-encodes a PNG (file path or buffer) as WebP in the browser; keeps the size unless w/h are given. */
 async function toWebp(browser, src, out, w, h) {
   const p = await browser.newPage();
   const data = await p.evaluate(
@@ -250,12 +253,12 @@ async function toWebp(browser, src, out, w, h) {
       img.src = url;
       await img.decode();
       const c = document.createElement('canvas');
-      c.width = w;
-      c.height = h;
-      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      c.width = w ?? img.naturalWidth;
+      c.height = h ?? img.naturalHeight;
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
       return c.toDataURL('image/webp', 0.86).split(',')[1];
     },
-    { url: `data:image/png;base64,${file64(src)}`, w, h },
+    { url: `data:image/png;base64,${Buffer.isBuffer(src) ? b64(src) : file64(src)}`, w, h },
   );
   writeFileSync(out, Buffer.from(data, 'base64'));
   await p.close();
