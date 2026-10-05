@@ -35,7 +35,9 @@ utils/domain.ts             normalizeDomain, matchSite, originsFor
 utils/i18n.ts               t(), applyI18n() for [data-i18n]
 assets/shared.css           design tokens (light/dark), vermilion accent
 public/_locales/{en,ru}/    all UI strings; placeholders like $USED$
-public/icon/                placeholder icons (half red, half gray circle)
+public/icon/                PNG icons, generated from assets/icon.svg by `npm run icons`
+assets/icon.svg             icon source: white tapir-baku on a deep jade tile (Torii's sibling style)
+scripts/make-icons.mjs      renders the PNGs with Playwright
 tests/e2e.mjs               Playwright smoke test
 ```
 
@@ -46,6 +48,7 @@ npm install
 npm run dev            # Chrome with HMR
 npm run build          # .output/chrome-mv3
 npm run typecheck
+npm run icons          # rebuild public/icon/*.png after editing assets/icon.svg
 npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, runs Playwright (first time: npx playwright install chromium)
 ```
 
@@ -53,10 +56,11 @@ npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, run
 
 **MVP polish (next):**
 
-- Real icon and store assets: screenshots, a promo GIF of a site fading out.
+- Store assets: screenshots, a promo GIF of a site fading out.
+- Optional: the toolbar icon fades from jade to gray as the limit runs out (`action.setIcon` with ImageData).
 - Test on real YouTube, VK and TikTok (SPA navigation, fullscreen video, iframes).
 
-Done: toolbar badge with minutes left (vermilion, gray at 0, empty with no sites); a non-preset `fadeSeconds` shows as a "Custom" option in settings; onboarding page (`welcome.html`) opens on first install with popular-site chips (RU-centric order for Russian UI), a custom site field and limit presets, and asks for all chosen origins in one permission prompt.
+Done: icon (white tapir on deep jade; picked over kanji, detailed heads and illustrated versions, which didn't read at 16 px); toolbar badge with minutes left (vermilion, gray at 0, empty with no sites); a non-preset `fadeSeconds` shows as a "Custom" option in settings; onboarding page (`welcome.html`) opens on first install with popular-site chips (RU-centric order for Russian UI), a custom site field and limit presets, and asks for all chosen origins in one permission prompt.
 
 **v1.0:**
 
