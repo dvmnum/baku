@@ -1,5 +1,6 @@
 import { browser } from 'wxt/browser';
 import { normalizeDomain, originsFor } from '@/utils/domain';
+import { builtinExclusions, normalizeExclusion } from '@/utils/exclusions';
 import { applyI18n, t } from '@/utils/i18n';
 import { getSettings, getUsage, setSettings, type FadeMode, type Settings, type Usage } from '@/utils/state';
 
@@ -145,7 +146,9 @@ function createRow(site: string): Row {
   remove.addEventListener('click', () => {
     const siteLimits = { ...settings.siteLimits };
     delete siteLimits[site];
-    void save({ sites: settings.sites.filter((s) => s !== site), siteLimits });
+    const exclusions = { ...settings.exclusions };
+    delete exclusions[site];
+    void save({ sites: settings.sites.filter((s) => s !== site), siteLimits, exclusions });
     void browser.permissions.remove({ origins: originsFor(site) }).catch(() => undefined);
   });
 
@@ -167,7 +170,66 @@ function createRow(site: string): Row {
   stepper.append(minus, val, plus);
   edRow.append(seg, stepper);
   const hint = el('p', 'ed-hint');
-  box.append(edRow, hint);
+
+  // Pages of this site that don't count: built-in (a messenger) plus the user's own.
+  const ex = el('div', 'ex');
+  const exLabel = span('fl', t('optExcl'));
+  const exChips = el('div', 'ex-chips');
+  const exForm = document.createElement('form');
+  exForm.className = 'ex-add';
+  const exInput = document.createElement('input');
+  exInput.type = 'text';
+  exInput.placeholder = t('optExclPlaceholder', [site]);
+  exInput.autocomplete = 'off';
+  exInput.spellcheck = false;
+  const exBtn = button(t('optAdd'));
+  exBtn.type = 'submit';
+  exForm.append(exInput, exBtn);
+  const exErr = el('p', 'err hidden');
+  const exHint = el('p', 'ed-hint');
+  exHint.textContent = t('optExclHint');
+  ex.append(exLabel, exChips, exForm, exErr, exHint);
+  exForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const pattern = normalizeExclusion(exInput.value, site);
+    if (!pattern) {
+      exErr.textContent = t('optExclInvalid', [site]);
+      exErr.classList.remove('hidden');
+      return;
+    }
+    exErr.classList.add('hidden');
+    exInput.value = '';
+    const mine = settings.exclusions[site] ?? [];
+    if (mine.includes(pattern) || builtinExclusions(site).includes(pattern)) return;
+    void save({ exclusions: { ...settings.exclusions, [site]: [...mine, pattern] } });
+  });
+  const pageLabel = (p: string) => (p.startsWith('/') ? `${site}${p}` : p);
+  const renderExclusions = () => {
+    const mine = settings.exclusions[site] ?? [];
+    exChips.replaceChildren(
+      ...builtinExclusions(site).map((p) => {
+        const c = span('ex-chip builtin', pageLabel(p));
+        c.title = t('optExclBuiltin');
+        return c;
+      }),
+      ...mine.map((p) => {
+        const c = span('ex-chip', pageLabel(p));
+        const x = button('×');
+        x.setAttribute('aria-label', t('optExclRemove', [pageLabel(p)]));
+        x.addEventListener('click', () => {
+          const rest = mine.filter((v) => v !== p);
+          const exclusions = { ...settings.exclusions };
+          if (rest.length) exclusions[site] = rest;
+          else delete exclusions[site];
+          void save({ exclusions });
+        });
+        c.append(x);
+        return c;
+      }),
+    );
+  };
+
+  box.append(edRow, hint, ex);
   inner.append(box);
   wrap.append(inner);
 
@@ -212,6 +274,7 @@ function createRow(site: string): Row {
     stepper.classList.toggle('off', !isOwn);
     val.textContent = minutes(isOwn ? cur : draft);
     hint.textContent = isOwn ? t('optHintOwn') : t('optHintShared', [settings.limitMinutes]);
+    renderExclusions();
   };
   return { li, update };
 }

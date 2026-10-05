@@ -366,5 +366,41 @@
   },
   "popupOwnLimit": {
     "message": "свой лимит"
+  },
+  "popupExcluded": {
+    "message": "Здесь время не считается"
+  },
+  "optExcl": {
+    "message": "Не считать"
+  },
+  "optExclHint": {
+    "message": "Сообщения и другие полезные разделы: время не идёт, не сереют."
+  },
+  "optExclPlaceholder": {
+    "message": "Страница, например $SITE$/im",
+    "placeholders": {
+      "site": {
+        "content": "$1"
+      }
+    }
+  },
+  "optExclInvalid": {
+    "message": "Это не страница $SITE$",
+    "placeholders": {
+      "site": {
+        "content": "$1"
+      }
+    }
+  },
+  "optExclBuiltin": {
+    "message": "Встроено"
+  },
+  "optExclRemove": {
+    "message": "Убрать $PAGE$",
+    "placeholders": {
+      "page": {
+        "content": "$1"
+      }
+    }
   }
 }

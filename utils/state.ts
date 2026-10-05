@@ -9,6 +9,8 @@ export interface Settings {
   limitMinutes: number;
   /** Per-site daily limits in minutes. A site listed here doesn't use the shared limit. */
   siteLimits: Record<string, number>;
+  /** User-added excluded pages per site, on top of the built-in ones (utils/exclusions.ts). */
+  exclusions: Record<string, string[]>;
   /** How long the fade from color to full strength takes, in seconds. */
   fadeSeconds: number;
   /** How gray a site gets once faded: 0.6, 0.8 or 1. */
@@ -38,6 +40,7 @@ export const DEFAULT_SETTINGS: Settings = {
   sites: [],
   limitMinutes: 30,
   siteLimits: {},
+  exclusions: {},
   fadeSeconds: 150,
   fadeStrength: 1,
   mode: 'soft',
@@ -74,7 +77,7 @@ export function emptyUsage(): Usage {
 }
 
 export function normalizeSettings(raw: Partial<Settings> | undefined): Settings {
-  return { ...DEFAULT_SETTINGS, ...raw, siteLimits: { ...raw?.siteLimits } };
+  return { ...DEFAULT_SETTINGS, ...raw, siteLimits: { ...raw?.siteLimits }, exclusions: { ...raw?.exclusions } };
 }
 
 export async function getSettings(): Promise<Settings> {

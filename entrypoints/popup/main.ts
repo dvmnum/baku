@@ -1,5 +1,6 @@
 import { browser } from 'wxt/browser';
 import { matchDomain, matchSite, normalizeDomain, originsFor, originsForDomain } from '@/utils/domain';
+import { isExcluded } from '@/utils/exclusions';
 import { HEARTBEAT_MS } from '@/utils/messages';
 import { applyI18n, t, tp } from '@/utils/i18n';
 import {
@@ -30,6 +31,8 @@ let settings: Settings;
 let usage: Usage;
 /** Domain of the active tab, or null if the page can't be tracked. */
 let currentDomain: string | null = null;
+/** Full URL of the active tab, for excluded pages like a messenger. */
+let currentUrl = '';
 /** Whether we hold host permission for the tracked site of the active tab. */
 let hasAccess = true;
 /** Set after the user declined the permission prompt in this popup. */
@@ -43,6 +46,7 @@ async function init(): Promise<void> {
   applyI18n();
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
   currentDomain = tab?.url ? normalizeDomain(tab.url) : null;
+  currentUrl = tab?.url ?? '';
   const session = (await browser.storage.session.get('lastBeatAt')) as { lastBeatAt?: number };
   lastBeatAt = session.lastBeatAt ?? 0;
   [settings, usage] = await Promise.all([getSettings(), getUsage()]);
@@ -91,9 +95,15 @@ function trackedCurrent(): string | null {
   return currentDomain ? matchSite(currentDomain, settings.sites) : null;
 }
 
+/** The active tab is a tracked site's excluded page (say, VK messages). */
+function onExcludedPage(): boolean {
+  const site = trackedCurrent();
+  return site !== null && isExcluded(currentUrl, site, settings);
+}
+
 /** True while heartbeats from the active tab keep arriving. */
 function isCounting(): boolean {
-  return trackedCurrent() !== null && hasAccess && Date.now() - lastBeatAt < HEARTBEAT_MS + 1500;
+  return trackedCurrent() !== null && hasAccess && !onExcludedPage() && Date.now() - lastBeatAt < HEARTBEAT_MS + 1500;
 }
 
 /**
@@ -167,7 +177,7 @@ function renderTimer(): void {
 
   $('cur-live').classList.toggle('hidden', !isCounting());
   if (trackedCurrent() && hasAccess) {
-    $('cur-state-text').textContent = t(isCounting() ? 'popupCounting' : 'popupTracked');
+    $('cur-state-text').textContent = t(onExcludedPage() ? 'popupExcluded' : isCounting() ? 'popupCounting' : 'popupTracked');
   }
 }
 
@@ -215,7 +225,7 @@ function renderCurrent(hasSites: boolean, over: boolean): void {
   }
 
   // Once the limit is out, a tracked site is already gray; the card adds nothing.
-  card.classList.toggle('hidden', over && tracked !== null && hasAccess);
+  card.classList.toggle('hidden', over && tracked !== null && hasAccess && !onExcludedPage());
   $('cur-name').textContent = tracked ?? currentDomain;
 
   if (tracked && !hasAccess) {
@@ -225,7 +235,7 @@ function renderCurrent(hasSites: boolean, over: boolean): void {
     action.classList.remove('hidden');
   } else if (tracked) {
     sw.classList.remove('hidden');
-    $('cur-state-text').textContent = t(isCounting() ? 'popupCounting' : 'popupTracked');
+    $('cur-state-text').textContent = t(onExcludedPage() ? 'popupExcluded' : isCounting() ? 'popupCounting' : 'popupTracked');
   } else {
     if (accessDenied) card.classList.add('warn');
     $('cur-state-text').textContent = t(

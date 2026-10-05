@@ -1,6 +1,7 @@
 import { browser } from 'wxt/browser';
 import { defineContentScript } from 'wxt/utils/define-content-script';
 import { matchSite } from '@/utils/domain';
+import { isExcluded } from '@/utils/exclusions';
 import { HEARTBEAT_MS, IDLE_MS, type HeartbeatMessage } from '@/utils/messages';
 import {
   DEFAULT_SETTINGS,
@@ -40,8 +41,14 @@ export default defineContentScript({
     style.id = 'baku-fade';
     let applied = '';
 
-    function render(): void {
+    /** Tracked site of this page, or null if untracked or on an excluded page (a messenger). */
+    function countedSite(): string | null {
       const site = matchSite(location.hostname, settings.sites);
+      return site && !isExcluded(location.href, site, settings) ? site : null;
+    }
+
+    function render(): void {
+      const site = countedSite();
       const level = site
         ? fadeLevel(settings, normalizeUsage(rawUsage), site)
         : { grayscale: 0, brightness: 1, hard: 0 };
@@ -99,7 +106,7 @@ export default defineContentScript({
     function tick(): void {
       render(); // also catches the midnight reset
       if (!isBeingUsed()) return;
-      if (matchSite(location.hostname, settings.sites) === null) return;
+      if (countedSite() === null) return;
       const msg: HeartbeatMessage = { type: 'heartbeat', hostname: location.hostname };
       browser.runtime.sendMessage(msg).catch(() => {
         // Extension was reloaded/removed: this script is orphaned, stop.
@@ -127,5 +134,13 @@ export default defineContentScript({
       render();
       timer = setInterval(tick, HEARTBEAT_MS);
     });
+
+    // SPAs (VK, YouTube) switch pages without reloading; re-check exclusions on URL change.
+    let lastHref = location.href;
+    setInterval(() => {
+      if (location.href === lastHref) return;
+      lastHref = location.href;
+      render();
+    }, 1000);
   },
 });

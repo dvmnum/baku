@@ -334,5 +334,41 @@
   },
   "popupOwnLimit": {
     "message": "own limit"
+  },
+  "popupExcluded": {
+    "message": "Time doesn't count here"
+  },
+  "optExcl": {
+    "message": "Don't count"
+  },
+  "optExclHint": {
+    "message": "Messages and other useful pages: no time, never gray."
+  },
+  "optExclPlaceholder": {
+    "message": "A page, e.g. $SITE$/im",
+    "placeholders": {
+      "site": {
+        "content": "$1"
+      }
+    }
+  },
+  "optExclInvalid": {
+    "message": "That's not a page of $SITE$",
+    "placeholders": {
+      "site": {
+        "content": "$1"
+      }
+    }
+  },
+  "optExclBuiltin": {
+    "message": "Built in"
+  },
+  "optExclRemove": {
+    "message": "Remove $PAGE$",
+    "placeholders": {
+      "page": {
+        "content": "$1"
+      }
+    }
   }
 }

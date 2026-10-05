@@ -84,6 +84,30 @@ try {
     : fail(`vk.ru not counted for vk.com: ${JSON.stringify(vkUsage)}`);
   await vk.close();
 
+  // Excluded pages (a messenger): no time, no fade, even past the limit. SPA navigation is picked up.
+  await sw.evaluate(() => {
+    const d = new Date();
+    const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return chrome.storage.local.set({
+      settings: { sites: ['fake.test'], limitMinutes: 0.05, fadeSeconds: 6, exclusions: { 'fake.test': ['/chat'] } },
+      usage: { date, seconds: 100, perSite: { 'fake.test': 100 }, extraSeconds: 0, extraPerSite: {}, extensionsUsed: 0, limitHitAt: null },
+    });
+  });
+  await page.goto(`http://fake.test:${port}/chat/42`);
+  for (let i = 0; i < 7; i++) {
+    await page.mouse.move(100 + (i % 5) * 10, 200);
+    await page.waitForTimeout(1000);
+  }
+  const chat = await page.evaluate(() => getComputedStyle(document.documentElement).filter);
+  const chatSecs = await sw.evaluate(() => chrome.storage.local.get('usage').then(({ usage }) => usage.perSite['fake.test']));
+  chat === 'none' && chatSecs === 100
+    ? ok('excluded page stays in color and costs no time')
+    : fail(`excluded page: filter=${chat} seconds=${chatSecs}`);
+  await page.evaluate(() => history.pushState({}, '', '/feed'));
+  await page.waitForTimeout(3500);
+  const feed = await page.evaluate(() => getComputedStyle(document.documentElement).filter);
+  feed.includes('grayscale') ? ok('SPA navigation out of the excluded page fades it') : fail(`after pushState: ${feed}`);
+
   // Own limit: the shared limit is huge, but the site's own 3 s run out; fade capped at 80%.
   await sw.evaluate(() =>
     chrome.storage.local.set({
@@ -130,6 +154,11 @@ try {
   await opts.waitForTimeout(300);
   const back = await sw.evaluate(() => chrome.storage.local.get('settings').then(({ settings }) => settings.siteLimits));
   back['fake.test'] === undefined ? ok('options: back to the shared limit') : fail(`options shared: ${JSON.stringify(back)}`);
+  await opts.fill('#site-list li.open .ex-add input', 'https://fake.test/forum/?page=2');
+  await opts.press('#site-list li.open .ex-add input', 'Enter');
+  await opts.waitForTimeout(300);
+  const ex = await sw.evaluate(() => chrome.storage.local.get('settings').then(({ settings }) => settings.exclusions));
+  ex['fake.test']?.includes('/forum') ? ok('options: excluded page added as /forum') : fail(`options exclusions: ${JSON.stringify(ex)}`);
 
   // Popup, opened as a tab. tabs.query is stubbed so the "active tab" is the tracked site.
   const id = new URL(sw.url()).host;

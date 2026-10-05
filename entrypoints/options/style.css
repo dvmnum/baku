@@ -346,6 +346,84 @@ li.open .ed-wrap {
   color: var(--muted);
 }
 
+/* Excluded pages inside the editor */
+
+.ex {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+.ex .fl {
+  margin-bottom: 8px;
+}
+
+.ex-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.ex-chips:empty {
+  display: none;
+}
+
+.ex-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 4px 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 7%, var(--soft));
+  font-size: 12.5px;
+}
+
+.ex-chip.builtin {
+  padding-right: 10px;
+  color: var(--muted);
+}
+
+.ex-chip button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.ex-chip button:hover {
+  color: var(--text);
+}
+
+.ex-add {
+  display: flex;
+  gap: 6px;
+}
+
+.ex-add input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: var(--bg);
+  font-size: 13px;
+}
+
+.ex-add input::placeholder {
+  color: var(--muted);
+}
+
+.ex-add button {
+  padding: 0 12px;
+  border-radius: 9px;
+  font-size: 13px;
+}
+
 /* Fading -------------------------------------------------------------------- */
 
 .preview {
