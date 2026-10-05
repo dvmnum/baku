@@ -17,6 +17,8 @@ const file64 = (p) => b64(readFileSync(resolve(p)));
 const FONT_CYR = file64('public/fonts/geologica-cyrillic.woff2');
 const FONT_LAT = file64('public/fonts/geologica-latin.woff2');
 const ART = `data:image/webp;base64,${file64('public/img/baku-night.webp')}`;
+/** Night-sky color sampled from the illustration, for panels next to it. */
+const SKY = '#0b3651';
 const ICON = `data:image/png;base64,${file64('public/icon/128.png')}`;
 
 const COPY = {
@@ -30,7 +32,7 @@ const COPY = {
       ['Сообщения не считаются', 'Мессенджер VK, Direct и другие полезные разделы не тратят время и не сереют.'],
       ['Ещё 5 минут, если очень надо', 'Но сначала короткая пауза. И только дважды в день.'],
     ],
-    marquee: ['Лента выцветает,', 'когда время вышло'],
+    marquee: ['Время вышло —', 'краски тоже'],
     feed: 'Лента',
   },
   en: {
@@ -43,7 +45,7 @@ const COPY = {
       ["Messages don't count", 'VK messages, Instagram Direct and other useful pages never cost time or go gray.'],
       ['5 more minutes, if you really need it', 'After a short pause, and only twice a day.'],
     ],
-    marquee: ['Your feed fades', 'when time is up'],
+    marquee: ["Time's up.", 'So is the color.'],
     feed: 'Feed',
   },
 };
@@ -202,27 +204,24 @@ for (const lang of ['ru', 'en']) {
   const names = ['1-fade', '2-timer', '3-own-limit', '4-messages', '5-extension'];
   for (const [i, v] of visuals.entries()) await render(browser, slide(i, c.slides[i], v), 1280, 800, join(dir, `${names[i]}.png`));
 
-  // Small promo tile 440x280.
+  // Small promo tile 440x280: a night-sky panel with the name, the illustration beside it.
   await render(browser, `<!doctype html><meta charset="utf-8"><style>${BASE}
-    .w{position:relative;width:440px;height:280px;overflow:hidden}
-    .art{position:absolute;inset:0;background:url(${ART}) 70% 50%/cover}
-    .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgb(8 42 47/.92) 0,rgb(8 42 47/.75) 45%,transparent 80%)}
-    .t{position:absolute;left:28px;top:50%;transform:translateY(-50%)}.t img{width:56px;height:56px}
-    .t b{display:block;margin-top:12px;font-size:34px;letter-spacing:-.02em}.t span{display:block;margin-top:4px;font-size:17px;color:#cfe7e1}
-    </style><div class="w"><div class="art"></div><div class="shade"></div><div class="t"><img src="${ICON}"><b>${c.name}</b><span>${c.tagline}</span></div></div>`,
+    .w{display:grid;grid-template-columns:190px 1fr;width:440px;height:280px;overflow:hidden;background:${SKY}}
+    .t{display:flex;flex-direction:column;justify-content:center;padding:0 0 0 24px}
+    .t img{width:48px;height:48px}.t b{margin-top:14px;font-size:30px;letter-spacing:-.02em}
+    .t span{margin-top:4px;font-size:15px;line-height:1.3;color:#bcd3dc}
+    .a{background:url(${ART}) 72% 45%/cover}
+    </style><div class="w"><div class="t"><img src="${ICON}"><b>${c.name}</b><span>${c.tagline}</span></div><div class="a"></div></div>`,
   440, 280, join(OUT, `promo-440x280-${lang}.png`));
 
-  // Marquee 1400x560: the illustration fades from color to gray across the banner.
+  // Marquee 1400x560: the same, wider: headline on the panel, the illustration as is.
   await render(browser, `<!doctype html><meta charset="utf-8"><style>${BASE}
-    .w{position:relative;width:1400px;height:560px;overflow:hidden}
-    .a{position:absolute;inset:0;background:url(${ART}) 60% 55%/cover}
-    .g{filter:grayscale(1) brightness(.8);-webkit-mask:linear-gradient(90deg,transparent 52%,#000 80%)}
-    .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgb(8 42 47/.95) 0,rgb(8 42 47/.8) 32%,transparent 58%)}
-    .t{position:absolute;left:80px;top:50%;transform:translateY(-50%)}
-    .t .b{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:700}.t .b img{width:56px;height:56px}
-    h1{margin:28px 0 0;font-size:58px;line-height:1.05;letter-spacing:-.02em}
-    </style><div class="w"><div class="a"></div><div class="a g"></div><div class="shade"></div>
-    <div class="t"><div class="b"><img src="${ICON}">${c.name}</div><h1>${c.marquee[0]}<br>${c.marquee[1]}</h1></div></div>`,
+    .w{display:grid;grid-template-columns:560px 1fr;width:1400px;height:560px;overflow:hidden;background:${SKY}}
+    .t{display:flex;flex-direction:column;justify-content:center;padding:0 0 0 76px}
+    .b{display:flex;align-items:center;gap:12px;font-size:24px;font-weight:700}.b img{width:44px;height:44px}
+    h1{margin:26px 0 0;font-size:54px;line-height:1.06;letter-spacing:-.02em;font-weight:700}
+    .a{background:url(${ART}) 62% 50%/cover}
+    </style><div class="w"><div class="t"><div class="b"><img src="${ICON}">${c.name}</div><h1>${c.marquee[0]}<br>${c.marquee[1]}</h1></div><div class="a"></div></div>`,
   1400, 560, join(OUT, `marquee-1400x560-${lang}.png`));
   console.log(`store images: ${lang}`);
 }
