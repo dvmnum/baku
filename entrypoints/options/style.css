@@ -510,40 +510,22 @@ li.open .ed-wrap {
 
 /* About: support and links */
 
-.about .support {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
 .about h2 {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   font-size: 16px;
   font-weight: 600;
 }
 
-.about .support > div {
-  flex: 1 1 260px;
-  min-width: 0;
+.support-text {
+  margin: 0;
+  color: var(--muted);
 }
 
-.about .sub {
-  display: block;
-}
-
-/* Boosty's orange, as a quiet text link rather than a loud button */
+/* Boosty's orange, as a link inside the sentence rather than a loud button */
 a.boosty {
-  flex: none;
   color: #e8582a;
-  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-}
-
-a.boosty::after {
-  content: ' →';
 }
 
 a.boosty:hover {
@@ -556,7 +538,6 @@ a.boosty:hover {
     color: #ff7a4a;
   }
 }
-
 .links {
   display: flex;
   flex-wrap: wrap;
