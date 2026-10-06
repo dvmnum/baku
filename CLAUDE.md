@@ -53,6 +53,8 @@ scripts/store.mjs           store screenshots/promo/marquee from the real UI (`n
 store/                      listing-{ru,en}.md, privacy-policy.md (source of the policy), screenshots/, promo, marquee
 site/                       GitHub Pages, Torii-style: index.html (ru) + en/index.html, style.css, demo.js (drag-to-fade before/after), privacy.html (generated), img/ (og images, store screenshots and bare UI pieces `ui-*.webp` for the feature rows, all from `npm run store`). Feature rows pair a big headline with a real piece of the UI; no icon-card grids (the owner found them generic). Store buttons are href="#" + data-soon until the listing URL exists.
 tests/e2e.mjs               Playwright smoke test
+CHANGELOG.md                user-facing changes per version (English)
+.github/FUNDING.yml         the repo's Sponsor button → Boosty
 ```
 
 ## Commands

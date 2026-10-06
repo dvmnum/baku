@@ -6,14 +6,14 @@
 Distracting sites slowly fade to gray when your daily limit runs out. Nothing gets blocked, they just stop being fun.<br>
 <sub>Время вышло — краски тоже. Сайты, где залипаешь, плавно выцветают в серый, когда дневной лимит кончился.</sub></p>
 
-<p align="center"><a href="https://dvmnum.github.io/baku">Website</a> · <a href="https://dvmnum.github.io/baku/privacy.html">Privacy</a> · <a href="https://boosty.to/dvmnum/donate">Support on Boosty</a></p>
+<p align="center"><a href="https://dvmnum.github.io/baku">Website</a> · <a href="https://dvmnum.github.io/baku/privacy.html">Privacy</a> · <a href="CHANGELOG.md">Changelog</a></p>
 
 ![Baku](store/marquee-1400x560-en.png)
 
 > In Japanese folklore the baku is a spirit that comes at night and eats bad dreams.
 > This one eats doomscrolling: it doesn't scold or forbid, it just quietly takes the color out of your feed when it's time for a break.
 
-## What it does
+## Features
 
 - **Fades instead of blocking.** No block pages, no lock screens. When time is up, the site slowly turns gray and dims a little, and scrolling on just isn't fun anymore. You choose how gray (60%, 80% or fully) and how fast (30 s, 2.5 or 10 min).
 - **Counts honestly.** Time runs only while you scroll, click, type or watch a video on a tracked site. A tab in the background, or you away from the keyboard, doesn't count.
