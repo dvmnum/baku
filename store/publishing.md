@@ -153,11 +153,7 @@ Baku не блокирует сайты. Когда дневной лимит к
 Баку — дух из японских легенд, который съедает плохие сны. Этот съедает думскроллинг.
 ```
 
-4. Картинки для русского языка свои:
-   - **Screenshots**: 5 файлов из `store/screenshots/ru/`, по номерам 1→5;
-   - **Small promo tile**: `store/promo-440x280-ru.png`;
-   - **Marquee promo tile**: `store/marquee-1400x560-ru.png`.
-5. Категория, иконка и ссылки общие на все языки, их не трогаешь.
+4. Картинки (скриншоты, плитка, баннер) в магазине одни на все языки, для русского отдельно не загружаются: везде остаются английские. Категория, иконка и ссылки тоже общие.
 
 **Save draft.**
 
@@ -188,7 +184,7 @@ Attaches the fade script only to sites the user added and granted access to (dyn
 When the user opens the popup, it reads the current tab's address to show its time and offer to track that site.
 ```
 
-**Host permission justification** (поле называется так, хотя у нас это `optional_host_permissions`):
+**Host permission justification** — такого поля нет, и это нормально: магазин спрашивает обоснование только для обязательного доступа к сайтам, а у Baku он опциональный (`optional_host_permissions`). Текст на случай, если модератор спросит:
 ```
 Site access is optional and requested one site at a time, only when the user adds that site. It is needed to count time on that site and turn it gray. The extension has no access to any other site.
 ```
