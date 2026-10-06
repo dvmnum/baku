@@ -521,7 +521,24 @@ li.open .ed-wrap {
   color: var(--muted);
 }
 
-/* Boosty's orange, as a link inside the sentence rather than a loud button */
+/* The donation service's color (Boosty orange, Telegram blue), as a link inside the sentence rather than a loud button */
+a.tribute {
+  color: #1f8fd0;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+a.tribute:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  a.tribute {
+    color: #4cc0ff;
+  }
+}
+
 a.boosty {
   color: #e8582a;
   font-weight: 600;

@@ -2,6 +2,9 @@
 
 Versions follow semver. The version lives in `package.json` (WXT writes it into the manifest) and shows at the bottom of the settings page.
 
+## Unreleased
+- The donation link follows the UI language: Boosty in Russian, Tribute (Telegram) in English.
+
 ## 1.0.0
 First public release (Chrome Web Store, then Firefox Add-ons).
 - New popup: time left as a ring with a live m:ss timer, the current site, all sites folded behind a toggle, nine states for every situation.

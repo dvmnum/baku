@@ -104,7 +104,7 @@ Baku is built with [Claude Code](https://claude.com/claude-code). The idea, desi
 
 ## Support
 
-Baku is free and ad-free. If it helped you scroll less, you can [support the author on Boosty](https://boosty.to/dvmnum/donate).
+Baku is free and ad-free. If it helped you scroll less, you can support the author via Telegram on [Tribute](https://web.tribute.tg/d/RJo) (from Russia — on [Boosty](https://boosty.to/dvmnum/donate)).
 
 ## License
 

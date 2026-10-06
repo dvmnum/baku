@@ -36,7 +36,7 @@ Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 =
 entrypoints/background.ts   heartbeat accounting, dynamic content-script registration, toolbar badge
 entrypoints/content.ts      activity detection, heartbeats, CSS filter (registration: 'runtime')
 entrypoints/popup/          timer ring (m:ss), current-site card, "All sites" list folded behind a toggle (state in localStorage), "5 more minutes"; 9 states, see main.ts
-entrypoints/options/        daily limit (stepper + presets), sites with today's time and own-limit editor, fade strength / speed / mode with a before/after preview, About (Boosty, site, issues, source, privacy, version)
+entrypoints/options/        daily limit (stepper + presets), sites with today's time and own-limit editor, fade strength / speed / mode with a before/after preview, About (donation link: Boosty for Russian UI, Tribute/Telegram otherwise, via optSupportUrl/optSupportService in the locales; site, issues, source, privacy, version)
 entrypoints/welcome/        onboarding on first install: illustration, pick sites + daily limit
 utils/state.ts              Settings/Usage types, defaults, limit math (limitSeconds/usedSeconds/grantExtension), fade math
 utils/exclusions.ts         built-in excluded pages (messengers), isExcluded(), normalizeExclusion()
@@ -54,7 +54,7 @@ store/                      listing-{ru,en}.md, privacy-policy.md (source of the
 site/                       GitHub Pages, Torii-style: index.html (ru) + en/index.html, style.css, demo.js (drag-to-fade before/after), privacy.html (generated), img/ (og images, store screenshots and bare UI pieces `ui-*.webp` for the feature rows, all from `npm run store`). Feature rows pair a big headline with a real piece of the UI; no icon-card grids (the owner found them generic). Store buttons are href="#" + data-soon until the listing URL exists.
 tests/e2e.mjs               Playwright smoke test
 CHANGELOG.md                user-facing changes per version (English)
-.github/FUNDING.yml         the repo's Sponsor button → Boosty
+.github/FUNDING.yml         the repo's Sponsor button → Tribute + Boosty (the site's en page and README also lead with Tribute, ru with Boosty)
 ```
 
 ## Commands

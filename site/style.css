@@ -126,6 +126,10 @@ section { padding: 76px 0 0; }
 .support p { margin: 0; color: var(--ink-2); max-width: 560px; }
 .btn.boosty { background: #f15f2c; color: #fff; border-color: transparent; }
 .btn.boosty:hover { background: #ff6d39; }
+/* English page: Tribute (Telegram) instead of Boosty */
+.btn.tribute { background: #2aabee; color: #fff; border-color: transparent; }
+.btn.tribute:hover { background: #3cb9f7; }
+.support.tg { background: linear-gradient(120deg, rgba(42, 171, 238, .16), rgba(52, 209, 168, .12)); }
 
 /* footer */
 footer { margin-top: 88px; padding: 28px 0 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; font-size: 14px; color: var(--ink-3); }

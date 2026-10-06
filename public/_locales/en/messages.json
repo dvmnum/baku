@@ -378,7 +378,15 @@
     "message": "If it helped you scroll less,"
   },
   "optSupportButton": {
-    "message": "support the project on Boosty"
+    "message": "support the project via Telegram"
+  },
+  "optSupportUrl": {
+    "message": "https://web.tribute.tg/d/RJo",
+    "description": "Donation link: Boosty for Russian, Tribute (Telegram) for everyone else."
+  },
+  "optSupportService": {
+    "message": "tribute",
+    "description": "CSS class for the donation link color: boosty or tribute."
   },
   "optLinkSite": {
     "message": "Website"

@@ -1,2 +1,4 @@
-# The Sponsor button on the repo page. GitHub supports external links here.
-custom: ['https://boosty.to/dvmnum/donate']
+# The Sponsor button on the repo page: Tribute (Telegram) and Boosty.
+custom:
+  - https://web.tribute.tg/d/RJo
+  - https://boosty.to/dvmnum/donate

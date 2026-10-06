@@ -412,6 +412,12 @@
   "optSupportButton": {
     "message": "поддержи проект на Boosty"
   },
+  "optSupportUrl": {
+    "message": "https://boosty.to/dvmnum/donate"
+  },
+  "optSupportService": {
+    "message": "boosty"
+  },
   "optLinkSite": {
     "message": "Сайт"
   },
