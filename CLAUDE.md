@@ -8,7 +8,7 @@ The owner talks in Russian, casually. Code, comments and commits are in English.
 
 ## Status
 
-Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (18 checks); typecheck and build are clean. What's left before publishing is store material (see Roadmap).
+Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (18 checks); typecheck and build are clean. Submitted to the Chrome Web Store by the owner; the listing copy was later cleaned of brand names (see Store listing copy below).
 
 Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 = the first public release (everything above).
 
@@ -27,6 +27,7 @@ Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 =
 - **UI style:** clean and simple, Geologica, neutral surfaces, jade only for what's live (ring, switch, current site); everything goes gray when time is out. No Japanese ornament in the UI (only the name). The popup header is a small tapir mark + "Baku".
 - **Tone:** plain and clear for numbers, buttons and labels. A light "go take a break" voice only at emotional moments (almost out, out, waiting before an extension, no extensions left), never shaming. Those lines rotate daily (`popupAlmost_N`, `popupRest_N`, `popupThink_N`).
 - **License:** GPL-3.0-or-later for the code (chosen over MIT to keep forks and store clones open). The name, icon and illustration are excluded and stay © dvmnum (see README). The repo goes public at launch; `site/` is published to GitHub Pages (https://dvmnum.github.io/baku) by `.github/workflows/pages.yml`.
+- **Store listing copy:** no lists of brands or site names in the description or screenshot captions (Torii was rejected for keyword spam over exactly that). Say "video, social, feeds", not YouTube/VK/TikTok. Domains shown inside UI screenshots are fine.
 - **Distribution:** Chrome Web Store first (it also covers Yandex Browser, Edge, Opera and Brave), then Firefox AMO.
 
 ## Layout
