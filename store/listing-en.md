@@ -15,7 +15,7 @@ Rebuild: `npm run store`.
 Baku doesn't block anything. When your daily limit runs out, the feed slowly fades to gray, and doomscrolling just stops being fun.
 
 HOW IT WORKS
-• Add the sites you lose time on: YouTube, Reddit, TikTok, X, anything.
+• Add the sites you lose time on: video, social, feeds, anything.
 • Set a shared daily limit, say 30 minutes.
 • When time is up, those sites slowly turn gray. Nothing closes or hides; you just lose the urge to keep scrolling.
 • At midnight everything is in color again.
@@ -24,10 +24,10 @@ TIME IS COUNTED HONESTLY
 Only while you're actually there: the tab is open and you scroll, click or watch a video. A tab in the background, or you away from the computer, doesn't count.
 
 OWN LIMIT FOR ANY SITE
-YouTube 20 minutes, TikTok 10, and the rest share one limit. A site with its own limit is counted separately.
+Give the most addictive site a smaller limit of its own; the rest share one. A site with its own limit is counted separately.
 
 MESSAGES DON'T COUNT
-Instagram Direct, X messages, Reddit chat and other useful pages never cost time and never go gray. You can add your own pages too.
+Direct messages and other useful parts of social sites never cost time and never go gray. You can add your own pages too.
 
 5 MORE MINUTES, IF YOU REALLY NEED IT
 You can extend, but only after a short pause, so your hand doesn't do it on autopilot. And only twice a day.

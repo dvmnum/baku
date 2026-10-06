@@ -28,8 +28,8 @@ const COPY = {
     slides: [
       ['Сайты выцветают, когда лимит кончился', 'Ничего не блокируется. Лента просто становится серой и скучной.'],
       ['Сколько осталось — видно сразу', 'Таймер на сегодня, текущий сайт и время по каждому сайту.'],
-      ['Свой лимит для любого сайта', 'YouTube — 20 минут, TikTok — 10, остальные делят общий лимит.'],
-      ['Сообщения не считаются', 'Мессенджер VK, Direct и другие полезные разделы не тратят время и не сереют.'],
+      ['Свой лимит для любого сайта', 'Самому затягивающему — лимит поменьше, остальные делят общий.'],
+      ['Сообщения не считаются', 'Личные сообщения и другие полезные разделы не тратят время и не сереют.'],
       ['Ещё 5 минут, если очень надо', 'Но сначала короткая пауза. И только дважды в день.'],
     ],
     marquee: ['Время вышло —', 'краски тоже'],
@@ -41,8 +41,8 @@ const COPY = {
     slides: [
       ['Sites fade to gray when time is up', "Nothing gets blocked. The feed just turns gray and dull."],
       ["See what's left at a glance", "Today's timer, the current site and time per site."],
-      ['Own limit for any site', 'YouTube 20 minutes, TikTok 10, the rest share one limit.'],
-      ["Messages don't count", 'Instagram Direct, X messages and other useful pages never cost time or go gray.'],
+      ['Own limit for any site', 'A smaller limit for the most addictive site, one shared limit for the rest.'],
+      ["Messages don't count", 'Direct messages and other useful pages never cost time or go gray.'],
       ['5 more minutes, if you really need it', 'After a short pause, and only twice a day.'],
     ],
     marquee: ["Time's up.", 'So is the color.'],
