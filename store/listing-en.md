@@ -74,3 +74,25 @@ Leave the rest unchecked. Confirm all three certifications: data is not sold or 
 - **Default language:** English (`default_locale: en`), Russian as an extra
 - **Visibility:** Public
 - **Package:** `npm run zip` → `.output/baku-1.0.0-chrome.zip`
+
+---
+
+## Firefox Add-ons (AMO)
+
+- **Package:** `npm run zip:firefox` → `.output/baku-1.0.0-firefox.zip` (Manifest V3, Firefox 128+). The same command writes `.output/baku-1.0.0-sources.zip`; upload it when AMO asks for source code (the extension is built with a bundler).
+- **Listing texts:** the same description as above; screenshots from `store/screenshots/en/`.
+- **Data collection:** declared in the manifest as `data_collection_permissions: { required: ["none"] }`.
+- **Notes for reviewers** (paste into the "Notes to reviewer" field):
+
+```
+Built with WXT (Vite) and TypeScript. To reproduce the package from the sources zip:
+  Node.js 22+, npm 10+
+  npm ci
+  npm run zip:firefox
+The output is .output/baku-1.0.0-firefox.zip.
+
+The extension asks for no host permissions at install. Each site the user adds is requested
+through optional_host_permissions, and the content script is registered at runtime only for
+granted sites (scripting.registerContentScripts). No network requests, no remote code;
+all data stays in storage.local.
+```

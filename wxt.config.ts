@@ -1,7 +1,11 @@
 import { defineConfig } from 'wxt';
 
 export default defineConfig({
-  manifest: ({ mode }) => ({
+  // The sources zip AMO asks for: only what the build needs, not store or site images.
+  zip: {
+    excludeSources: ['store/**', 'site/**', '.claude/**', '.github/**'],
+  },
+  manifest: ({ mode, browser }) => ({
     name: '__MSG_extName__',
     short_name: '__MSG_extShortName__',
     description: '__MSG_extDescription__',
@@ -14,5 +18,18 @@ export default defineConfig({
     action: {
       default_title: '__MSG_extShortName__',
     },
+    ...(browser === 'firefox'
+      ? {
+          browser_specific_settings: {
+            gecko: {
+              id: 'baku@dvmnum.github.io',
+              // optional_host_permissions and :has() in the UI need a recent Firefox (128 is the current ESR).
+              strict_min_version: '128.0',
+              // Required by AMO for new extensions: Baku sends nothing anywhere.
+              data_collection_permissions: { required: ['none'] },
+            },
+          },
+        }
+      : {}),
   }),
 });

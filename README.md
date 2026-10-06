@@ -57,6 +57,7 @@ npm run dev            # Chrome with hot reload
 npm run typecheck
 npm run test:e2e       # Playwright: builds a test variant and runs the smoke suite
 npm run zip            # store package → .output/baku-<version>-chrome.zip
+npm run zip:firefox    # Firefox package + sources zip for AMO
 npm run store          # store screenshots and site images from the real UI
 npm run icons          # PNG icons from assets/icon.svg
 npm run privacy        # site/privacy.html from store/privacy-policy.md

@@ -28,7 +28,7 @@ Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 =
 - **Tone:** plain and clear for numbers, buttons and labels. A light "go take a break" voice only at emotional moments (almost out, out, waiting before an extension, no extensions left), never shaming. Those lines rotate daily (`popupAlmost_N`, `popupRest_N`, `popupThink_N`).
 - **License:** GPL-3.0-or-later for the code (chosen over MIT to keep forks and store clones open). The name, icon and illustration are excluded and stay © dvmnum (see README). The repo goes public at launch; `site/` is published to GitHub Pages (https://dvmnum.github.io/baku) by `.github/workflows/pages.yml`.
 - **Store listing copy:** no lists of brands or site names in the description or screenshot captions (Torii was rejected for keyword spam over exactly that). Say "video, social, feeds", not YouTube/VK/TikTok. Domains shown inside UI screenshots are fine.
-- **Distribution:** Chrome Web Store first (it also covers Yandex Browser, Edge, Opera and Brave), then Firefox AMO.
+- **Distribution:** Chrome Web Store first (it also covers Yandex Browser, Edge, Opera and Brave), then Firefox AMO. The Firefox build is MV3 with `browser_specific_settings.gecko` (id `baku@dvmnum.github.io`, min 128, `data_collection_permissions: none`) added only for `-b firefox` in wxt.config.ts. `web-ext lint` is clean; not yet run in a real Firefox.
 
 ## Layout
 
@@ -65,6 +65,7 @@ npm run typecheck
 npm run icons          # rebuild public/icon/*.png after editing assets/icon.svg
 npm run store          # rebuild store/ images from the real UI (e2e build)
 npm run zip            # .output/baku-<version>-chrome.zip for upload
+npm run zip:firefox    # .output/baku-<version>-firefox.zip (MV3, Firefox 128+) + -sources.zip for AMO review
 npm run test:e2e       # builds with --mode e2e into .output/chrome-mv3-e2e, runs Playwright (first time: npx playwright install chromium)
 ```
 
