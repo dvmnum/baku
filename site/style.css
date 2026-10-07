@@ -48,7 +48,8 @@ img { display: block; max-width: 100%; height: auto; }
 .hero h1 em { white-space: nowrap; font-style: normal; background: linear-gradient(90deg, #7ff0cf, var(--moon)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .hero p { margin: 20px auto 0; max-width: 620px; font-size: clamp(16px, 2vw, 19px); color: var(--ink-2); }
 .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 32px; }
-.note { margin-top: 14px; font-size: 13.5px; color: var(--ink-3); }
+.note { margin-top: 14px; font-size: 13.5px; line-height: 1.7; color: var(--ink-3); }
+.note a { color: var(--ink-2); text-underline-offset: 3px; }
 
 /* buttons */
 .btn {
@@ -62,7 +63,7 @@ img { display: block; max-width: 100%; height: auto; }
 .btn svg { width: 20px; height: 20px; flex: none; }
 @media (max-width: 420px) { .cta .btn { width: 100%; justify-content: center; white-space: normal; } .support { padding: 24px 20px; } .support .btn { width: 100%; justify-content: center; } }
 /* store not live yet: a placeholder link (href="#") labeled with data-soon, not clickable */
-.btn[data-soon] { pointer-events: none; opacity: .6; }
+.btn[data-soon] { pointer-events: none; opacity: .55; }
 .btn[data-soon]::after { content: attr(data-soon); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: rgba(255, 255, 255, .1); color: var(--ink-2); }
 .btn.primary[data-soon]::after { background: rgba(0, 0, 0, .1); color: rgba(0, 0, 0, .55); }
 
