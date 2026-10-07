@@ -8,7 +8,7 @@ The owner talks in Russian, casually. Code, comments and commits are in English.
 
 ## Status
 
-Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (18 checks); typecheck and build are clean. Submitted to the Chrome Web Store and Firefox AMO on 2026-10-06 (following `store/publishing.md`), waiting for review. Once a listing URL exists, put it into the site's store buttons (now href="#" + data-soon) and the README.
+Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (18 checks); typecheck and build are clean. Live in the Chrome Web Store since 2026-10-07: https://chromewebstore.google.com/detail/infpagbpjhccbddhcjmndhdhhbbiblhi (the site's Chrome buttons and the README link there). Submitted to Firefox AMO on 2026-10-06, waiting for review; once its URL exists, put it into the site's Firefox card (still href="#" + data-soon) and the README.
 
 Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 = the first public release (everything above).
 

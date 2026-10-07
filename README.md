@@ -37,7 +37,7 @@ Light and dark themes follow the system. The UI speaks English and Russian.
 
 ## Install
 
-Chrome Web Store (also for Edge, Yandex Browser, Opera, Brave, Vivaldi) — coming soon, then Firefox Add-ons. Links will be on the [website](https://dvmnum.github.io/baku).
+**[Chrome Web Store](https://chromewebstore.google.com/detail/infpagbpjhccbddhcjmndhdhhbbiblhi)**, also for Edge, Yandex Browser, Opera, Brave and Vivaldi. Firefox Add-ons — coming soon.
 
 From source:
 
