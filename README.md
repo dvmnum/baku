@@ -37,7 +37,7 @@ Light and dark themes follow the system. The UI speaks English and Russian.
 
 ## Install
 
-**[Chrome Web Store](https://chromewebstore.google.com/detail/infpagbpjhccbddhcjmndhdhhbbiblhi)**, also for Edge, Yandex Browser, Opera, Brave and Vivaldi. Firefox Add-ons — coming soon.
+**[Chrome Web Store](https://chromewebstore.google.com/detail/infpagbpjhccbddhcjmndhdhhbbiblhi)**, also for Edge, Yandex Browser, Opera, Brave and Vivaldi · **[Firefox Add-ons](https://addons.mozilla.org/firefox/addon/baku-fade/)**
 
 From source:
 

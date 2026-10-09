@@ -2,13 +2,13 @@
 
 ## What this is
 
-Browser extension (Chrome MV3, Firefox later). Distracting sites fade to grayscale once their daily time limit runs out (a shared one, or a site's own). Nothing is ever blocked; the site just stops being fun. Part of the owner's side-project series named after Japanese mythology (baku = a spirit that eats bad dreams).
+Browser extension (Chrome and Firefox, MV3). Distracting sites fade to grayscale once their daily time limit runs out (a shared one, or a site's own). Nothing is ever blocked; the site just stops being fun. Part of the owner's side-project series named after Japanese mythology (baku = a spirit that eats bad dreams).
 
 The owner talks in Russian, casually. Code, comments and commits are in English. The UI is bilingual (ru + en) from day one.
 
 ## Status
 
-Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (18 checks); typecheck and build are clean. Live in the Chrome Web Store since 2026-10-07: https://chromewebstore.google.com/detail/infpagbpjhccbddhcjmndhdhhbbiblhi (the site's Chrome buttons and the README link there). Submitted to Firefox AMO on 2026-10-06, waiting for review; once its URL exists, put it into the site's Firefox card (still href="#" + data-soon) and the README.
+Version **1.0.0** is feature-complete for the first Chrome Web Store release: new popup, settings and onboarding (light + dark), per-site limits, fade strength. Verified by the Playwright e2e suite (18 checks); typecheck and build are clean. Live in the Chrome Web Store since 2026-10-07: https://chromewebstore.google.com/detail/infpagbpjhccbddhcjmndhdhhbbiblhi (the site's Chrome buttons and the README link there). Live on Firefox AMO since 2026-10-09: https://addons.mozilla.org/firefox/addon/baku-fade/ (slug baku-fade; the site's Firefox buttons and the README link there).
 
 Versions: 0.1 = the MVP mechanics (fade, time tracking, "5 more minutes"). 1.0 = the first public release (everything above).
 
@@ -51,7 +51,7 @@ assets/icon.svg             icon source: white tapir-baku on a deep jade tile (T
 scripts/make-icons.mjs      renders the PNGs with Playwright
 scripts/store.mjs           store screenshots/promo/marquee from the real UI (`npm run store`)
 store/                      listing-{ru,en}.md, privacy-policy.md (source of the policy), screenshots/, promo, marquee
-site/                       GitHub Pages, Torii-style: index.html (ru) + en/index.html, style.css, demo.js (drag-to-fade before/after), privacy.html (generated), img/ (og images, store screenshots and bare UI pieces `ui-*.webp` for the feature rows, all from `npm run store`). Feature rows pair a big headline with a real piece of the UI; no icon-card grids (the owner found them generic). Store buttons are href="#" + data-soon until the listing URL exists.
+site/                       GitHub Pages, Torii-style: index.html (ru) + en/index.html, style.css, demo.js (drag-to-fade before/after), privacy.html (generated), img/ (og images, store screenshots and bare UI pieces `ui-*.webp` for the feature rows, all from `npm run store`). Feature rows pair a big headline with a real piece of the UI; no icon-card grids (the owner found them generic). Store buttons link to the live listings; data-soon (+ <em class="soon">) is the placeholder style for any future store.
 tests/e2e.mjs               Playwright smoke test
 CHANGELOG.md                user-facing changes per version (English)
 .github/FUNDING.yml         the repo's Sponsor button → Tribute + Boosty (the site's en page and README also lead with Tribute, ru with Boosty)
